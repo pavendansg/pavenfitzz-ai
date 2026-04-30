@@ -1,3 +1,3 @@
 function unlockPremium(){
-window.location.href="ai-dashboard.html";
+window.location.href="payment.html";
 }

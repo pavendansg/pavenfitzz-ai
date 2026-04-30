@@ -1,3 +1,5 @@
+/* style.css */
+
 *{
 margin:0;
 padding:0;
@@ -6,79 +8,119 @@ font-family:Arial, sans-serif;
 }
 
 body{
-background:#000;
+background:linear-gradient(135deg,#000,#111,#000);
 color:white;
+min-height:100vh;
 display:flex;
 justify-content:center;
 align-items:center;
-min-height:100vh;
 padding:20px;
 }
 
 .container{
-max-width:420px;
 width:100%;
+max-width:460px;
 background:#111;
 padding:30px;
-border-radius:20px;
-box-shadow:0 0 25px rgba(255,215,0,0.2);
-text-align:center;
+border-radius:22px;
 border:1px solid #222;
+box-shadow:0 0 30px rgba(255,215,0,0.15);
+text-align:center;
+animation:fadeIn 1s ease;
+}
+
+.top-badge{
+display:inline-block;
+background:#ffd700;
+color:#000;
+font-weight:bold;
+padding:8px 14px;
+border-radius:30px;
+font-size:13px;
+margin-bottom:18px;
 }
 
 h1{
+font-size:34px;
 color:#ffd700;
-font-size:32px;
 margin-bottom:10px;
 }
 
 .subtitle{
 color:#aaa;
-margin-bottom:25px;
 font-size:16px;
+margin-bottom:25px;
 }
 
 .price-box{
 background:#1a1a1a;
-padding:20px;
-border-radius:15px;
-margin-bottom:25px;
+padding:22px;
+border-radius:18px;
 border:1px solid #333;
+margin-bottom:25px;
 }
 
 .price-box h2{
+font-size:30px;
 color:#00ff99;
-font-size:28px;
 margin-bottom:8px;
 }
 
 .features{
 display:grid;
-grid-template-columns:1fr;
-gap:12px;
+gap:14px;
 margin-bottom:25px;
 }
 
 .card{
 background:#161616;
-padding:14px;
-border-radius:12px;
+padding:16px;
+border-radius:16px;
 border:1px solid #2a2a2a;
+text-align:left;
 transition:0.3s;
 }
 
 .card:hover{
-transform:translateY(-3px);
+transform:translateY(-4px);
 border-color:#ffd700;
+box-shadow:0 0 15px rgba(255,215,0,0.15);
+}
+
+.card h3{
+font-size:18px;
+margin-bottom:8px;
+color:#fff;
+}
+
+.card p{
+font-size:14px;
+color:#aaa;
+line-height:1.4;
+}
+
+.stats{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:12px;
+margin-bottom:22px;
+}
+
+.mini-box{
+background:#1a1a1a;
+padding:14px;
+border-radius:14px;
+font-size:14px;
+border:1px solid #333;
 }
 
 button{
 width:100%;
-padding:16px;
+padding:18px;
 font-size:18px;
 font-weight:bold;
 border:none;
-border-radius:14px;
+border-radius:16px;
 background:#ffd700;
 color:#000;
 cursor:pointer;
@@ -87,10 +129,46 @@ transition:0.3s;
 
 button:hover{
 transform:scale(1.03);
+box-shadow:0 0 18px rgba(255,215,0,0.4);
+}
+
+.small-text{
+margin-top:12px;
+font-size:13px;
+color:#00ff99;
+}
+
+.reviews{
+margin-top:24px;
+background:#151515;
+padding:18px;
+border-radius:16px;
+border:1px solid #222;
+}
+
+.reviews p{
+font-size:14px;
+color:#ddd;
+margin-bottom:10px;
+}
+
+.reviews p:last-child{
+margin-bottom:0;
 }
 
 .footer{
 margin-top:20px;
+font-size:13px;
 color:#777;
-font-size:14px;
+}
+
+@keyframes fadeIn{
+from{
+opacity:0;
+transform:translateY(20px);
+}
+to{
+opacity:1;
+transform:translateY(0);
+}
 }

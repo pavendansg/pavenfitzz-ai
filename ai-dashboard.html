@@ -1,1 +1,72 @@
+<!-- ai-dashboard.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PavenFitzz AI Dashboard</title>
+<link rel="stylesheet" href="ai.css">
+</head>
+<body>
 
+<div class="container">
+
+<h1>🔥 PavenFitzz AI Coach</h1>
+<p class="subtitle">Premium Fitness Planner</p>
+
+<!-- Workout Planner -->
+<div class="box">
+<h2>💪 AI Workout Generator</h2>
+
+<select id="goal">
+<option>Bulk</option>
+<option>Cut</option>
+<option>Maintain</option>
+<option>Athletic</option>
+</select>
+
+<select id="level">
+<option>Beginner</option>
+<option>Intermediate</option>
+<option>Advanced</option>
+</select>
+
+<select id="split">
+<option>PPL</option>
+<option>Bro Split</option>
+<option>Upper Lower</option>
+<option>Full Body</option>
+</select>
+
+<button onclick="generateWorkout()">Generate Workout</button>
+
+<div id="workoutResult" class="result"></div>
+</div>
+
+<!-- Meal Planner -->
+<div class="box">
+<h2>🍽️ AI Meal Generator</h2>
+
+<input type="text" id="foods" placeholder="Enter foods you have">
+
+<button onclick="generateMeal()">Generate Meal Plan</button>
+
+<div id="mealResult" class="result"></div>
+</div>
+
+<!-- Budget Planner -->
+<div class="box">
+<h2>💰 Budget Diet Planner</h2>
+
+<input type="number" id="budget" placeholder="Enter Budget ₹">
+
+<button onclick="generateBudget()">Generate Budget Plan</button>
+
+<div id="budgetResult" class="result"></div>
+</div>
+
+</div>
+
+<script src="ai.js"></script>
+</body>
+</html>

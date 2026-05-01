@@ -1,72 +1,96 @@
-<!-- ai-dashboard.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PavenFitzz AI Dashboard</title>
+<title>PavenFitzz AI Coach</title>
 <link rel="stylesheet" href="ai.css">
 </head>
 <body>
-
 <div class="container">
 
-<h1>🔥 PavenFitzz AI Coach</h1>
-<p class="subtitle">Premium Fitness Planner</p>
+  <!-- HEADER -->
+  <div class="ai-header">
+    <div class="ai-logo">🔥</div>
+    <div class="ai-title">PavenFitzz AI Coach</div>
+    <div class="ai-subtitle">Premium Fitness Planner · Powered by AI</div>
+  </div>
 
-<!-- Workout Planner -->
-<div class="box">
-<h2>💪 AI Workout Generator</h2>
+  <!-- WORKOUT GENERATOR -->
+  <div class="box">
+    <div class="box-header">
+      <span style="font-size:20px;">💪</span>
+      <h2>AI Workout Generator</h2>
+    </div>
 
-<select id="goal">
-<option>Bulk</option>
-<option>Cut</option>
-<option>Maintain</option>
-<option>Athletic</option>
-</select>
+    <label class="input-label">Your Goal</label>
+    <select id="goal">
+      <option>Bulk</option>
+      <option>Cut</option>
+      <option>Maintain</option>
+      <option>Athletic</option>
+    </select>
 
-<select id="level">
-<option>Beginner</option>
-<option>Intermediate</option>
-<option>Advanced</option>
-</select>
+    <label class="input-label">Experience Level</label>
+    <select id="level">
+      <option>Beginner</option>
+      <option>Intermediate</option>
+      <option>Advanced</option>
+    </select>
 
-<select id="split">
-<option>PPL</option>
-<option>Bro Split</option>
-<option>Upper Lower</option>
-<option>Full Body</option>
-</select>
+    <label class="input-label">Workout Split</label>
+    <select id="split">
+      <option>PPL</option>
+      <option>Bro Split</option>
+      <option>Upper Lower</option>
+      <option>Full Body</option>
+    </select>
 
-<button onclick="generateWorkout()">Generate Workout</button>
+    <button id="workoutBtn" onclick="generateWorkout()">
+      Generate Workout 💪
+    </button>
 
-<div id="workoutResult" class="result"></div>
+    <div id="workoutResult" class="result"></div>
+  </div>
+
+  <!-- MEAL GENERATOR -->
+  <div class="box">
+    <div class="box-header">
+      <span style="font-size:20px;">🍽️</span>
+      <h2>AI Meal Generator</h2>
+    </div>
+
+    <label class="input-label">Foods you have at home</label>
+    <input type="text" id="foods"
+      placeholder="e.g. rice, eggs, chicken, oats...">
+
+    <button id="mealBtn" onclick="generateMeal()">
+      Generate Meal Plan 🍗
+    </button>
+
+    <div id="mealResult" class="result"></div>
+  </div>
+
+  <!-- BUDGET PLANNER -->
+  <div class="box">
+    <div class="box-header">
+      <span style="font-size:20px;">💰</span>
+      <h2>Budget Diet Planner</h2>
+    </div>
+
+    <label class="input-label">Daily Budget (₹)</label>
+    <input type="number" id="budget" placeholder="e.g. 150">
+
+    <button id="budgetBtn" onclick="generateBudget()">
+      Generate Budget Plan 💰
+    </button>
+
+    <div id="budgetResult" class="result"></div>
+  </div>
+
+  <button class="back-btn" onclick="history.back()">← Go Back</button>
+
 </div>
-
-<!-- Meal Planner -->
-<div class="box">
-<h2>🍽️ AI Meal Generator</h2>
-
-<input type="text" id="foods" placeholder="Enter foods you have">
-
-<button onclick="generateMeal()">Generate Meal Plan</button>
-
-<div id="mealResult" class="result"></div>
-</div>
-
-<!-- Budget Planner -->
-<div class="box">
-<h2>💰 Budget Diet Planner</h2>
-
-<input type="number" id="budget" placeholder="Enter Budget ₹">
-
-<button onclick="generateBudget()">Generate Budget Plan</button>
-
-<div id="budgetResult" class="result"></div>
-</div>
-
-</div>
-
 <script src="ai.js"></script>
 </body>
 </html>

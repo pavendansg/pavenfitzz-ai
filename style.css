@@ -1,174 +1,241 @@
-/* style.css */
-
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:Arial, sans-serif;
+*, *::before, *::after {
+  margin: 0; padding: 0; box-sizing: border-box;
 }
 
-body{
-background:linear-gradient(135deg,#000,#111,#000);
-color:white;
-min-height:100vh;
-display:flex;
-justify-content:center;
-align-items:center;
-padding:20px;
+body {
+  background: #0a0a0a;
+  color: #fff;
+  font-family: Arial, sans-serif;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 32px 16px 48px;
 }
 
-.container{
-width:100%;
-max-width:460px;
-background:#111;
-padding:30px;
-border-radius:22px;
-border:1px solid #222;
-box-shadow:0 0 30px rgba(255,215,0,0.15);
-text-align:center;
-animation:fadeIn 1s ease;
+.container {
+  width: 100%;
+  max-width: 460px;
+  text-align: center;
+  animation: fadeIn 0.6s ease;
 }
 
-.top-badge{
-display:inline-block;
-background:#ffd700;
-color:#000;
-font-weight:bold;
-padding:8px 14px;
-border-radius:30px;
-font-size:13px;
-margin-bottom:18px;
+/* BADGE */
+.top-badge {
+  display: inline-block;
+  background: linear-gradient(90deg, #ffd700, #ffb300);
+  color: #000;
+  font-weight: 900;
+  font-size: 12px;
+  letter-spacing: 1px;
+  padding: 7px 18px;
+  border-radius: 99px;
+  margin-bottom: 20px;
 }
 
-h1{
-font-size:34px;
-color:#ffd700;
-margin-bottom:10px;
+/* TITLE */
+h1 {
+  font-size: 32px;
+  font-weight: 900;
+  color: #ffd700;
+  margin-bottom: 8px;
+  line-height: 1.1;
 }
 
-.subtitle{
-color:#aaa;
-font-size:16px;
-margin-bottom:25px;
+.subtitle {
+  font-size: 15px;
+  color: #555;
+  margin-bottom: 24px;
 }
 
-.price-box{
-background:#1a1a1a;
-padding:22px;
-border-radius:18px;
-border:1px solid #333;
-margin-bottom:25px;
+/* PRICE BOX */
+.price-box {
+  background: #0a0f0a;
+  border: 2px solid rgba(0,255,136,0.2);
+  border-radius: 20px;
+  padding: 22px;
+  margin-bottom: 24px;
 }
 
-.price-box h2{
-font-size:30px;
-color:#00ff99;
-margin-bottom:8px;
+.price-label {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #444;
+  margin-bottom: 8px;
 }
 
-.features{
-display:grid;
-gap:14px;
-margin-bottom:25px;
+.price-val {
+  font-size: 36px;
+  font-weight: 900;
+  color: #00ff88;
+  margin-bottom: 6px;
 }
 
-.card{
-background:#161616;
-padding:16px;
-border-radius:16px;
-border:1px solid #2a2a2a;
-text-align:left;
-transition:0.3s;
+.price-val span {
+  font-size: 18px;
+  font-weight: 700;
+  color: #00cc66;
 }
 
-.card:hover{
-transform:translateY(-4px);
-border-color:#ffd700;
-box-shadow:0 0 15px rgba(255,215,0,0.15);
+.price-compare {
+  font-size: 13px;
+  color: #444;
 }
 
-.card h3{
-font-size:18px;
-margin-bottom:8px;
-color:#fff;
+.price-compare s {
+  color: #ff4444;
 }
 
-.card p{
-font-size:14px;
-color:#aaa;
-line-height:1.4;
+/* FEATURES */
+.features {
+  display: grid;
+  gap: 10px;
+  margin-bottom: 20px;
 }
 
-.stats{
-display:grid;
-grid-template-columns:1fr 1fr;
-gap:12px;
-margin-bottom:22px;
+.card {
+  background: linear-gradient(180deg, #111, #0d0d0d);
+  border: 1px solid rgba(255,255,255,0.05);
+  border-radius: 16px;
+  padding: 14px 16px;
+  text-align: left;
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  transition: 0.2s;
 }
 
-.mini-box{
-background:#1a1a1a;
-padding:14px;
-border-radius:14px;
-font-size:14px;
-border:1px solid #333;
+.card:hover {
+  transform: translateY(-2px);
+  border-color: rgba(255,215,0,0.2);
+  box-shadow: 0 8px 20px rgba(255,215,0,0.06);
 }
 
-button{
-width:100%;
-padding:18px;
-font-size:18px;
-font-weight:bold;
-border:none;
-border-radius:16px;
-background:#ffd700;
-color:#000;
-cursor:pointer;
-transition:0.3s;
+.card-icon {
+  font-size: 24px;
+  flex-shrink: 0;
+  margin-top: 2px;
 }
 
-button:hover{
-transform:scale(1.03);
-box-shadow:0 0 18px rgba(255,215,0,0.4);
+.card h3 {
+  font-size: 15px;
+  font-weight: 800;
+  color: #fff;
+  margin-bottom: 4px;
 }
 
-.small-text{
-margin-top:12px;
-font-size:13px;
-color:#00ff99;
+.card p {
+  font-size: 13px;
+  color: #555;
+  line-height: 1.5;
 }
 
-.reviews{
-margin-top:24px;
-background:#151515;
-padding:18px;
-border-radius:16px;
-border:1px solid #222;
+/* STATS */
+.stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 20px;
 }
 
-.reviews p{
-font-size:14px;
-color:#ddd;
-margin-bottom:10px;
+.mini-box {
+  background: #111;
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 14px;
+  padding: 14px;
+  font-size: 13px;
+  color: #aaa;
 }
 
-.reviews p:last-child{
-margin-bottom:0;
+.mini-box strong {
+  color: #ffd700;
+  font-weight: 900;
 }
 
-.footer{
-margin-top:20px;
-font-size:13px;
-color:#777;
+/* CTA BUTTON */
+.cta-btn {
+  width: 100%;
+  padding: 18px;
+  font-size: 17px;
+  font-weight: 900;
+  border: none;
+  border-radius: 16px;
+  background: linear-gradient(90deg, #ffd700, #ffb300);
+  color: #000;
+  cursor: pointer;
+  transition: 0.2s;
+  letter-spacing: 0.3px;
 }
 
-@keyframes fadeIn{
-from{
-opacity:0;
-transform:translateY(20px);
+.cta-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 28px rgba(255,215,0,0.3);
 }
-to{
-opacity:1;
-transform:translateY(0);
+
+.cta-btn:active { transform: scale(0.98); }
+
+.small-text {
+  margin-top: 10px;
+  font-size: 12px;
+  color: #00ff88;
 }
+
+/* REVIEWS */
+.reviews {
+  margin-top: 24px;
+  background: #0d0d0d;
+  border: 1px solid rgba(255,255,255,0.05);
+  border-radius: 18px;
+  padding: 20px;
+  text-align: left;
+}
+
+.review-title {
+  font-size: 14px;
+  font-weight: 800;
+  color: #ffd700;
+  margin-bottom: 14px;
+  text-align: center;
+}
+
+.review-item {
+  background: #111;
+  border: 1px solid rgba(255,255,255,0.04);
+  border-radius: 12px;
+  padding: 12px 14px;
+  margin-bottom: 8px;
+}
+
+.review-item:last-child { margin-bottom: 0; }
+
+.review-stars {
+  font-size: 12px;
+  margin-bottom: 4px;
+}
+
+.review-item p {
+  font-size: 13px;
+  color: #aaa;
+  line-height: 1.5;
+}
+
+/* FOOTER */
+.footer {
+  margin-top: 24px;
+  font-size: 12px;
+  color: #333;
+}
+
+/* ANIMATIONS */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* MOBILE */
+@media (max-width: 400px) {
+  h1 { font-size: 26px; }
+  .price-val { font-size: 28px; }
+  .cta-btn { font-size: 15px; padding: 16px; }
 }

@@ -7,8 +7,18 @@ async function callAI(prompt) {
     body: JSON.stringify({ prompt })
   });
   const data = await res.json();
-  if (data.error) throw new Error(data.error);
-  return data.text;
+
+  // Handle both response formats
+  if (data.text) return data.text;
+
+  // Gemini raw format
+  if (data.candidates?.[0]?.content?.parts?.[0]?.text) {
+    return data.candidates[0].content.parts[0].text;
+  }
+
+  // Debug — log what we got
+  console.log("API Response:", JSON.stringify(data));
+  throw new Error("No text in response");
 }
 
 function showLoading(id) {
@@ -55,7 +65,8 @@ End with one motivational tip.`;
       </div>` + html
     );
   } catch(e) {
-    showResult("workoutResult", `<div class="result-line" style="color:#ff4444;">⚠️ Error. Try again.</div>`);
+    console.error("Workout error:", e);
+    showResult("workoutResult", `<div class="result-line" style="color:#ff4444;">⚠️ ${e.message}</div>`);
   }
 
   btn.disabled = false;
@@ -84,7 +95,8 @@ High protein, practical. Add calories per meal. Use emojis. Indian diet style.`;
     ).join("");
     showResult("mealResult", html);
   } catch(e) {
-    showResult("mealResult", `<div class="result-line" style="color:#ff4444;">⚠️ Error. Try again.</div>`);
+    console.error("Meal error:", e);
+    showResult("mealResult", `<div class="result-line" style="color:#ff4444;">⚠️ ${e.message}</div>`);
   }
 
   btn.disabled = false;
@@ -118,7 +130,8 @@ Stay within ₹${budget}. Use emojis. Practical for Indian markets.`;
       </div>` + html
     );
   } catch(e) {
-    showResult("budgetResult", `<div class="result-line" style="color:#ff4444;">⚠️ Error. Try again.</div>`);
+    console.error("Budget error:", e);
+    showResult("budgetResult", `<div class="result-line" style="color:#ff4444;">⚠️ ${e.message}</div>`);
   }
 
   btn.disabled = false;

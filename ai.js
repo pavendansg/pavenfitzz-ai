@@ -1,18 +1,21 @@
-// ✅ Direct Anthropic API call — no Cloudflare needed
+// ✅ Direct Gemini API call — no Cloudflare needed
+const GEMINI_KEY = "AIzaSyBDkPioz9apRz7nb--AE00VEmUKcTgW-ak";
+
 async function callAI(prompt) {
-  const res = await fetch("https://api.anthropic.com/v1/messages", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      model: "claude-sonnet-4-20250514",
-      max_tokens: 1000,
-      messages: [{ role: "user", content: prompt }]
-    })
-  });
+  const res = await fetch(
+    `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${GEMINI_KEY}`,
+    {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        contents: [{ parts: [{ text: prompt }] }]
+      })
+    }
+  );
   const data = await res.json();
-  const text = data.content.map(i => i.text || "").join("");
+  const text = data?.candidates?.[0]?.content?.parts?.[0]?.text;
   if (!text) {
-    console.log("Claude response:", JSON.stringify(data));
+    console.log("Gemini response:", JSON.stringify(data));
     throw new Error("No response from AI");
   }
   return text;

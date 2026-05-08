@@ -1,24 +1,24 @@
-const WORKER_URL = "https://pavenfitzz-ai.pavendansg.workers.dev";
+// ✅ Direct Gemini API call — no Cloudflare needed
+const GEMINI_KEY = "AIzaSyBDkPioz9apRz7nb--AE00VEmUKcTgW-ak";
 
 async function callAI(prompt) {
-  const res = await fetch(WORKER_URL, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ prompt })
-  });
+  const res = await fetch(
+    `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${GEMINI_KEY}`,
+    {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        contents: [{ parts: [{ text: prompt }] }]
+      })
+    }
+  );
   const data = await res.json();
-
-  // Handle both response formats
-  if (data.text) return data.text;
-
-  // Gemini raw format
-  if (data.candidates?.[0]?.content?.parts?.[0]?.text) {
-    return data.candidates[0].content.parts[0].text;
+  const text = data?.candidates?.[0]?.content?.parts?.[0]?.text;
+  if (!text) {
+    console.log("Gemini response:", JSON.stringify(data));
+    throw new Error("No response from AI");
   }
-
-  // Debug — log what we got
-  console.log("API Response:", JSON.stringify(data));
-  throw new Error("No text in response");
+  return text;
 }
 
 function showLoading(id) {

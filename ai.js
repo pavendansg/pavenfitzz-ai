@@ -1,7 +1,7 @@
 const GEMINI_KEY = "AIzaSyBDkPioz9apRz7nb--AE00VEmUKcTgW-ak";
 
 async function callAI(prompt) {
-  const url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-lite:generateContent?key=" + GEMINI_KEY;
+  const url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=" + GEMINI_KEY;
   const res = await fetch(url, {
     method: "POST",
     headers: { "Content-Type": "application/json" },

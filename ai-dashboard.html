@@ -79,7 +79,7 @@
 var GEMINI_KEY = "AIzaSyBDkPioz9apRz7nb--AE00VEmUKcTgW-ak";
 
 function callAI(prompt) {
-  var url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-lite:generateContent?key=" + GEMINI_KEY;
+  var url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=" + GEMINI_KEY;
   return fetch(url, {
     method: "POST",
     headers: { "Content-Type": "application/json" },

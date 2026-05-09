@@ -1,17 +1,14 @@
-// ✅ Direct Gemini API call — no Cloudflare needed
 const GEMINI_KEY = "AIzaSyBDkPioz9apRz7nb--AE00VEmUKcTgW-ak";
 
 async function callAI(prompt) {
-  // FIXED ✅
-const res = await fetch(
-    `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-lite:generateContent?key=${GEMINI_KEY}`,
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        contents: [{ parts: [{ text: prompt }] }]
-      })
-    }
-  );
+  const url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-lite:generateContent?key=" + GEMINI_KEY;
+  const res = await fetch(url, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      contents: [{ parts: [{ text: prompt }] }]
+    })
+  });
   const data = await res.json();
   const text = data?.candidates?.[0]?.content?.parts?.[0]?.text;
   if (!text) {
@@ -24,7 +21,7 @@ const res = await fetch(
 function showLoading(id) {
   const el = document.getElementById(id);
   el.classList.add("show");
-  el.innerHTML = `<div class="loading-dots"><span></span><span></span><span></span></div>`;
+  el.innerHTML = '<div class="loading-dots"><span></span><span></span><span></span></div>';
 }
 
 function showResult(id, html) {
@@ -43,30 +40,27 @@ async function generateWorkout() {
   btn.innerText = "Generating...";
   showLoading("workoutResult");
 
-  const prompt = `You are an expert fitness coach. Create a ${split} workout plan for a ${level} level person with goal: ${goal}.
-Give exactly 4-6 days. For each day give: day name, 4-5 exercises with sets x reps.
-Format as plain text. Use emojis. Keep it concise and practical for Indians.
-End with one motivational tip.`;
+  const prompt = "You are an expert fitness coach. Create a " + split + " workout plan for a " + level + " level person with goal: " + goal + ". Give exactly 4-6 days. For each day give: day name, 4-5 exercises with sets x reps. Format as plain text. Use emojis. Keep it concise and practical for Indians. End with one motivational tip.";
 
   try {
     const text = await callAI(prompt);
-    const lines = text.split("\n").filter(l => l.trim());
-    const html = lines.map(line => {
+    const lines = text.split("\n").filter(function(l) { return l.trim(); });
+    const html = lines.map(function(line) {
       if (line.match(/day\s*\d/i) || line.match(/^(monday|tuesday|wednesday|thursday|friday|saturday|sunday)/i)) {
-        return `<div class="result-day"><div class="result-day-title">${line}</div></div>`;
+        return '<div class="result-day"><div class="result-day-title">' + line + '</div></div>';
       }
-      return `<div class="result-line"><span>${line}</span></div>`;
+      return '<div class="result-line"><span>' + line + '</span></div>';
     }).join("");
     showResult("workoutResult",
-      `<div style="margin-bottom:10px;">
-        <span class="tag tag-gold">${goal}</span>
-        <span class="tag tag-green">${level}</span>
-        <span class="tag tag-gold">${split}</span>
-      </div>` + html
+      '<div style="margin-bottom:10px;">' +
+      '<span class="tag tag-gold">' + goal + '</span>' +
+      '<span class="tag tag-green">' + level + '</span>' +
+      '<span class="tag tag-gold">' + split + '</span>' +
+      '</div>' + html
     );
   } catch(e) {
     console.error("Workout error:", e);
-    showResult("workoutResult", `<div class="result-line" style="color:#ff4444;">⚠️ ${e.message}</div>`);
+    showResult("workoutResult", '<div class="result-line" style="color:#ff4444;">Error: ' + e.message + '</div>');
   }
 
   btn.disabled = false;
@@ -77,26 +71,24 @@ async function generateMeal() {
   const foods = document.getElementById("foods").value.trim();
   const btn   = document.getElementById("mealBtn");
 
-  if (!foods) { alert("Enter the foods you have ⚠️"); return; }
+  if (!foods) { alert("Enter the foods you have"); return; }
 
   btn.disabled = true;
   btn.innerText = "Generating...";
   showLoading("mealResult");
 
-  const prompt = `You are a nutrition expert. The person has these foods: ${foods}.
-Create a full day meal plan (Breakfast, Lunch, Snack, Dinner) using ONLY these foods.
-High protein, practical. Add calories per meal. Use emojis. Indian diet style.`;
+  const prompt = "You are a nutrition expert. The person has these foods: " + foods + ". Create a full day meal plan (Breakfast, Lunch, Snack, Dinner) using ONLY these foods. High protein, practical. Add calories per meal. Use emojis. Indian diet style.";
 
   try {
     const text = await callAI(prompt);
-    const lines = text.split("\n").filter(l => l.trim());
-    const html = lines.map(line =>
-      `<div class="result-line"><span>${line}</span></div>`
-    ).join("");
+    const lines = text.split("\n").filter(function(l) { return l.trim(); });
+    const html = lines.map(function(line) {
+      return '<div class="result-line"><span>' + line + '</span></div>';
+    }).join("");
     showResult("mealResult", html);
   } catch(e) {
     console.error("Meal error:", e);
-    showResult("mealResult", `<div class="result-line" style="color:#ff4444;">⚠️ ${e.message}</div>`);
+    showResult("mealResult", '<div class="result-line" style="color:#ff4444;">Error: ' + e.message + '</div>');
   }
 
   btn.disabled = false;
@@ -107,31 +99,26 @@ async function generateBudget() {
   const budget = document.getElementById("budget").value;
   const btn    = document.getElementById("budgetBtn");
 
-  if (!budget || budget < 1) { alert("Enter valid budget ⚠️"); return; }
+  if (!budget || budget < 1) { alert("Enter valid budget"); return; }
 
   btn.disabled = true;
   btn.innerText = "Generating...";
   showLoading("budgetResult");
 
-  const prompt = `You are a budget nutrition expert in India.
-Create a high protein muscle building diet for ₹${budget} per day.
-List foods with prices in rupees. Full day plan: Breakfast, Lunch, Snack, Dinner.
-Stay within ₹${budget}. Use emojis. Practical for Indian markets.`;
+  const prompt = "You are a budget nutrition expert in India. Create a high protein muscle building diet for Rs." + budget + " per day. List foods with prices in rupees. Full day plan: Breakfast, Lunch, Snack, Dinner. Stay within Rs." + budget + ". Use emojis. Practical for Indian markets.";
 
   try {
     const text = await callAI(prompt);
-    const lines = text.split("\n").filter(l => l.trim());
-    const html = lines.map(line =>
-      `<div class="result-line"><span>${line}</span></div>`
-    ).join("");
+    const lines = text.split("\n").filter(function(l) { return l.trim(); });
+    const html = lines.map(function(line) {
+      return '<div class="result-line"><span>' + line + '</span></div>';
+    }).join("");
     showResult("budgetResult",
-      `<div style="margin-bottom:10px;">
-        <span class="tag tag-green">Budget: ₹${budget}/day</span>
-      </div>` + html
+      '<div style="margin-bottom:10px;"><span class="tag tag-green">Budget: Rs.' + budget + '/day</span></div>' + html
     );
   } catch(e) {
     console.error("Budget error:", e);
-    showResult("budgetResult", `<div class="result-line" style="color:#ff4444;">⚠️ ${e.message}</div>`);
+    showResult("budgetResult", '<div class="result-line" style="color:#ff4444;">Error: ' + e.message + '</div>');
   }
 
   btn.disabled = false;

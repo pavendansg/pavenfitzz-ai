@@ -6,483 +6,205 @@
 <title>PavenFitzz AI Coach</title>
 <link rel="stylesheet" href="ai.css">
 </head>
-
 <body>
-
 <div class="container">
 
   <div class="ai-header">
     <div class="ai-logo">🔥</div>
     <div class="ai-title">PavenFitzz AI Coach</div>
-    <div class="ai-subtitle">
-      Premium Fitness Planner · Powered by AI
-    </div>
+    <div class="ai-subtitle">Premium Fitness Planner · Powered by AI</div>
   </div>
 
-  <!-- WORKOUT -->
   <div class="box">
-
     <div class="box-header">
       <span style="font-size:20px;">💪</span>
       <h2>AI Workout Generator</h2>
     </div>
-
     <label class="input-label">Your Goal</label>
-
     <select id="goal">
       <option>Bulk</option>
       <option>Cut</option>
       <option>Maintain</option>
       <option>Athletic</option>
     </select>
-
     <label class="input-label">Experience Level</label>
-
     <select id="level">
       <option>Beginner</option>
       <option>Intermediate</option>
       <option>Advanced</option>
     </select>
-
     <label class="input-label">Workout Split</label>
-
     <select id="split">
       <option>PPL</option>
       <option>Bro Split</option>
       <option>Upper Lower</option>
       <option>Full Body</option>
     </select>
-
-    <button id="workoutBtn" type="button"
-      onclick="generateWorkout()">
+    <button id="workoutBtn" type="button" onclick="generateWorkout()">
       Generate Workout 💪
     </button>
-
     <div id="workoutResult" class="result"></div>
-
   </div>
 
-  <!-- MEAL -->
   <div class="box">
-
     <div class="box-header">
       <span style="font-size:20px;">🍽️</span>
       <h2>AI Meal Generator</h2>
     </div>
-
-    <label class="input-label">
-      Foods you have at home
-    </label>
-
-    <input type="text"
-      id="foods"
-      placeholder="e.g. rice, eggs, chicken, oats...">
-
-    <button id="mealBtn"
-      type="button"
-      onclick="generateMeal()">
-
+    <label class="input-label">Foods you have at home</label>
+    <input type="text" id="foods" placeholder="e.g. rice, eggs, chicken, oats...">
+    <button id="mealBtn" type="button" onclick="generateMeal()">
       Generate Meal Plan 🍗
-
     </button>
-
     <div id="mealResult" class="result"></div>
-
   </div>
 
-  <!-- BUDGET -->
   <div class="box">
-
     <div class="box-header">
       <span style="font-size:20px;">💰</span>
       <h2>Budget Diet Planner</h2>
     </div>
-
-    <label class="input-label">
-      Daily Budget (₹)
-    </label>
-
-    <input type="number"
-      id="budget"
-      placeholder="e.g. 150">
-
-    <button id="budgetBtn"
-      type="button"
-      onclick="generateBudget()">
-
+    <label class="input-label">Daily Budget (₹)</label>
+    <input type="number" id="budget" placeholder="e.g. 150">
+    <button id="budgetBtn" type="button" onclick="generateBudget()">
       Generate Budget Plan 💰
-
     </button>
-
     <div id="budgetResult" class="result"></div>
-
   </div>
 
-  <button class="back-btn"
-    onclick="history.back()">
-
-    ← Go Back
-
-  </button>
+  <button class="back-btn" onclick="history.back()">← Go Back</button>
 
 </div>
 
 <script>
+const WORKER_URL = "https://pavenfitzz-ai.pavendansg.workers.dev";
 
-const WORKER_URL =
-"https://pavenfitzz-ai.pavendansg.workers.dev";
+// Convert **bold** and *italic* markdown to HTML
+function formatText(text) {
+  return text
+    .replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>")
+    .replace(/\*(.*?)\*/g, "<em>$1</em>")
+    .replace(/^-\s/gm, "• ");
+}
 
 function callAI(prompt) {
-
   return fetch(WORKER_URL, {
-
     method: "POST",
-
-    headers: {
-      "Content-Type": "application/json"
-    },
-
-    body: JSON.stringify({
-      prompt: prompt
-    })
-
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ prompt: prompt })
   })
-
-  .then(function(res) {
-    return res.json();
-  })
-
+  .then(function(res) { return res.json(); })
   .then(function(data) {
-
-    console.log(data);
-
-    // Worker formatted response
-    if (data.text) {
-      return data.text;
-    }
-
-    // Raw Gemini response fallback
-    if (
-      data.candidates &&
-      data.candidates[0] &&
-      data.candidates[0].content &&
-      data.candidates[0].content.parts &&
-      data.candidates[0].content.parts[0]
-    ) {
-      return data.candidates[0]
-      .content.parts[0].text;
-    }
-
-    // Error response
-    if (data.error) {
-      throw new Error(data.error);
-    }
-
+    if (data.text) return data.text;
+    if (data.error) throw new Error(data.error);
     throw new Error("No response from AI");
-
   });
-
 }
 
 function showLoading(id) {
-
-  const el =
-  document.getElementById(id);
-
+  var el = document.getElementById(id);
   el.className = "result show";
-
-  el.innerHTML =
-  "🔥 Generating AI response...";
-
+  el.innerHTML = '<div class="loading-dots"><span></span><span></span><span></span></div>';
 }
 
 function showResult(id, html) {
-
-  const el =
-  document.getElementById(id);
-
+  var el = document.getElementById(id);
   el.className = "result show";
-
   el.innerHTML = html;
+}
 
+function renderLines(text) {
+  return text.split("\n")
+    .filter(function(l) { return l.trim(); })
+    .map(function(line) {
+      var clean = formatText(line.trim());
+      // Day headers
+      if (/^(day\s*\d|monday|tuesday|wednesday|thursday|friday|saturday|sunday|push|pull|legs|upper|lower|chest|back|shoulder)/i.test(line)) {
+        return '<div class="result-day"><div class="result-day-title">' + clean + '</div></div>';
+      }
+      return '<div class="result-line"><span>' + clean + '</span></div>';
+    }).join("");
 }
 
 async function generateWorkout() {
-
-  const goal =
-  document.getElementById("goal").value;
-
-  const level =
-  document.getElementById("level").value;
-
-  const split =
-  document.getElementById("split").value;
-
-  const btn =
-  document.getElementById("workoutBtn");
+  var goal  = document.getElementById("goal").value;
+  var level = document.getElementById("level").value;
+  var split = document.getElementById("split").value;
+  var btn   = document.getElementById("workoutBtn");
 
   btn.disabled = true;
-
   btn.innerText = "Generating...";
-
   showLoading("workoutResult");
 
-  const prompt =
-  `Create a ${split} workout plan
-  for a ${level} level person
-  with goal: ${goal}.
-  Give 4-6 workout days.
-  Include exercises,
-  sets and reps.
-  Keep it practical for Indians.`;
+  var prompt = "You are a fitness coach. Create a SHORT " + split + " workout plan for " + level + " level with goal: " + goal + ". Format EXACTLY like this:\n\nDay 1 - Push 💪\n• Bench Press: 3x8\n• Shoulder Press: 3x10\n• Tricep Dips: 3x12\n\nDay 2 - Pull 🏋️\n• Deadlift: 3x6\n• Pull Ups: 3x8\n\nOnly list day name and exercises with sets x reps. No descriptions. No extra text. Max 6 days. End with one tip line.";
 
   try {
-
-    const text =
-    await callAI(prompt);
-
-    const lines =
-    text.split("\n")
-    .filter(line => line.trim());
-
-    const html =
-    lines.map(line => {
-
-      if (
-        /day\s*\d/i.test(line)
-      ) {
-
-        return `
-        <div class="result-day">
-          <div class="result-day-title">
-            ${line}
-          </div>
-        </div>
-        `;
-      }
-
-      return `
-      <div class="result-line">
-        <span>${line}</span>
-      </div>
-      `;
-
-    }).join("");
-
-    showResult(
-      "workoutResult",
-
-      `
-      <div style="margin-bottom:10px;">
-
-        <span class="tag tag-gold">
-          ${goal}
-        </span>
-
-        <span class="tag tag-green">
-          ${level}
-        </span>
-
-        <span class="tag tag-gold">
-          ${split}
-        </span>
-
-      </div>
-
-      ${html}
-      `
+    var text = await callAI(prompt);
+    var html = renderLines(text);
+    showResult("workoutResult",
+      '<div style="margin-bottom:10px;">' +
+      '<span class="tag tag-gold">' + goal + '</span> ' +
+      '<span class="tag tag-green">' + level + '</span> ' +
+      '<span class="tag tag-gold">' + split + '</span>' +
+      '</div>' + html
     );
-
-  }
-
-  catch(err) {
-
-    showResult(
-      "workoutResult",
-
-      `
-      <div class="result-line"
-      style="color:#ff4444;">
-
-      ⚠️ ${err.message}
-
-      </div>
-      `
-    );
-
-  }
-
-  finally {
-
+  } catch(e) {
+    showResult("workoutResult", '<div class="result-line" style="color:#ff4444;">⚠️ ' + e.message + '</div>');
+  } finally {
     btn.disabled = false;
-
-    btn.innerText =
-    "Generate Workout 💪";
-
+    btn.innerText = "Generate Workout 💪";
   }
-
 }
 
 async function generateMeal() {
+  var foods = document.getElementById("foods").value.trim();
+  var btn   = document.getElementById("mealBtn");
 
-  const foods =
-  document.getElementById("foods")
-  .value.trim();
-
-  const btn =
-  document.getElementById("mealBtn");
-
-  if (!foods) {
-    alert("Enter foods");
-    return;
-  }
+  if (!foods) { alert("Enter foods you have"); return; }
 
   btn.disabled = true;
-
   btn.innerText = "Generating...";
-
   showLoading("mealResult");
 
-  const prompt =
-  `Create a high protein meal plan
-  using these foods:
-  ${foods}.
-  Include breakfast,
-  lunch, snacks and dinner.`;
+  var prompt = "You are a nutrition expert. Foods available: " + foods + ". Create a SHORT Indian meal plan. Format EXACTLY like:\n\n🌅 Breakfast: Eggs + Oats (350 cal, 25g protein)\n🍱 Lunch: Rice + Chicken (500 cal, 40g protein)\n🍎 Snack: Banana + Peanut Butter (200 cal, 8g protein)\n🌙 Dinner: Dal + Roti (400 cal, 20g protein)\n\nOnly 4 meals. One line each. Use only the given foods. No extra text.";
 
   try {
-
-    const text =
-    await callAI(prompt);
-
-    const html =
-    text.split("\n")
-    .filter(line => line.trim())
-    .map(line => `
-      <div class="result-line">
-        <span>${line}</span>
-      </div>
-    `)
-    .join("");
-
+    var text = await callAI(prompt);
+    var html = renderLines(text);
     showResult("mealResult", html);
-
-  }
-
-  catch(err) {
-
-    showResult(
-      "mealResult",
-
-      `
-      <div class="result-line"
-      style="color:#ff4444;">
-
-      ⚠️ ${err.message}
-
-      </div>
-      `
-    );
-
-  }
-
-  finally {
-
+  } catch(e) {
+    showResult("mealResult", '<div class="result-line" style="color:#ff4444;">⚠️ ' + e.message + '</div>');
+  } finally {
     btn.disabled = false;
-
-    btn.innerText =
-    "Generate Meal Plan 🍗";
-
+    btn.innerText = "Generate Meal Plan 🍗";
   }
-
 }
 
 async function generateBudget() {
+  var budget = document.getElementById("budget").value;
+  var btn    = document.getElementById("budgetBtn");
 
-  const budget =
-  document.getElementById("budget")
-  .value;
-
-  const btn =
-  document.getElementById("budgetBtn");
-
-  if (!budget || budget < 1) {
-    alert("Enter valid budget");
-    return;
-  }
+  if (!budget || budget < 1) { alert("Enter valid budget"); return; }
 
   btn.disabled = true;
-
   btn.innerText = "Generating...";
-
   showLoading("budgetResult");
 
-  const prompt =
-  `Create a muscle building
-  Indian diet plan for Rs.${budget}
-  per day with food prices.`;
+  var prompt = "You are a budget diet expert in India. Budget: Rs." + budget + " per day. Create a SHORT muscle building diet. Format EXACTLY like:\n\n🛒 Shopping List:\n• Eggs (6) - Rs.30\n• Rice (200g) - Rs.15\n\n🍽️ Meal Plan:\n🌅 Breakfast: 3 Eggs + Oats (300 cal)\n🍱 Lunch: Rice + Dal (450 cal)\n🍎 Snack: Banana + Peanut Butter (200 cal)\n🌙 Dinner: Rice + Eggs (400 cal)\n\nTotal: Rs.X/day. No extra text.";
 
   try {
-
-    const text =
-    await callAI(prompt);
-
-    const html =
-    text.split("\n")
-    .filter(line => line.trim())
-    .map(line => `
-      <div class="result-line">
-        <span>${line}</span>
-      </div>
-    `)
-    .join("");
-
-    showResult(
-      "budgetResult",
-
-      `
-      <div style="margin-bottom:10px;">
-
-      <span class="tag tag-green">
-      Budget: ₹${budget}/day
-      </span>
-
-      </div>
-
-      ${html}
-      `
+    var text = await callAI(prompt);
+    var html = renderLines(text);
+    showResult("budgetResult",
+      '<div style="margin-bottom:10px;"><span class="tag tag-green">Budget: ₹' + budget + '/day</span></div>' + html
     );
-
-  }
-
-  catch(err) {
-
-    showResult(
-      "budgetResult",
-
-      `
-      <div class="result-line"
-      style="color:#ff4444;">
-
-      ⚠️ ${err.message}
-
-      </div>
-      `
-    );
-
-  }
-
-  finally {
-
+  } catch(e) {
+    showResult("budgetResult", '<div class="result-line" style="color:#ff4444;">⚠️ ' + e.message + '</div>');
+  } finally {
     btn.disabled = false;
-
-    btn.innerText =
-    "Generate Budget Plan 💰";
-
+    btn.innerText = "Generate Budget Plan 💰";
   }
-
 }
-
 </script>
 
 </body>

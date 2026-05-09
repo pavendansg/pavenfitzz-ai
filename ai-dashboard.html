@@ -76,25 +76,19 @@
 </div>
 
 <script>
-var GEMINI_KEY = "AIzaSyBDkPioz9apRz7nb--AE00VEmUKcTgW-ak";
+var WORKER_URL = "https://pavenfitzz-ai.pavendansg.workers.dev";
 
 function callAI(prompt) {
-  var url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=" + GEMINI_KEY;
-  return fetch(url, {
+  return fetch(WORKER_URL, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      contents: [{ parts: [{ text: prompt }] }]
-    })
+    body: JSON.stringify({ prompt: prompt })
   })
   .then(function(res) { return res.json(); })
   .then(function(data) {
-    var text = data && data.candidates && data.candidates[0] && data.candidates[0].content && data.candidates[0].content.parts && data.candidates[0].content.parts[0] && data.candidates[0].content.parts[0].text;
-    if (!text) {
-      console.log("Gemini raw:", JSON.stringify(data));
-      throw new Error("No response from AI");
-    }
-    return text;
+    if (data.text) return data.text;
+    if (data.error) throw new Error(data.error);
+    throw new Error("No response from AI");
   });
 }
 
@@ -140,8 +134,7 @@ function generateWorkout() {
     );
   })
   .catch(function(e) {
-    console.error("Workout error:", e);
-    showResult("workoutResult", '<div class="result-line" style="color:#ff4444;">Error: ' + e.message + '</div>');
+    showResult("workoutResult", '<div class="result-line" style="color:#ff4444;">⚠️ ' + e.message + '</div>');
   })
   .finally(function() {
     btn.disabled = false;
@@ -170,8 +163,7 @@ function generateMeal() {
     showResult("mealResult", html);
   })
   .catch(function(e) {
-    console.error("Meal error:", e);
-    showResult("mealResult", '<div class="result-line" style="color:#ff4444;">Error: ' + e.message + '</div>');
+    showResult("mealResult", '<div class="result-line" style="color:#ff4444;">⚠️ ' + e.message + '</div>');
   })
   .finally(function() {
     btn.disabled = false;
@@ -202,8 +194,7 @@ function generateBudget() {
     );
   })
   .catch(function(e) {
-    console.error("Budget error:", e);
-    showResult("budgetResult", '<div class="result-line" style="color:#ff4444;">Error: ' + e.message + '</div>');
+    showResult("budgetResult", '<div class="result-line" style="color:#ff4444;">⚠️ ' + e.message + '</div>');
   })
   .finally(function() {
     btn.disabled = false;

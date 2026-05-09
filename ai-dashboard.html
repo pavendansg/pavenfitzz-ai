@@ -79,7 +79,6 @@
 <script>
 const WORKER_URL = "https://pavenfitzz-ai.pavendansg.workers.dev";
 
-// Convert **bold** and *italic* markdown to HTML
 function formatText(text) {
   return text
     .replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>")
@@ -118,7 +117,6 @@ function renderLines(text) {
     .filter(function(l) { return l.trim(); })
     .map(function(line) {
       var clean = formatText(line.trim());
-      // Day headers
       if (/^(day\s*\d|monday|tuesday|wednesday|thursday|friday|saturday|sunday|push|pull|legs|upper|lower|chest|back|shoulder)/i.test(line)) {
         return '<div class="result-day"><div class="result-day-title">' + clean + '</div></div>';
       }
@@ -126,7 +124,56 @@ function renderLines(text) {
     }).join("");
 }
 
+function todayKey() {
+  return new Date().toISOString().split("T")[0];
+}
+
+function savePlan(type, html) {
+  localStorage.setItem("plan_" + type + "_date", todayKey());
+  localStorage.setItem("plan_" + type + "_html", html);
+}
+
+function getSavedPlan(type) {
+  var savedDate = localStorage.getItem("plan_" + type + "_date");
+  var savedHtml = localStorage.getItem("plan_" + type + "_html");
+  if (savedDate === todayKey() && savedHtml) {
+    return savedHtml;
+  }
+  return null;
+}
+
+function lockBtn(btnId, msg) {
+  var btn = document.getElementById(btnId);
+  btn.disabled = true;
+  btn.innerText = msg;
+  btn.style.opacity = "0.5";
+  btn.style.cursor = "not-allowed";
+}
+
+window.onload = function() {
+  var workout = getSavedPlan("workout");
+  if (workout) {
+    showResult("workoutResult", workout);
+    lockBtn("workoutBtn", "✅ Generated Today");
+  }
+  var meal = getSavedPlan("meal");
+  if (meal) {
+    showResult("mealResult", meal);
+    lockBtn("mealBtn", "✅ Generated Today");
+  }
+  var budget = getSavedPlan("budget");
+  if (budget) {
+    showResult("budgetResult", budget);
+    lockBtn("budgetBtn", "✅ Generated Today");
+  }
+};
+
 async function generateWorkout() {
+  if (getSavedPlan("workout")) {
+    alert("Already generated today! Come back tomorrow 💪");
+    return;
+  }
+
   var goal  = document.getElementById("goal").value;
   var level = document.getElementById("level").value;
   var split = document.getElementById("split").value;
@@ -140,23 +187,32 @@ async function generateWorkout() {
 
   try {
     var text = await callAI(prompt);
-    var html = renderLines(text);
-    showResult("workoutResult",
+    var html =
       '<div style="margin-bottom:10px;">' +
       '<span class="tag tag-gold">' + goal + '</span> ' +
       '<span class="tag tag-green">' + level + '</span> ' +
       '<span class="tag tag-gold">' + split + '</span>' +
-      '</div>' + html
-    );
+      '</div>' +
+      renderLines(text) +
+      '<div style="margin-top:12px;font-size:12px;color:#555;text-align:center;">📅 Generated ' + todayKey() + ' · Resets tomorrow</div>';
+
+    showResult("workoutResult", html);
+    savePlan("workout", html);
+    lockBtn("workoutBtn", "✅ Generated Today");
+
   } catch(e) {
     showResult("workoutResult", '<div class="result-line" style="color:#ff4444;">⚠️ ' + e.message + '</div>');
-  } finally {
     btn.disabled = false;
     btn.innerText = "Generate Workout 💪";
   }
 }
 
 async function generateMeal() {
+  if (getSavedPlan("meal")) {
+    alert("Already generated today! Come back tomorrow 🍗");
+    return;
+  }
+
   var foods = document.getElementById("foods").value.trim();
   var btn   = document.getElementById("mealBtn");
 
@@ -170,17 +226,27 @@ async function generateMeal() {
 
   try {
     var text = await callAI(prompt);
-    var html = renderLines(text);
+    var html =
+      renderLines(text) +
+      '<div style="margin-top:12px;font-size:12px;color:#555;text-align:center;">📅 Generated ' + todayKey() + ' · Resets tomorrow</div>';
+
     showResult("mealResult", html);
+    savePlan("meal", html);
+    lockBtn("mealBtn", "✅ Generated Today");
+
   } catch(e) {
     showResult("mealResult", '<div class="result-line" style="color:#ff4444;">⚠️ ' + e.message + '</div>');
-  } finally {
     btn.disabled = false;
     btn.innerText = "Generate Meal Plan 🍗";
   }
 }
 
 async function generateBudget() {
+  if (getSavedPlan("budget")) {
+    alert("Already generated today! Come back tomorrow 💰");
+    return;
+  }
+
   var budget = document.getElementById("budget").value;
   var btn    = document.getElementById("budgetBtn");
 
@@ -194,13 +260,17 @@ async function generateBudget() {
 
   try {
     var text = await callAI(prompt);
-    var html = renderLines(text);
-    showResult("budgetResult",
-      '<div style="margin-bottom:10px;"><span class="tag tag-green">Budget: ₹' + budget + '/day</span></div>' + html
-    );
+    var html =
+      '<div style="margin-bottom:10px;"><span class="tag tag-green">Budget: ₹' + budget + '/day</span></div>' +
+      renderLines(text) +
+      '<div style="margin-top:12px;font-size:12px;color:#555;text-align:center;">📅 Generated ' + todayKey() + ' · Resets tomorrow</div>';
+
+    showResult("budgetResult", html);
+    savePlan("budget", html);
+    lockBtn("budgetBtn", "✅ Generated Today");
+
   } catch(e) {
     showResult("budgetResult", '<div class="result-line" style="color:#ff4444;">⚠️ ' + e.message + '</div>');
-  } finally {
     btn.disabled = false;
     btn.innerText = "Generate Budget Plan 💰";
   }

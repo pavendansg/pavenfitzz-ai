@@ -1,280 +1,493 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PavenFitzz AI Coach</title>
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>PavenFitzz AI Dashboard</title>
+
 <link rel="stylesheet" href="ai.css">
+
+<style>
+
+body{
+  margin:0;
+  font-family:Arial,sans-serif;
+  background:#0b0b0b;
+  color:white;
+}
+
+.container{
+  max-width:1100px;
+  margin:auto;
+  padding:20px;
+}
+
+.header{
+  text-align:center;
+  margin-bottom:40px;
+}
+
+.logo{
+  font-size:70px;
+  margin-bottom:10px;
+}
+
+.title{
+  font-size:38px;
+  font-weight:700;
+}
+
+.subtitle{
+  color:#aaa;
+  margin-top:10px;
+  font-size:16px;
+}
+
+.stats-grid{
+  display:grid;
+  grid-template-columns:
+  repeat(auto-fit,minmax(220px,1fr));
+  gap:18px;
+  margin-bottom:35px;
+}
+
+.stat-card{
+  background:#151515;
+  border-radius:20px;
+  padding:22px;
+  border:1px solid rgba(255,255,255,0.08);
+  box-shadow:0 0 20px rgba(0,0,0,0.4);
+}
+
+.stat-title{
+  color:#aaa;
+  margin-bottom:10px;
+}
+
+.stat-value{
+  font-size:28px;
+  font-weight:700;
+  color:#00ff88;
+}
+
+.main-grid{
+  display:grid;
+  grid-template-columns:
+  repeat(auto-fit,minmax(280px,1fr));
+  gap:22px;
+}
+
+.feature-card{
+  background:#151515;
+  border-radius:24px;
+  padding:25px;
+  border:1px solid rgba(255,255,255,0.08);
+  transition:.3s;
+  position:relative;
+  overflow:hidden;
+}
+
+.feature-card:hover{
+  transform:translateY(-5px);
+  border-color:#00ff88;
+}
+
+.feature-icon{
+  font-size:50px;
+  margin-bottom:18px;
+}
+
+.feature-title{
+  font-size:24px;
+  font-weight:700;
+  margin-bottom:12px;
+}
+
+.feature-desc{
+  color:#aaa;
+  line-height:1.7;
+  margin-bottom:22px;
+}
+
+.open-btn{
+  width:100%;
+  padding:15px;
+  border:none;
+  border-radius:14px;
+  font-size:16px;
+  font-weight:700;
+  cursor:pointer;
+  transition:.3s;
+}
+
+.workout-btn{
+  background:linear-gradient(
+  90deg,
+  #00ff88,
+  #00c3ff
+  );
+
+  color:black;
+}
+
+.budget-btn{
+  background:linear-gradient(
+  90deg,
+  #ffd000,
+  #ff9900
+  );
+
+  color:black;
+}
+
+.meal-btn{
+  background:linear-gradient(
+  90deg,
+  #ff5f6d,
+  #ffc371
+  );
+
+  color:black;
+}
+
+.home-btn{
+  background:linear-gradient(
+  90deg,
+  #8e2de2,
+  #4a00e0
+  );
+
+  color:white;
+}
+
+.open-btn:hover{
+  transform:scale(1.03);
+}
+
+.quote-box{
+  margin-top:35px;
+  background:linear-gradient(
+  90deg,
+  #00ff88,
+  #00c3ff
+  );
+
+  color:black;
+
+  padding:24px;
+  border-radius:22px;
+  text-align:center;
+  font-weight:700;
+  line-height:1.8;
+  font-size:18px;
+}
+
+.footer{
+  margin-top:35px;
+  text-align:center;
+  color:#666;
+  font-size:14px;
+}
+
+</style>
+
 </head>
+
 <body>
+
 <div class="container">
 
-  <div class="ai-header">
-    <div class="ai-logo">🔥</div>
-    <div class="ai-title">PavenFitzz AI Coach</div>
-    <div class="ai-subtitle">Premium Fitness Planner · Powered by AI</div>
-  </div>
+  <!-- HEADER -->
 
-  <div class="box">
-    <div class="box-header">
-      <span style="font-size:20px;">💪</span>
-      <h2>AI Workout Generator</h2>
+  <div class="header">
+
+    <div class="logo">🔥</div>
+
+    <div class="title">
+      PavenFitzz AI
     </div>
-    <label class="input-label">Your Goal</label>
-    <select id="goal">
-      <option>Bulk</option>
-      <option>Cut</option>
-      <option>Maintain</option>
-      <option>Athletic</option>
-    </select>
-    <label class="input-label">Experience Level</label>
-    <select id="level">
-      <option>Beginner</option>
-      <option>Intermediate</option>
-      <option>Advanced</option>
-    </select>
-    <label class="input-label">Workout Split</label>
-    <select id="split">
-      <option>PPL</option>
-      <option>Bro Split</option>
-      <option>Upper Lower</option>
-      <option>Full Body</option>
-    </select>
-    <button id="workoutBtn" type="button" onclick="generateWorkout()">
-      Generate Workout 💪
-    </button>
-    <div id="workoutResult" class="result"></div>
-  </div>
 
-  <div class="box">
-    <div class="box-header">
-      <span style="font-size:20px;">🍽️</span>
-      <h2>AI Meal Generator</h2>
+    <div class="subtitle">
+      Premium AI Fitness Coaching Platform
     </div>
-    <label class="input-label">Foods you have at home</label>
-    <input type="text" id="foods" placeholder="e.g. rice, eggs, chicken, oats...">
-    <button id="mealBtn" type="button" onclick="generateMeal()">
-      Generate Meal Plan 🍗
-    </button>
-    <div id="mealResult" class="result"></div>
+
   </div>
 
-  <div class="box">
-    <div class="box-header">
-      <span style="font-size:20px;">💰</span>
-      <h2>Budget Diet Planner</h2>
+  <!-- STATS -->
+
+  <div class="stats-grid">
+
+    <div class="stat-card">
+
+      <div class="stat-title">
+        Current Goal
+      </div>
+
+      <div class="stat-value"
+      id="goalText">
+
+      Bulk
+
+      </div>
+
     </div>
-    <label class="input-label">Daily Budget (₹)</label>
-    <input type="number" id="budget" placeholder="e.g. 150">
-    <button id="budgetBtn" type="button" onclick="generateBudget()">
-      Generate Budget Plan 💰
-    </button>
-    <div id="budgetResult" class="result"></div>
+
+    <div class="stat-card">
+
+      <div class="stat-title">
+        Workout Split
+      </div>
+
+      <div class="stat-value"
+      id="splitText">
+
+      PPL
+
+      </div>
+
+    </div>
+
+    <div class="stat-card">
+
+      <div class="stat-title">
+        Workout Streak
+      </div>
+
+      <div class="stat-value"
+      id="streakText">
+
+      0 Days
+
+      </div>
+
+    </div>
+
+    <div class="stat-card">
+
+      <div class="stat-title">
+        Daily Budget
+      </div>
+
+      <div class="stat-value"
+      id="budgetText">
+
+      ₹200
+
+      </div>
+
+    </div>
+
   </div>
 
-  <button class="back-btn" onclick="history.back()">← Go Back</button>
+  <!-- MAIN FEATURES -->
+
+  <div class="main-grid">
+
+    <!-- WORKOUT -->
+
+    <div class="feature-card">
+
+      <div class="feature-icon">
+        💪
+      </div>
+
+      <div class="feature-title">
+        AI Workout Coach
+      </div>
+
+      <div class="feature-desc">
+
+        Generate personalized workout
+        programs based on your goal,
+        level and workout split.
+
+      </div>
+
+      <button class="open-btn workout-btn"
+      onclick="openWorkout()">
+
+      Open Workout Program →
+
+      </button>
+
+    </div>
+
+    <!-- BUDGET -->
+
+    <div class="feature-card">
+
+      <div class="feature-icon">
+        💰
+      </div>
+
+      <div class="feature-title">
+        Budget Diet Planner
+      </div>
+
+      <div class="feature-desc">
+
+        Create affordable Indian diet
+        plans with realistic shopping
+        lists and nutrition targets.
+
+      </div>
+
+      <button class="open-btn budget-btn"
+      onclick="openBudget()">
+
+      Open Budget Planner →
+
+      </button>
+
+    </div>
+
+    <!-- MEAL -->
+
+    <div class="feature-card">
+
+      <div class="feature-icon">
+        🍽️
+      </div>
+
+      <div class="feature-title">
+        AI Meal Planner
+      </div>
+
+      <div class="feature-desc">
+
+        Build complete meal schedules
+        with calories, protein targets
+        and hydration guidance.
+
+      </div>
+
+      <button class="open-btn meal-btn"
+      onclick="openMeal()">
+
+      Open Meal Planner →
+
+      </button>
+
+    </div>
+
+    <!-- HOME -->
+
+    <div class="feature-card">
+
+      <div class="feature-icon">
+        🏠
+      </div>
+
+      <div class="feature-title">
+        Fitness Home
+      </div>
+
+      <div class="feature-desc">
+
+        Track streaks, hydration,
+        workout completion and your
+        full transformation journey.
+
+      </div>
+
+      <button class="open-btn home-btn"
+      onclick="openHome()">
+
+      Open Fitness Home →
+
+      </button>
+
+    </div>
+
+  </div>
+
+  <!-- MOTIVATION -->
+
+  <div class="quote-box">
+
+    “Discipline creates results.
+    Consistency transforms your body.
+    Your AI fitness journey starts now.” 🔥
+
+  </div>
+
+  <!-- FOOTER -->
+
+  <div class="footer">
+
+    PavenFitzz AI Coach © 2026
+
+  </div>
 
 </div>
 
 <script>
-const WORKER_URL = "https://pavenfitzz-ai.pavendansg.workers.dev";
 
-function formatText(text) {
-  return text
-    .replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>")
-    .replace(/\*(.*?)\*/g, "<em>$1</em>")
-    .replace(/^-\s/gm, "• ");
+const goal =
+localStorage.getItem("goal")
+|| "Bulk";
+
+const split =
+localStorage.getItem("split")
+|| "PPL";
+
+const streak =
+localStorage.getItem("streak")
+|| "0";
+
+const budget =
+localStorage.getItem("budget")
+|| "200";
+
+document.getElementById(
+  "goalText"
+).innerText = goal;
+
+document.getElementById(
+  "splitText"
+).innerText = split;
+
+document.getElementById(
+  "streakText"
+).innerText =
+streak + " Days";
+
+document.getElementById(
+  "budgetText"
+).innerText =
+"₹" + budget;
+
+function openWorkout(){
+
+  window.location.href =
+  "workout.html";
+
 }
 
-function callAI(prompt) {
-  return fetch(WORKER_URL, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ prompt: prompt })
-  })
-  .then(function(res) { return res.json(); })
-  .then(function(data) {
-    if (data.text) return data.text;
-    if (data.error) throw new Error(data.error);
-    throw new Error("No response from AI");
-  });
+function openBudget(){
+
+  window.location.href =
+  "budget.html";
+
 }
 
-function showLoading(id) {
-  var el = document.getElementById(id);
-  el.className = "result show";
-  el.innerHTML = '<div class="loading-dots"><span></span><span></span><span></span></div>';
+function openMeal(){
+
+  window.location.href =
+  "meal.html";
+
 }
 
-function showResult(id, html) {
-  var el = document.getElementById(id);
-  el.className = "result show";
-  el.innerHTML = html;
+function openHome(){
+
+  window.location.href =
+  "home.html";
+
 }
 
-function renderLines(text) {
-  return text.split("\n")
-    .filter(function(l) { return l.trim(); })
-    .map(function(line) {
-      var clean = formatText(line.trim());
-      if (/^(day\s*\d|monday|tuesday|wednesday|thursday|friday|saturday|sunday|push|pull|legs|upper|lower|chest|back|shoulder)/i.test(line)) {
-        return '<div class="result-day"><div class="result-day-title">' + clean + '</div></div>';
-      }
-      return '<div class="result-line"><span>' + clean + '</span></div>';
-    }).join("");
-}
-
-function todayKey() {
-  return new Date().toISOString().split("T")[0];
-}
-
-function savePlan(type, html) {
-  localStorage.setItem("plan_" + type + "_date", todayKey());
-  localStorage.setItem("plan_" + type + "_html", html);
-}
-
-function getSavedPlan(type) {
-  var savedDate = localStorage.getItem("plan_" + type + "_date");
-  var savedHtml = localStorage.getItem("plan_" + type + "_html");
-  if (savedDate === todayKey() && savedHtml) {
-    return savedHtml;
-  }
-  return null;
-}
-
-function lockBtn(btnId, msg) {
-  var btn = document.getElementById(btnId);
-  btn.disabled = true;
-  btn.innerText = msg;
-  btn.style.opacity = "0.5";
-  btn.style.cursor = "not-allowed";
-}
-
-window.onload = function() {
-  var workout = getSavedPlan("workout");
-  if (workout) {
-    showResult("workoutResult", workout);
-    lockBtn("workoutBtn", "✅ Generated Today");
-  }
-  var meal = getSavedPlan("meal");
-  if (meal) {
-    showResult("mealResult", meal);
-    lockBtn("mealBtn", "✅ Generated Today");
-  }
-  var budget = getSavedPlan("budget");
-  if (budget) {
-    showResult("budgetResult", budget);
-    lockBtn("budgetBtn", "✅ Generated Today");
-  }
-};
-
-async function generateWorkout() {
-  if (getSavedPlan("workout")) {
-    alert("Already generated today! Come back tomorrow 💪");
-    return;
-  }
-
-  var goal  = document.getElementById("goal").value;
-  var level = document.getElementById("level").value;
-  var split = document.getElementById("split").value;
-  var btn   = document.getElementById("workoutBtn");
-
-  btn.disabled = true;
-  btn.innerText = "Generating...";
-  showLoading("workoutResult");
-
-  var prompt = "You are a fitness coach. Create a SHORT " + split + " workout plan for " + level + " level with goal: " + goal + ". Format EXACTLY like this:\n\nDay 1 - Push 💪\n• Bench Press: 3x8\n• Shoulder Press: 3x10\n• Tricep Dips: 3x12\n\nDay 2 - Pull 🏋️\n• Deadlift: 3x6\n• Pull Ups: 3x8\n\nOnly list day name and exercises with sets x reps. No descriptions. No extra text. Max 6 days. End with one tip line.";
-
-  try {
-    var text = await callAI(prompt);
-    var html =
-      '<div style="margin-bottom:10px;">' +
-      '<span class="tag tag-gold">' + goal + '</span> ' +
-      '<span class="tag tag-green">' + level + '</span> ' +
-      '<span class="tag tag-gold">' + split + '</span>' +
-      '</div>' +
-      renderLines(text) +
-      '<div style="margin-top:12px;font-size:12px;color:#555;text-align:center;">📅 Generated ' + todayKey() + ' · Resets tomorrow</div>';
-
-    showResult("workoutResult", html);
-    savePlan("workout", html);
-    lockBtn("workoutBtn", "✅ Generated Today");
-
-  } catch(e) {
-    showResult("workoutResult", '<div class="result-line" style="color:#ff4444;">⚠️ ' + e.message + '</div>');
-    btn.disabled = false;
-    btn.innerText = "Generate Workout 💪";
-  }
-}
-
-async function generateMeal() {
-  if (getSavedPlan("meal")) {
-    alert("Already generated today! Come back tomorrow 🍗");
-    return;
-  }
-
-  var foods = document.getElementById("foods").value.trim();
-  var btn   = document.getElementById("mealBtn");
-
-  if (!foods) { alert("Enter foods you have"); return; }
-
-  btn.disabled = true;
-  btn.innerText = "Generating...";
-  showLoading("mealResult");
-
-  var prompt = "You are a nutrition expert. Foods available: " + foods + ". Create a SHORT Indian meal plan. Format EXACTLY like:\n\n🌅 Breakfast: Eggs + Oats (350 cal, 25g protein)\n🍱 Lunch: Rice + Chicken (500 cal, 40g protein)\n🍎 Snack: Banana + Peanut Butter (200 cal, 8g protein)\n🌙 Dinner: Dal + Roti (400 cal, 20g protein)\n\nOnly 4 meals. One line each. Use only the given foods. No extra text.";
-
-  try {
-    var text = await callAI(prompt);
-    var html =
-      renderLines(text) +
-      '<div style="margin-top:12px;font-size:12px;color:#555;text-align:center;">📅 Generated ' + todayKey() + ' · Resets tomorrow</div>';
-
-    showResult("mealResult", html);
-    savePlan("meal", html);
-    lockBtn("mealBtn", "✅ Generated Today");
-
-  } catch(e) {
-    showResult("mealResult", '<div class="result-line" style="color:#ff4444;">⚠️ ' + e.message + '</div>');
-    btn.disabled = false;
-    btn.innerText = "Generate Meal Plan 🍗";
-  }
-}
-
-async function generateBudget() {
-  if (getSavedPlan("budget")) {
-    alert("Already generated today! Come back tomorrow 💰");
-    return;
-  }
-
-  var budget = document.getElementById("budget").value;
-  var btn    = document.getElementById("budgetBtn");
-
-  if (!budget || budget < 1) { alert("Enter valid budget"); return; }
-
-  btn.disabled = true;
-  btn.innerText = "Generating...";
-  showLoading("budgetResult");
-
-  var prompt = "You are a budget diet expert in India. Budget: Rs." + budget + " per day. Create a SHORT muscle building diet. Format EXACTLY like:\n\n🛒 Shopping List:\n• Eggs (6) - Rs.30\n• Rice (200g) - Rs.15\n\n🍽️ Meal Plan:\n🌅 Breakfast: 3 Eggs + Oats (300 cal)\n🍱 Lunch: Rice + Dal (450 cal)\n🍎 Snack: Banana + Peanut Butter (200 cal)\n🌙 Dinner: Rice + Eggs (400 cal)\n\nTotal: Rs.X/day. No extra text.";
-
-  try {
-    var text = await callAI(prompt);
-    var html =
-      '<div style="margin-bottom:10px;"><span class="tag tag-green">Budget: ₹' + budget + '/day</span></div>' +
-      renderLines(text) +
-      '<div style="margin-top:12px;font-size:12px;color:#555;text-align:center;">📅 Generated ' + todayKey() + ' · Resets tomorrow</div>';
-
-    showResult("budgetResult", html);
-    savePlan("budget", html);
-    lockBtn("budgetBtn", "✅ Generated Today");
-
-  } catch(e) {
-    showResult("budgetResult", '<div class="result-line" style="color:#ff4444;">⚠️ ' + e.message + '</div>');
-    btn.disabled = false;
-    btn.innerText = "Generate Budget Plan 💰";
-  }
-}
 </script>
 
 </body>

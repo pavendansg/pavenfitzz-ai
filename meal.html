@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>PavenFitzz Meal Planner</title>
+
+<link rel="stylesheet" href="ai.css">
+
+<style>
+
+body{
+  margin:0;
+  font-family:Arial,sans-serif;
+  background:#0b0b0b;
+  color:white;
+}
+
+.container{
+  max-width:900px;
+  margin:auto;
+  padding:20px;
+}
+
+.ai-header{
+  text-align:center;
+  margin-bottom:30px;
+}
+
+.ai-logo{
+  font-size:60px;
+  margin-bottom:10px;
+}
+
+.ai-title{
+  font-size:34px;
+  font-weight:700;
+}
+
+.ai-subtitle{
+  color:#aaa;
+  margin-top:10px;
+}
+
+.box{
+  background:#151515;
+  border-radius:20px;
+  padding:25px;
+  margin-bottom:25px;
+  border:1px solid rgba(255,255,255,0.08);
+  box-shadow:0 0 20px rgba(0,0,0,0.4);
+}
+
+.info-box{
+  background:#0f2417;
+  border:1px solid #00ff88;
+  border-radius:14px;
+  padding:16px;
+  margin-bottom:20px;
+  line-height:1.7;
+}
+
+.input-label{
+  display:block;
+  margin-top:18px;
+  margin-bottom:10px;
+  font-weight:600;
+}
+
+select,input{
+  width:100%;
+  padding:14px;
+  border:none;
+  border-radius:12px;
+  background:#222;
+  color:white;
+  font-size:16px;
+}
+
+button{
+  width:100%;
+  padding:16px;
+  border:none;
+  border-radius:14px;
+  margin-top:25px;
+  font-size:16px;
+  font-weight:700;
+  cursor:pointer;
+  transition:.3s;
+}
+
+.generate-btn{
+  background:linear-gradient(90deg,#00ff88,#00c3ff);
+  color:black;
+}
+
+.generate-btn:hover{
+  transform:translateY(-2px);
+}
+
+.finish-btn{
+  background:#00ff88;
+  color:black;
+}
+
+.result{
+  margin-top:25px;
+}
+
+.meal-card{
+  background:#1b1b1b;
+  border-radius:16px;
+  padding:18px;
+  margin-bottom:18px;
+  border-left:5px solid #00ff88;
+}
+
+.meal-title{
+  color:#00ff88;
+  font-size:22px;
+  font-weight:700;
+  margin-bottom:12px;
+}
+
+.result-line{
+  padding:10px 0;
+  border-bottom:1px solid rgba(255,255,255,0.06);
+  line-height:1.7;
+}
+
+.tip-box{
+  margin-top:20px;
+  background:#111;
+  border-radius:14px;
+  padding:16px;
+  color:#ccc;
+  line-height:1.7;
+}
+
+.loading{
+  text-align:center;
+  padding:30px;
+  color:#00ff88;
+  font-size:18px;
+}
+
+.summary-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+  gap:15px;
+  margin-bottom:25px;
+}
+
+.summary-card{
+  background:#151515;
+  border-radius:16px;
+  padding:18px;
+  border:1px solid rgba(255,255,255,0.08);
+}
+
+.summary-title{
+  color:#aaa;
+  margin-bottom:8px;
+}
+
+.summary-value{
+  font-size:22px;
+  font-weight:700;
+  color:#00ff88;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+  <div class="ai-header">
+
+    <div class="ai-logo">🍽️</div>
+
+    <div class="ai-title">
+      AI Meal Planner
+    </div>
+
+    <div class="ai-subtitle">
+      Personalized nutrition for your fitness journey
+    </div>
+
+  </div>
+
+  <div class="summary-grid">
+
+    <div class="summary-card">
+
+      <div class="summary-title">
+        Goal
+      </div>
+
+      <div class="summary-value"
+      id="goalText">
+      </div>
+
+    </div>
+
+    <div class="summary-card">
+
+      <div class="summary-title">
+        Workout Split
+      </div>
+
+      <div class="summary-value"
+      id="splitText">
+      </div>
+
+    </div>
+
+    <div class="summary-card">
+
+      <div class="summary-title">
+        Daily Budget
+      </div>
+
+      <div class="summary-value"
+      id="budgetText">
+      </div>
+
+    </div>
+
+  </div>
+
+  <div class="box">
+
+    <label class="input-label">
+      Workout Time
+    </label>
+
+    <select id="workoutTime">
+
+      <option>Morning</option>
+      <option>Evening</option>
+      <option>Night</option>
+
+    </select>
+
+    <label class="input-label">
+      Meals Per Day
+    </label>
+
+    <select id="mealsPerDay">
+
+      <option>4</option>
+      <option>5</option>
+      <option>6</option>
+
+    </select>
+
+    <label class="input-label">
+      Water Intake Goal
+    </label>
+
+    <select id="waterGoal">
+
+      <option>2 Litres</option>
+      <option>3 Litres</option>
+      <option>4 Litres</option>
+
+    </select>
+
+    <button class="generate-btn"
+    onclick="generateMealPlan()">
+
+    Generate Full Meal Plan 🔥
+
+    </button>
+
+  </div>
+
+  <div id="mealResult"
+  class="result"></div>
+
+</div>
+
+<script>
+
+const WORKER_URL =
+"https://pavenfitzz-ai.pavendansg.workers.dev";
+
+const goal =
+localStorage.getItem("goal")
+|| "Bulk";
+
+const split =
+localStorage.getItem("split")
+|| "PPL";
+
+const budget =
+localStorage.getItem("budget")
+|| "200";
+
+const foodType =
+localStorage.getItem("foodType")
+|| "Non-Veg";
+
+document.getElementById(
+  "goalText"
+).innerText = goal;
+
+document.getElementById(
+  "splitText"
+).innerText = split;
+
+document.getElementById(
+  "budgetText"
+).innerText = "₹" + budget;
+
+async function generateMealPlan(){
+
+  const workoutTime =
+  document.getElementById(
+    "workoutTime"
+  ).value;
+
+  const mealsPerDay =
+  document.getElementById(
+    "mealsPerDay"
+  ).value;
+
+  const waterGoal =
+  document.getElementById(
+    "waterGoal"
+  ).value;
+
+  const result =
+  document.getElementById(
+    "mealResult"
+  );
+
+  result.innerHTML = `
+  <div class="loading">
+
+  🤖 AI Nutrition Coach is
+  preparing your meal strategy...
+
+  </div>
+  `;
+
+  const prompt = `
+Create a PROFESSIONAL Indian
+fitness meal plan.
+
+Goal: ${goal}
+Workout Split: ${split}
+Budget: Rs.${budget}/day
+Food Type: ${foodType}
+Workout Time: ${workoutTime}
+Meals Per Day: ${mealsPerDay}
+
+IMPORTANT:
+- Create practical Indian meals
+- Include:
+Breakfast
+Pre Workout
+Post Workout
+Lunch
+Snacks
+Dinner
+- Mention calories and protein briefly
+- Mention hydration guidance
+- Mention sleep/recovery advice
+- Keep professional clean format
+- Bullet style only
+- Realistic and affordable foods
+`;
+
+  try{
+
+    const res = await fetch(WORKER_URL,{
+
+      method:"POST",
+
+      headers:{
+        "Content-Type":"application/json"
+      },
+
+      body:JSON.stringify({
+        prompt:prompt
+      })
+
+    });
+
+    const data =
+    await res.json();
+
+    const text =
+    data.text || "No response";
+
+    const lines =
+    text.split("\n")
+    .filter(line => line.trim());
+
+    let html = "";
+
+    lines.forEach(line => {
+
+      if(
+        line.toLowerCase().includes("breakfast")
+        ||
+        line.toLowerCase().includes("pre")
+        ||
+        line.toLowerCase().includes("post")
+        ||
+        line.toLowerCase().includes("lunch")
+        ||
+        line.toLowerCase().includes("dinner")
+        ||
+        line.toLowerCase().includes("snack")
+        ||
+        line.toLowerCase().includes("hydration")
+        ||
+        line.toLowerCase().includes("recovery")
+      ){
+
+        html += `
+        <div class="meal-card">
+
+        <div class="meal-title">
+        ${line}
+        </div>
+        `;
+
+      }
+
+      else{
+
+        html += `
+        <div class="result-line">
+        ${line}
+        </div>
+        `;
+
+      }
+
+    });
+
+    html += `
+    </div>
+
+    <div class="tip-box">
+
+    ⚠️ Follow your meal timing
+    consistently with your workout
+    program for maximum progress.
+
+    Proper hydration, sleep and
+    recovery are essential for
+    muscle growth and fat loss.
+
+    Water Goal:
+    ${waterGoal}
+
+    </div>
+
+    <button class="finish-btn"
+    onclick="finishJourney()">
+
+    ✅ Finish Fitness Setup
+
+    </button>
+    `;
+
+    result.innerHTML = html;
+
+  }
+
+  catch(err){
+
+    result.innerHTML = `
+    <div class="box"
+    style="color:red;">
+
+    ⚠️ ${err.message}
+
+    </div>
+    `;
+
+  }
+
+}
+
+function finishJourney(){
+
+  alert(
+    "🔥 Your AI Fitness Journey is Ready!"
+  );
+
+  window.location.href =
+  "dashboard.html";
+
+}
+
+</script>
+
+</body>
+</html>

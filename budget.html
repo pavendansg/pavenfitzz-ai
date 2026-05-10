@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>PavenFitzz Budget Planner</title>
+
+<link rel="stylesheet" href="ai.css">
+
+<style>
+
+body{
+  margin:0;
+  font-family:Arial,sans-serif;
+  background:#0b0b0b;
+  color:white;
+}
+
+.container{
+  max-width:900px;
+  margin:auto;
+  padding:20px;
+}
+
+.ai-header{
+  text-align:center;
+  margin-bottom:30px;
+}
+
+.ai-logo{
+  font-size:60px;
+  margin-bottom:10px;
+}
+
+.ai-title{
+  font-size:34px;
+  font-weight:700;
+}
+
+.ai-subtitle{
+  color:#aaa;
+  margin-top:10px;
+}
+
+.box{
+  background:#151515;
+  border-radius:20px;
+  padding:25px;
+  margin-bottom:25px;
+  border:1px solid rgba(255,255,255,0.08);
+  box-shadow:0 0 20px rgba(0,0,0,0.4);
+}
+
+.input-label{
+  display:block;
+  margin-top:18px;
+  margin-bottom:10px;
+  font-weight:600;
+}
+
+input,select{
+  width:100%;
+  padding:14px;
+  border:none;
+  border-radius:12px;
+  background:#222;
+  color:white;
+  font-size:16px;
+}
+
+button{
+  width:100%;
+  padding:16px;
+  border:none;
+  border-radius:14px;
+  margin-top:25px;
+  font-size:16px;
+  font-weight:700;
+  cursor:pointer;
+  transition:.3s;
+}
+
+.generate-btn{
+  background:linear-gradient(90deg,#00ff88,#00c3ff);
+  color:black;
+}
+
+.generate-btn:hover{
+  transform:translateY(-2px);
+}
+
+.next-btn{
+  background:#00c3ff;
+  color:black;
+}
+
+.result{
+  margin-top:25px;
+}
+
+.section-card{
+  background:#1b1b1b;
+  border-radius:16px;
+  padding:18px;
+  margin-bottom:18px;
+  border-left:5px solid #00ff88;
+}
+
+.section-title{
+  color:#00ff88;
+  font-size:22px;
+  font-weight:700;
+  margin-bottom:12px;
+}
+
+.result-line{
+  padding:10px 0;
+  border-bottom:1px solid rgba(255,255,255,0.06);
+  line-height:1.7;
+}
+
+.tip-box{
+  margin-top:20px;
+  background:#111;
+  border-radius:14px;
+  padding:16px;
+  color:#ccc;
+  line-height:1.7;
+}
+
+.loading{
+  text-align:center;
+  padding:30px;
+  color:#00ff88;
+  font-size:18px;
+}
+
+.goal-box{
+  background:#0f2417;
+  border:1px solid #00ff88;
+  border-radius:14px;
+  padding:15px;
+  margin-bottom:20px;
+  line-height:1.7;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+  <div class="ai-header">
+
+    <div class="ai-logo">💰</div>
+
+    <div class="ai-title">
+      AI Budget Diet Planner
+    </div>
+
+    <div class="ai-subtitle">
+      Smart nutrition based on your workout goal
+    </div>
+
+  </div>
+
+  <div class="goal-box">
+
+    <strong>Current Workout Goal:</strong>
+    <span id="goalText"></span>
+
+    <br><br>
+
+    <strong>Workout Split:</strong>
+    <span id="splitText"></span>
+
+  </div>
+
+  <div class="box">
+
+    <label class="input-label">
+      Daily Budget (₹)
+    </label>
+
+    <input type="number"
+    id="budget"
+    placeholder="e.g. 200">
+
+    <label class="input-label">
+      Food Preference
+    </label>
+
+    <select id="foodType">
+
+      <option>Non-Veg</option>
+      <option>Veg</option>
+
+    </select>
+
+    <label class="input-label">
+      Supplements
+    </label>
+
+    <select id="supplements">
+
+      <option>Yes</option>
+      <option>No</option>
+
+    </select>
+
+    <button class="generate-btn"
+    onclick="generateBudgetPlan()">
+
+    Generate Budget Plan 🔥
+
+    </button>
+
+  </div>
+
+  <div id="budgetResult"
+  class="result"></div>
+
+</div>
+
+<script>
+
+const WORKER_URL =
+"https://pavenfitzz-ai.pavendansg.workers.dev";
+
+const goal =
+localStorage.getItem("goal")
+|| "Not Selected";
+
+const split =
+localStorage.getItem("split")
+|| "Not Selected";
+
+document.getElementById(
+  "goalText"
+).innerText = goal;
+
+document.getElementById(
+  "splitText"
+).innerText = split;
+
+async function generateBudgetPlan(){
+
+  const budget =
+  document.getElementById("budget")
+  .value;
+
+  const foodType =
+  document.getElementById("foodType")
+  .value;
+
+  const supplements =
+  document.getElementById("supplements")
+  .value;
+
+  const result =
+  document.getElementById("budgetResult");
+
+  if(!budget || budget < 50){
+
+    alert(
+      "Enter a valid budget"
+    );
+
+    return;
+
+  }
+
+  result.innerHTML = `
+  <div class="loading">
+
+  🤖 AI Nutrition Coach is
+  creating your budget plan...
+
+  </div>
+  `;
+
+  const prompt = `
+Create a STRICT Indian muscle-building
+daily diet plan.
+
+Goal: ${goal}
+Workout Split: ${split}
+Budget: Rs.${budget}/day
+Food Type: ${foodType}
+Supplements: ${supplements}
+
+IMPORTANT RULES:
+- Stay UNDER the budget
+- Cheap Indian foods only
+- First give shopping list with prices
+- Then create meal plan using ONLY those foods
+- Include:
+Breakfast
+Lunch
+Snack
+Dinner
+- Mention protein briefly
+- No expensive foods
+- Professional clean format
+- Bullet style only
+`;
+
+  try{
+
+    const res = await fetch(WORKER_URL,{
+
+      method:"POST",
+
+      headers:{
+        "Content-Type":"application/json"
+      },
+
+      body:JSON.stringify({
+        prompt:prompt
+      })
+
+    });
+
+    const data =
+    await res.json();
+
+    const text =
+    data.text || "No response";
+
+    const lines =
+    text.split("\n")
+    .filter(line => line.trim());
+
+    let html = "";
+
+    lines.forEach(line => {
+
+      if(
+        line.toLowerCase().includes("shopping")
+        ||
+        line.toLowerCase().includes("breakfast")
+        ||
+        line.toLowerCase().includes("lunch")
+        ||
+        line.toLowerCase().includes("dinner")
+        ||
+        line.toLowerCase().includes("snack")
+      ){
+
+        html += `
+        <div class="section-card">
+
+        <div class="section-title">
+        ${line}
+        </div>
+        `;
+
+      }
+
+      else{
+
+        html += `
+        <div class="result-line">
+        ${line}
+        </div>
+        `;
+
+      }
+
+    });
+
+    html += `
+    </div>
+
+    <div class="tip-box">
+
+    ⚠️ Follow this nutrition structure
+    consistently with your workout
+    program for best results.
+
+    Keep hydration high and maintain
+    proper sleep for recovery.
+
+    </div>
+
+    <button class="next-btn"
+    onclick="goMealPlanner()">
+
+    Continue to Meal Planner →
+
+    </button>
+    `;
+
+    result.innerHTML = html;
+
+    localStorage.setItem(
+      "budget",
+      budget
+    );
+
+    localStorage.setItem(
+      "foodType",
+      foodType
+    );
+
+  }
+
+  catch(err){
+
+    result.innerHTML = `
+    <div class="box"
+    style="color:red;">
+
+    ⚠️ ${err.message}
+
+    </div>
+    `;
+
+  }
+
+}
+
+function goMealPlanner(){
+
+  window.location.href =
+  "meal.html";
+
+}
+
+</script>
+
+</body>
+</html>

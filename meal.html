@@ -1,587 +1,203 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
 <meta charset="UTF-8">
-<meta name="viewport"
-content="width=device-width, initial-scale=1.0">
-
-<title>PavenFitzz Meal Planner</title>
-
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PavenFitzz — Meal Planner</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Syne:wght@400;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-
-body{
-  margin:0;
-  font-family:Arial,sans-serif;
-  background:#0b0b0b;
-  color:white;
-}
-
-.container{
-  max-width:900px;
-  margin:auto;
-  padding:20px;
-}
-
-.ai-header{
-  text-align:center;
-  margin-bottom:30px;
-}
-
-.ai-logo{
-  font-size:60px;
-  margin-bottom:10px;
-}
-
-.ai-title{
-  font-size:34px;
-  font-weight:700;
-}
-
-.ai-subtitle{
-  color:#aaa;
-  margin-top:10px;
-}
-
-.box{
-  background:#151515;
-  border-radius:20px;
-  padding:25px;
-  margin-bottom:25px;
-  border:1px solid rgba(255,255,255,0.08);
-  box-shadow:0 0 20px rgba(0,0,0,0.4);
-}
-
-.input-label{
-  display:block;
-  margin-top:18px;
-  margin-bottom:10px;
-  font-weight:600;
-}
-
-select,input{
-  width:100%;
-  padding:14px;
-  border:none;
-  border-radius:12px;
-  background:#222;
-  color:white;
-  font-size:16px;
-}
-
-button{
-  width:100%;
-  padding:16px;
-  border:none;
-  border-radius:14px;
-  margin-top:25px;
-  font-size:16px;
-  font-weight:700;
-  cursor:pointer;
-}
-
-.generate-btn{
-  background:linear-gradient(
-  90deg,
-  #00ff88,
-  #00c3ff
-  );
-
-  color:black;
-}
-
-.finish-btn{
-  background:#00ff88;
-  color:black;
-}
-
-.result{
-  margin-top:25px;
-}
-
-.meal-card{
-  background:#1b1b1b;
-  border-radius:16px;
-  padding:18px;
-  margin-bottom:18px;
-  border-left:5px solid #00ff88;
-}
-
-.meal-title{
-  color:#00ff88;
-  font-size:22px;
-  font-weight:700;
-  margin-bottom:12px;
-}
-
-.result-line{
-  padding:10px 0;
-  border-bottom:1px solid rgba(255,255,255,0.06);
-  line-height:1.7;
-}
-
-.tip-box{
-  margin-top:20px;
-  background:#111;
-  border-radius:14px;
-  padding:16px;
-  color:#ccc;
-  line-height:1.7;
-}
-
-.loading{
-  text-align:center;
-  padding:30px;
-  color:#00ff88;
-  font-size:18px;
-}
-
-.summary-grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
-  gap:15px;
-  margin-bottom:25px;
-}
-
-.summary-card{
-  background:#151515;
-  border-radius:16px;
-  padding:18px;
-  border:1px solid rgba(255,255,255,0.08);
-}
-
-.summary-title{
-  color:#aaa;
-  margin-bottom:8px;
-}
-
-.summary-value{
-  font-size:22px;
-  font-weight:700;
-  color:#00ff88;
-}
-
-.error-box{
-  background:#2a1111;
-  color:#ff7777;
-  padding:20px;
-  border-radius:16px;
-  margin-top:20px;
-}
-
+:root{--bg:#080808;--card:#101010;--green:#00ff88;--blue:#00c3ff;--gold:#ffd000;--orange:#ff7700;--red:#ff4455;--border:rgba(255,255,255,0.07);--muted:#666;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--bg);color:#f0f0f0;font-family:'Syne',sans-serif;min-height:100vh;}
+.wrap{max-width:900px;margin:auto;padding:28px 20px 60px;}
+.header{text-align:center;margin-bottom:36px;}
+.logo{font-size:50px;}
+.brand{font-family:'Bebas Neue',sans-serif;font-size:42px;letter-spacing:3px;background:linear-gradient(90deg,var(--orange),var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.tagline{color:var(--muted);font-size:13px;letter-spacing:2px;margin-top:4px;}
+.nav{display:flex;gap:10px;justify-content:center;margin-bottom:36px;flex-wrap:wrap;}
+.nav a{text-decoration:none;padding:9px 20px;border-radius:50px;font-size:13px;font-weight:700;letter-spacing:1px;border:1px solid var(--border);color:var(--muted);transition:all .25s;}
+.nav a:hover{border-color:var(--orange);color:var(--orange);}
+.nav a.active{background:var(--orange);color:#000;border-color:var(--orange);}
+.info-banner{background:linear-gradient(135deg,#1a0d00,#120900);border:1px solid rgba(255,119,0,0.2);border-radius:18px;padding:18px 22px;margin-bottom:20px;display:flex;gap:14px;align-items:flex-start;}
+.info-text{font-size:14px;line-height:1.7;color:#ccc;}
+.info-text strong{color:var(--orange);}
+.box{background:var(--card);border-radius:24px;padding:28px;border:1px solid var(--border);}
+.input-label{display:block;margin-top:22px;margin-bottom:8px;font-weight:700;color:var(--muted);letter-spacing:2px;font-size:11px;font-family:'DM Mono',monospace;text-transform:uppercase;}
+textarea{width:100%;padding:16px;border:1px solid #222;border-radius:12px;background:#0d0d0d;color:white;font-size:15px;font-family:'Syne',sans-serif;outline:none;resize:vertical;min-height:110px;transition:border-color .2s;line-height:1.6;}
+textarea:focus{border-color:var(--orange);}
+textarea::placeholder{color:#444;}
+select{width:100%;padding:15px 16px;border:1px solid #222;border-radius:12px;background:#0d0d0d;color:white;font-size:16px;font-family:'Syne',sans-serif;outline:none;transition:border-color .2s;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23666' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;cursor:pointer;}
+select:focus{border-color:var(--orange);}
+.budget-foods-hint{background:#0d0d0d;border:1px solid rgba(0,255,136,0.15);border-radius:12px;padding:14px 18px;margin-top:14px;}
+.budget-foods-label{font-size:11px;color:var(--green);font-family:'DM Mono',monospace;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:8px;}
+.budget-foods-list{font-size:13px;color:#aaa;line-height:1.7;}
+.generate-btn{width:100%;padding:18px;border:none;border-radius:16px;margin-top:28px;font-size:17px;font-weight:800;cursor:pointer;background:linear-gradient(90deg,var(--orange),var(--gold));color:#000;font-family:'Bebas Neue',sans-serif;letter-spacing:2px;transition:all .2s;}
+.generate-btn:hover{transform:translateY(-2px);}
+.generate-btn:disabled{opacity:0.5;cursor:not-allowed;transform:none;}
+.loading{text-align:center;padding:50px;color:var(--orange);font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:2px;}
+.loading-dots{display:flex;justify-content:center;gap:8px;margin-top:16px;}
+.loading-dots span{width:10px;height:10px;background:var(--orange);border-radius:50%;animation:bounce 1s ease infinite;}
+.loading-dots span:nth-child(2){animation-delay:.15s;}
+.loading-dots span:nth-child(3){animation-delay:.3s;}
+@keyframes bounce{0%,100%{transform:translateY(0);opacity:.3}50%{transform:translateY(-8px);opacity:1}}
+.result{margin-top:28px;}
+.macro-bar{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:20px;}
+.macro-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:16px;text-align:center;}
+.macro-val{font-family:'Bebas Neue',sans-serif;font-size:28px;letter-spacing:1px;}
+.macro-val.green{color:var(--green);}
+.macro-val.orange{color:var(--orange);}
+.macro-val.blue{color:var(--blue);}
+.macro-val.gold{color:var(--gold);}
+.macro-label{font-size:10px;color:var(--muted);font-family:'DM Mono',monospace;text-transform:uppercase;letter-spacing:1px;margin-top:4px;}
+.meal-card{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:22px;margin-bottom:14px;border-left:4px solid var(--orange);}
+.meal-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;}
+.meal-title{font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:1.5px;color:var(--orange);}
+.meal-cal{background:rgba(255,119,0,0.1);border:1px solid rgba(255,119,0,0.3);color:var(--orange);padding:4px 12px;border-radius:50px;font-size:12px;font-weight:700;font-family:'DM Mono',monospace;}
+.food-item{padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.05);font-size:15px;color:#ccc;line-height:1.7;display:flex;gap:8px;align-items:flex-start;}
+.food-item:last-child{border-bottom:none;}
+.food-dot{width:5px;height:5px;background:var(--orange);border-radius:50%;margin-top:9px;flex-shrink:0;}
+.prep-box{background:linear-gradient(135deg,#0d0800,#100a00);border:1px solid rgba(255,208,0,0.2);border-radius:14px;padding:18px;margin-top:14px;}
+.prep-title{color:var(--gold);font-family:'Bebas Neue',sans-serif;font-size:16px;letter-spacing:1.5px;margin-bottom:10px;}
+.prep-line{font-size:14px;color:#aaa;padding:5px 0;line-height:1.7;display:flex;gap:8px;}
+.prep-num{color:var(--gold);font-weight:700;flex-shrink:0;font-family:'DM Mono',monospace;}
+.tip-note{background:#0d0d0d;border-radius:14px;padding:16px 18px;margin-top:16px;color:#888;font-size:14px;line-height:1.7;}
+.tip-note strong{color:var(--green);}
+.btn-home{width:100%;padding:17px;border:none;border-radius:14px;font-size:15px;font-weight:800;cursor:pointer;font-family:'Syne',sans-serif;background:linear-gradient(90deg,var(--green),var(--blue));color:#000;margin-top:16px;transition:all .2s;}
+.btn-home:hover{transform:translateY(-2px);}
+.error-box{background:#1a0a0a;color:#ff7777;padding:20px;border-radius:16px;margin-top:20px;border:1px solid rgba(255,68,85,0.3);}
 </style>
-
 </head>
-
 <body>
-
-<div class="container">
-
-  <div class="ai-header">
-
-    <div class="ai-logo">🍽️</div>
-
-    <div class="ai-title">
-      AI Meal Planner
-    </div>
-
-    <div class="ai-subtitle">
-      Personalized nutrition for your fitness journey
-    </div>
-
+<div class="wrap">
+  <div class="header">
+    <div class="logo">🍗</div>
+    <div class="brand">Meal Planner</div>
+    <div class="tagline">TURN YOUR GROCERIES INTO A FITNESS MEAL PLAN</div>
   </div>
-
-  <div class="summary-grid">
-
-    <div class="summary-card">
-
-      <div class="summary-title">
-        Goal
-      </div>
-
-      <div class="summary-value"
-      id="goalText">
-      </div>
-
-    </div>
-
-    <div class="summary-card">
-
-      <div class="summary-title">
-        Workout Split
-      </div>
-
-      <div class="summary-value"
-      id="splitText">
-      </div>
-
-    </div>
-
-    <div class="summary-card">
-
-      <div class="summary-title">
-        Daily Budget
-      </div>
-
-      <div class="summary-value"
-      id="budgetText">
-      </div>
-
-    </div>
-
+  <div class="nav">
+    <a href="home.html">🏠 Home</a>
+    <a href="workout.html">💪 Workout</a>
+    <a href="budget.html">💰 Budget</a>
+    <a href="meal.html" class="active">🍗 Meal</a>
   </div>
-
+  <div class="info-banner">
+    <div style="font-size:22px;">💡</div>
+    <div class="info-text">Enter the foods you bought from your <strong>budget grocery list</strong>. AI will create a full day meal plan with prep ideas, calories and protein for your <strong id="goalInfo">fitness goal</strong>.</div>
+  </div>
   <div class="box">
-
-    <label class="input-label">
-      Workout Time
-    </label>
-
-    <select id="workoutTime">
-
-      <option>Morning</option>
-      <option>Evening</option>
-      <option>Night</option>
-
-    </select>
-
-    <label class="input-label">
-      Meals Per Day
-    </label>
-
-    <select id="mealsPerDay">
-
-      <option>4</option>
-      <option>5</option>
-      <option>6</option>
-
-    </select>
-
-    <label class="input-label">
-      Water Intake Goal
-    </label>
-
-    <select id="waterGoal">
-
-      <option>2 Litres</option>
-      <option>3 Litres</option>
-      <option>4 Litres</option>
-
-    </select>
-
-    <button class="generate-btn"
-    onclick="generateMealPlan()">
-
-    Generate Full Meal Plan 🔥
-
-    </button>
-
-  </div>
-
-  <div id="mealResult"
-  class="result"></div>
-
-</div>
-
-<script>
-
-const WORKER_URL =
-"https://pavenfitzz-ai.pavendansg.workers.dev/";
-
-const goal =
-localStorage.getItem("goal")
-|| "Bulk";
-
-const split =
-localStorage.getItem("split")
-|| "PPL";
-
-const budget =
-localStorage.getItem("budget")
-|| "200";
-
-const foodType =
-localStorage.getItem("foodType")
-|| "Non-Veg";
-
-document.getElementById(
-  "goalText"
-).innerText = goal;
-
-document.getElementById(
-  "splitText"
-).innerText = split;
-
-document.getElementById(
-  "budgetText"
-).innerText = "₹" + budget;
-
-window.onload = function(){
-
-  const savedMeal =
-  localStorage.getItem(
-    "generatedMeal"
-  );
-
-  const savedDate =
-  localStorage.getItem(
-    "mealDate"
-  );
-
-  const today =
-  new Date().toDateString();
-
-  if(
-    savedMeal &&
-    savedDate === today
-  ){
-
-    renderMeal(savedMeal);
-
-  }
-
-}
-
-async function generateMealPlan(){
-
-  const workoutTime =
-  document.getElementById(
-    "workoutTime"
-  ).value;
-
-  const mealsPerDay =
-  document.getElementById(
-    "mealsPerDay"
-  ).value;
-
-  const waterGoal =
-  document.getElementById(
-    "waterGoal"
-  ).value;
-
-  const result =
-  document.getElementById(
-    "mealResult"
-  );
-
-  result.innerHTML = `
-  <div class="loading">
-
-  🤖 AI Nutrition Coach is
-  preparing your meal strategy...
-
-  </div>
-  `;
-
-  const prompt = `
-Create a PROFESSIONAL Indian fitness meal plan.
-
-Goal: ${goal}
-Workout Split: ${split}
-Budget: Rs.${budget}/day
-Food Type: ${foodType}
-Workout Time: ${workoutTime}
-Meals Per Day: ${mealsPerDay}
-
-STRICT RULES:
-- SAME meal plan for entire day
-- Affordable Indian foods only
-- Stay under budget
-- Mention calories for every meal
-- Mention protein for every meal
-- Mention total calories
-- Mention total protein
-- NO chatting
-- NO motivation lines
-- NO long explanations
-- Keep concise and premium
-
-FORMAT:
-
-Breakfast:
-- foods
-
-Pre Workout:
-- foods
-
-Post Workout:
-- foods
-
-Lunch:
-- foods
-
-Snack:
-- foods
-
-Dinner:
-- foods
-
-Total Calories:
-Total Protein:
-`;
-
-  try{
-
-    const res = await fetch(WORKER_URL,{
-
-      method:"POST",
-
-      headers:{
-        "Content-Type":"application/json"
-      },
-
-      body:JSON.stringify({
-        prompt:prompt
-      })
-
-    });
-
-    const data =
-    await res.json();
-
-    console.log(data);
-
-    const text =
-    data.text || "No response";
-
-    localStorage.setItem(
-      "generatedMeal",
-      text
-    );
-
-    localStorage.setItem(
-      "mealDate",
-      new Date().toDateString()
-    );
-
-    renderMeal(text);
-
-  }
-
-  catch(err){
-
-    result.innerHTML = `
-    <div class="error-box">
-
-    ⚠️ ${err.message}
-
+    <label class="input-label">Foods You Have (from grocery list)</label>
+    <textarea id="foods" placeholder="e.g. eggs, chicken breast, rice, dal, oats, banana, curd, groundnuts, bread..."></textarea>
+    <div id="budgetFoodsHint" class="budget-foods-hint" style="display:none;">
+      <div class="budget-foods-label">🛒 From Your Budget Plan</div>
+      <div class="budget-foods-list" id="budgetFoodsList"></div>
     </div>
-    `;
-
-  }
-
-}
-
-function renderMeal(text){
-
-  const result =
-  document.getElementById(
-    "mealResult"
-  );
-
-  const lines =
-  text.split("\n")
-  .filter(line => line.trim());
-
-  let html = "";
-
-  let currentCard = false;
-
-  lines.forEach(line => {
-
-    const cleanLine =
-    line.trim();
-
-    if(
-      cleanLine.includes("Breakfast")
-      ||
-      cleanLine.includes("Pre")
-      ||
-      cleanLine.includes("Post")
-      ||
-      cleanLine.includes("Lunch")
-      ||
-      cleanLine.includes("Dinner")
-      ||
-      cleanLine.includes("Snack")
-      ||
-      cleanLine.includes("Calories")
-      ||
-      cleanLine.includes("Protein")
-    ){
-
-      if(currentCard){
-        html += `</div>`;
-      }
-
-      html += `
-      <div class="meal-card">
-
-      <div class="meal-title">
-      ${cleanLine}
-      </div>
-      `;
-
-      currentCard = true;
-
-    }
-
-    else{
-
-      html += `
-      <div class="result-line">
-
-      ${cleanLine}
-
-      </div>
-      `;
-
-    }
-
-  });
-
-  if(currentCard){
-    html += `</div>`;
-  }
-
-  html += `
-
-  <div class="tip-box">
-
-  ⚠️ Follow your meal timing
-  consistently with your workout
-  program for maximum progress.
-
-  Water Goal:
-  ${document.getElementById("waterGoal").value}
-
+    <label class="input-label">Meals Per Day</label>
+    <select id="meals">
+      <option value="4">4 Meals (Breakfast, Lunch, Snack, Dinner)</option>
+      <option value="5">5 Meals (+ Pre-Workout)</option>
+      <option value="6">6 Meals (+ Pre + Post Workout)</option>
+    </select>
+    <label class="input-label">Cooking Skill</label>
+    <select id="cookLevel">
+      <option>Basic (simple recipes)</option>
+      <option>Intermediate (some effort)</option>
+      <option>Advanced (meal prep style)</option>
+    </select>
+    <button class="generate-btn" id="genBtn" onclick="generateMeal()">Generate Meal Plan 🍗</button>
   </div>
-
-  <button class="finish-btn"
-  onclick="finishJourney()">
-
-  ✅ Finish Fitness Setup
-
-  </button>
-
-  `;
-
-  result.innerHTML = html;
-
+  <div id="mealResult" class="result"></div>
+</div>
+<script>
+const WORKER_URL="https://pavenfitzz-ai.pavendansg.workers.dev/";
+const goal=localStorage.getItem("goal")||"Bulk";
+const split=localStorage.getItem("split")||"PPL";
+const days=localStorage.getItem("days")||"4";
+document.getElementById("goalInfo").innerText=goal+" · "+split;
+const budgetPlan=localStorage.getItem("generatedBudget");
+if(budgetPlan){
+  const lines=budgetPlan.split("\n");
+  const shopItems=lines.filter(l=>l.trim().match(/^[-•]\s*\w/)).map(l=>l.replace(/^[-•]\s*/,'').split("—")[0].trim()).filter(Boolean).slice(0,12);
+  if(shopItems.length>0){
+    document.getElementById("budgetFoodsHint").style.display="block";
+    document.getElementById("budgetFoodsList").innerText=shopItems.join(", ");
+    document.getElementById("foods").value=shopItems.join(", ");
+  }
 }
-
-function finishJourney(){
-
-  alert(
-    "🔥 Your AI Fitness Journey is Ready!"
-  );
-
-  window.location.href =
-  "dashboard.html";
-
+async function generateMeal(){
+  const foods=document.getElementById("foods").value.trim();
+  const meals=document.getElementById("meals").value;
+  const cookLevel=document.getElementById("cookLevel").value;
+  const btn=document.getElementById("genBtn");
+  const result=document.getElementById("mealResult");
+  if(!foods){alert("⚠️ Enter the foods you have!");return;}
+  btn.disabled=true;
+  result.innerHTML=`<div class="loading">🍳 Creating Your Meal Plan<div class="loading-dots"><span></span><span></span><span></span></div></div>`;
+  const calorieTarget={Bulk:3200,Cut:2000,Maintain:2600,Athletic:2800}[goal]||2800;
+  const proteinTarget={Bulk:140,Cut:160,Maintain:120,Athletic:150}[goal]||130;
+  const prompt=`You are an expert Indian fitness nutrition coach. Goal: ${goal}. Split: ${split} (${days} days/week). City: Chennai. Calorie Target: ${calorieTarget} kcal/day. Protein Target: ${proteinTarget}g/day. Meals: ${meals}. Cooking: ${cookLevel}. Available Foods: ${foods}. Create a COMPLETE daily meal plan using ONLY these foods. Hit close to ${calorieTarget} cal and ${proteinTarget}g protein. Include quantities. Add prep tips. Indian style. FORMAT: DAILY MACROS: Total Calories: Total Protein: Total Carbs: Total Fat: BREAKFAST (X kcal | Xg protein): - food — quantity Prep: ... LUNCH: SNACK: DINNER: ${parseInt(meals)>=5?"PRE-WORKOUT:":""} ${parseInt(meals)>=6?"POST-WORKOUT:":""} MEAL PREP TIPS: 1. 2. 3.`;
+  try{
+    const res=await fetch(WORKER_URL,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({prompt})});
+    const data=await res.json();
+    const text=data.text||"No response";
+    renderMeal(text,calorieTarget,proteinTarget);
+  }catch(err){result.innerHTML=`<div class="error-box">⚠️ ${err.message}</div>`;}
+  btn.disabled=false;
 }
-
+function renderMeal(text,calTarget,protTarget){
+  const result=document.getElementById("mealResult");
+  const lines=text.split("\n").filter(l=>l.trim());
+  let macros={cal:calTarget,prot:protTarget+"g",carbs:"—",fat:"—"};
+  lines.forEach(line=>{
+    const c=line.trim();
+    if(c.match(/total calories/i)){const m=c.match(/(\d+)/);if(m)macros.cal=m[1];}
+    if(c.match(/total protein/i)){const m=c.match(/(\d+)/);if(m)macros.prot=m[1]+"g";}
+    if(c.match(/total carbs/i)){const m=c.match(/(\d+)/);if(m)macros.carbs=m[1]+"g";}
+    if(c.match(/total fat/i)){const m=c.match(/(\d+)/);if(m)macros.fat=m[1]+"g";}
+  });
+  let html=`<div class="macro-bar">
+    <div class="macro-card"><div class="macro-val orange">${macros.cal}</div><div class="macro-label">Calories</div></div>
+    <div class="macro-card"><div class="macro-val green">${macros.prot}</div><div class="macro-label">Protein</div></div>
+    <div class="macro-card"><div class="macro-val blue">${macros.carbs}</div><div class="macro-label">Carbs</div></div>
+    <div class="macro-card"><div class="macro-val gold">${macros.fat}</div><div class="macro-label">Fat</div></div>
+  </div>`;
+  const mealKeywords=/^(breakfast|lunch|snack|dinner|pre-workout|post-workout|pre workout|post workout)/i;
+  const mealEmojis={breakfast:"🌅",lunch:"☀️",snack:"⚡",dinner:"🌙","pre-workout":"💪","post-workout":"🔄"};
+  let sections=[];let current=null;let prepHtml="";
+  lines.forEach(line=>{
+    const c=line.trim();
+    if(c.match(/^daily macros/i)||c.match(/^total (calories|protein|carbs|fat)/i))return;
+    if(c.match(mealKeywords)){
+      if(current)sections.push(current);
+      const calMatch=c.match(/(\d+)\s*kcal/i);
+      const protMatch=c.match(/(\d+)g\s*protein/i);
+      current={title:c.replace(/\(.*\)/,'').trim(),cal:calMatch?.[1]||"",prot:protMatch?.[1]||"",items:[],prep:""};
+    }else if(c.match(/^meal prep tips/i)){
+      if(current)sections.push(current);current=null;
+      prepHtml=`<div class="prep-box"><div class="prep-title">🧑‍🍳 Meal Prep Tips</div>`;
+    }else if(!current&&prepHtml&&c){
+      const n=c.match(/^(\d+)\.\s*(.*)/);
+      if(n)prepHtml+=`<div class="prep-line"><span class="prep-num">${n[1]}.</span><span>${n[2]}</span></div>`;
+      else prepHtml+=`<div class="prep-line"><span class="prep-num">→</span><span>${c.replace(/^[-•*]\s*/,'')}</span></div>`;
+    }else if(current){
+      if(c.match(/^prep:/i))current.prep=c.replace(/^prep:\s*/i,'');
+      else if(c.match(/^[-•*]\s*/)||c)current.items.push(c.replace(/^[-•*]\s*/,''));
+    }
+  });
+  if(current)sections.push(current);
+  if(prepHtml)prepHtml+=`</div>`;
+  sections.forEach(s=>{
+    const key=Object.keys(mealEmojis).find(k=>s.title.toLowerCase().includes(k));
+    const emoji=key?mealEmojis[key]:"🍽️";
+    html+=`<div class="meal-card"><div class="meal-header"><div class="meal-title">${emoji} ${s.title}</div>${s.cal?`<div class="meal-cal">${s.cal} kcal${s.prot?" · "+s.prot+"g P":""}</div>`:""}</div>`;
+    s.items.forEach(item=>{html+=`<div class="food-item"><div class="food-dot"></div><span>${item}</span></div>`;});
+    if(s.prep)html+=`<div style="margin-top:12px;padding:12px;background:#0d0d0d;border-radius:10px;font-size:13px;color:#999;line-height:1.7;"><span style="color:var(--orange);font-weight:700;">Prep: </span>${s.prep}</div>`;
+    html+=`</div>`;
+  });
+  html+=prepHtml;
+  html+=`<div class="tip-note"><strong>✅ Pro Tip:</strong> Meal prep on Sunday. Cook rice and dal in bulk. Store boiled eggs in fridge. Stay consistent! 💪</div>
+  <button class="btn-home" onclick="window.location.href='home.html'">← Back to Dashboard</button>`;
+  result.innerHTML=html;
+}
 </script>
-
 </body>
 </html>

@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>PavenFitzz Workout Coach</title>
+
+<link rel="stylesheet" href="ai.css">
+
+<style>
+
+body{
+  margin:0;
+  font-family:Arial, sans-serif;
+  background:#0b0b0b;
+  color:white;
+}
+
+.container{
+  max-width:900px;
+  margin:auto;
+  padding:20px;
+}
+
+.ai-header{
+  text-align:center;
+  margin-bottom:30px;
+}
+
+.ai-logo{
+  font-size:60px;
+  margin-bottom:10px;
+}
+
+.ai-title{
+  font-size:34px;
+  font-weight:700;
+}
+
+.ai-subtitle{
+  color:#aaa;
+  margin-top:10px;
+}
+
+.box{
+  background:#151515;
+  border:1px solid rgba(255,255,255,0.08);
+  border-radius:20px;
+  padding:25px;
+  margin-bottom:25px;
+  box-shadow:0 0 20px rgba(0,0,0,0.4);
+}
+
+.input-label{
+  display:block;
+  margin-bottom:10px;
+  margin-top:20px;
+  font-weight:600;
+}
+
+select{
+  width:100%;
+  padding:14px;
+  border:none;
+  border-radius:12px;
+  background:#222;
+  color:white;
+  font-size:16px;
+}
+
+button{
+  width:100%;
+  padding:16px;
+  border:none;
+  border-radius:14px;
+  margin-top:25px;
+  font-size:16px;
+  font-weight:700;
+  cursor:pointer;
+  transition:.3s;
+}
+
+.generate-btn{
+  background:linear-gradient(90deg,#00ff88,#00c3ff);
+  color:black;
+}
+
+.generate-btn:hover{
+  transform:translateY(-2px);
+}
+
+.confirm-btn{
+  background:#00ff88;
+  color:black;
+}
+
+.next-btn{
+  background:#00c3ff;
+  color:black;
+}
+
+.result{
+  margin-top:25px;
+}
+
+.day-card{
+  background:#1d1d1d;
+  border-radius:16px;
+  padding:18px;
+  margin-bottom:18px;
+  border-left:5px solid #00ff88;
+}
+
+.day-title{
+  font-size:22px;
+  font-weight:700;
+  color:#00ff88;
+  margin-bottom:12px;
+}
+
+.exercise{
+  padding:10px 0;
+  border-bottom:1px solid rgba(255,255,255,0.06);
+  line-height:1.7;
+}
+
+.tip-box{
+  margin-top:20px;
+  background:#111;
+  border-radius:14px;
+  padding:15px;
+  color:#ccc;
+  line-height:1.7;
+}
+
+.lock-box{
+  margin-top:20px;
+  padding:18px;
+  border-radius:14px;
+  background:#0f2417;
+  border:1px solid #00ff88;
+}
+
+.loading{
+  text-align:center;
+  padding:30px;
+  color:#00ff88;
+  font-size:18px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+  <div class="ai-header">
+
+    <div class="ai-logo">💪</div>
+
+    <div class="ai-title">
+      AI Workout Coach
+    </div>
+
+    <div class="ai-subtitle">
+      Personalized Fitness Program Generator
+    </div>
+
+  </div>
+
+  <div class="box">
+
+    <label class="input-label">
+      Fitness Goal
+    </label>
+
+    <select id="goal">
+      <option>Bulk</option>
+      <option>Cut</option>
+      <option>Maintain</option>
+      <option>Athletic</option>
+    </select>
+
+    <label class="input-label">
+      Experience Level
+    </label>
+
+    <select id="level">
+      <option>Beginner</option>
+      <option>Intermediate</option>
+      <option>Advanced</option>
+    </select>
+
+    <label class="input-label">
+      Workout Split
+    </label>
+
+    <select id="split">
+      <option>PPL</option>
+      <option>Bro Split</option>
+      <option>Upper Lower</option>
+      <option>Full Body</option>
+    </select>
+
+    <label class="input-label">
+      Workout Days Per Week
+    </label>
+
+    <select id="days">
+      <option>3</option>
+      <option>4</option>
+      <option>5</option>
+      <option>6</option>
+    </select>
+
+    <button class="generate-btn"
+    onclick="generateWorkout()">
+
+      Generate My Program 🔥
+
+    </button>
+
+  </div>
+
+  <div id="workoutResult"
+  class="result"></div>
+
+</div>
+
+<script>
+
+const WORKER_URL =
+"https://pavenfitzz-ai.pavendansg.workers.dev";
+
+async function generateWorkout(){
+
+  const goal =
+  document.getElementById("goal").value;
+
+  const level =
+  document.getElementById("level").value;
+
+  const split =
+  document.getElementById("split").value;
+
+  const days =
+  document.getElementById("days").value;
+
+  const result =
+  document.getElementById("workoutResult");
+
+  result.innerHTML = `
+  <div class="loading">
+  🤖 AI Coach is creating your
+  personalized workout program...
+  </div>
+  `;
+
+  const prompt = `
+Create a PROFESSIONAL ${days}-day ${split}
+workout plan.
+
+Goal: ${goal}
+Level: ${level}
+
+IMPORTANT:
+- This is a fixed weekly program
+- Clear DAY structure
+- 5 exercises per day
+- Include sets and reps
+- Short exercise guidance
+- Practical gym workout
+- Easy to follow
+- Professional clean format
+- Keep response organized
+`;
+
+  try{
+
+    const res = await fetch(WORKER_URL,{
+
+      method:"POST",
+
+      headers:{
+        "Content-Type":"application/json"
+      },
+
+      body:JSON.stringify({
+        prompt:prompt
+      })
+
+    });
+
+    const data =
+    await res.json();
+
+    const text =
+    data.text || "No response";
+
+    const lines =
+    text.split("\n")
+    .filter(line => line.trim());
+
+    let html = "";
+
+    lines.forEach(line => {
+
+      if(
+        line.toLowerCase().includes("day")
+      ){
+
+        html += `
+        <div class="day-card">
+
+        <div class="day-title">
+        ${line}
+        </div>
+        `;
+
+      }
+
+      else{
+
+        html += `
+        <div class="exercise">
+        ${line}
+        </div>
+        `;
+
+      }
+
+    });
+
+    html += `
+    </div>
+
+    <div class="lock-box">
+
+    ⚠️ This workout plan will remain
+    fixed until your workout cycle ends.
+
+    Follow the same program daily for
+    proper progress and consistency.
+
+    </div>
+
+    <button class="confirm-btn"
+    onclick="lockProgram()">
+
+    ✅ Confirm & Lock Program
+
+    </button>
+
+    <button class="next-btn"
+    onclick="goBudget()">
+
+    Continue to Budget Planning →
+
+    </button>
+    `;
+
+    result.innerHTML = html;
+
+    localStorage.setItem(
+      "generatedWorkout",
+      text
+    );
+
+    localStorage.setItem(
+      "goal",
+      goal
+    );
+
+    localStorage.setItem(
+      "level",
+      level
+    );
+
+    localStorage.setItem(
+      "split",
+      split
+    );
+
+    localStorage.setItem(
+      "days",
+      days
+    );
+
+  }
+
+  catch(err){
+
+    result.innerHTML = `
+    <div class="box"
+    style="color:red;">
+    ⚠️ ${err.message}
+    </div>
+    `;
+
+  }
+
+}
+
+function lockProgram(){
+
+  localStorage.setItem(
+    "programLocked",
+    "true"
+  );
+
+  alert(
+    "Workout Program Locked 🔥"
+  );
+
+}
+
+function goBudget(){
+
+  window.location.href =
+  "budget.html";
+
+}
+
+</script>
+
+</body>
+</html>

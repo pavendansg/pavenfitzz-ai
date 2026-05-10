@@ -3,17 +3,16 @@
 
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
 
 <title>PavenFitzz Workout Coach</title>
-
-<link rel="stylesheet" href="ai.css">
 
 <style>
 
 body{
   margin:0;
-  font-family:Arial, sans-serif;
+  font-family:Arial,sans-serif;
   background:#0b0b0b;
   color:white;
 }
@@ -26,17 +25,17 @@ body{
 
 .ai-header{
   text-align:center;
-  margin-bottom:30px;
+  margin-bottom:35px;
 }
 
 .ai-logo{
-  font-size:60px;
-  margin-bottom:10px;
+  font-size:65px;
 }
 
 .ai-title{
-  font-size:34px;
+  font-size:38px;
   font-weight:700;
+  margin-top:10px;
 }
 
 .ai-subtitle{
@@ -46,95 +45,123 @@ body{
 
 .box{
   background:#151515;
+  border-radius:24px;
+  padding:28px;
   border:1px solid rgba(255,255,255,0.08);
-  border-radius:20px;
-  padding:25px;
-  margin-bottom:25px;
-  box-shadow:0 0 20px rgba(0,0,0,0.4);
+  box-shadow:0 0 25px rgba(0,0,0,0.5);
 }
 
 .input-label{
   display:block;
+  margin-top:22px;
   margin-bottom:10px;
-  margin-top:20px;
-  font-weight:600;
+  font-weight:700;
+  color:#888;
+  letter-spacing:1px;
 }
 
 select{
   width:100%;
-  padding:14px;
-  border:none;
-  border-radius:12px;
-  background:#222;
-  color:white;
-  font-size:16px;
-}
-
-button{
-  width:100%;
   padding:16px;
   border:none;
   border-radius:14px;
-  margin-top:25px;
-  font-size:16px;
-  font-weight:700;
-  cursor:pointer;
-  transition:.3s;
+  background:#222;
+  color:white;
+  font-size:17px;
 }
 
 .generate-btn{
-  background:linear-gradient(90deg,#00ff88,#00c3ff);
+  width:100%;
+  padding:18px;
+  border:none;
+  border-radius:18px;
+  margin-top:28px;
+  font-size:18px;
+  font-weight:700;
+  cursor:pointer;
+
+  background:linear-gradient(
+  90deg,
+  #00ff88,
+  #00c3ff
+  );
+
   color:black;
 }
 
+.result{
+  margin-top:30px;
+}
+
+.day-card{
+  background:#151515;
+  border-left:5px solid #00ff88;
+  border-radius:20px;
+  padding:22px;
+  margin-bottom:20px;
+}
+
+.day-title{
+  color:#00ff88;
+  font-size:24px;
+  font-weight:700;
+  margin-bottom:15px;
+}
+
+.exercise{
+  padding:12px 0;
+  border-bottom:1px solid rgba(255,255,255,0.06);
+  line-height:1.8;
+}
+
+.loading{
+  text-align:center;
+  padding:35px;
+  color:#00ff88;
+  font-size:18px;
+}
+
+.lock-box{
+  background:#102218;
+  border:1px solid #00ff88;
+  border-radius:16px;
+  padding:18px;
+  margin-top:25px;
+  line-height:1.7;
+}
+
 .confirm-btn{
+  width:100%;
+  padding:16px;
+  border:none;
+  border-radius:16px;
+  margin-top:20px;
+  font-size:17px;
+  font-weight:700;
+  cursor:pointer;
   background:#00ff88;
   color:black;
 }
 
 .next-btn{
+  width:100%;
+  padding:16px;
+  border:none;
+  border-radius:16px;
+  margin-top:15px;
+  font-size:17px;
+  font-weight:700;
+  cursor:pointer;
   background:#00c3ff;
   color:black;
 }
 
-.result{
-  margin-top:25px;
-}
-
-.day-card{
-  background:#1d1d1d;
+.error-box{
+  background:#2a1111;
+  color:#ff7777;
+  padding:20px;
   border-radius:16px;
-  padding:18px;
-  margin-bottom:18px;
-  border-left:5px solid #00ff88;
-}
-
-.day-title{
-  font-size:22px;
-  font-weight:700;
-  color:#00ff88;
-  margin-bottom:12px;
-}
-
-.exercise{
-  padding:10px 0;
-  border-bottom:1px solid rgba(255,255,255,0.06);
-  line-height:1.7;
-}
-
-.lock-box{
   margin-top:20px;
-  padding:18px;
-  border-radius:14px;
-  background:#0f2417;
-  border:1px solid #00ff88;
-}
-
-.loading{
-  text-align:center;
-  padding:30px;
-  color:#00ff88;
-  font-size:18px;
 }
 
 </style>
@@ -162,7 +189,7 @@ button{
   <div class="box">
 
     <label class="input-label">
-      Fitness Goal
+      FITNESS GOAL
     </label>
 
     <select id="goal">
@@ -173,7 +200,7 @@ button{
     </select>
 
     <label class="input-label">
-      Experience Level
+      EXPERIENCE LEVEL
     </label>
 
     <select id="level">
@@ -183,7 +210,7 @@ button{
     </select>
 
     <label class="input-label">
-      Workout Split
+      WORKOUT SPLIT
     </label>
 
     <select id="split">
@@ -194,7 +221,7 @@ button{
     </select>
 
     <label class="input-label">
-      Workout Days Per Week
+      WORKOUT DAYS PER WEEK
     </label>
 
     <select id="days">
@@ -242,20 +269,22 @@ async function generateWorkout(){
 
   result.innerHTML = `
   <div class="loading">
-  🤖 AI Coach is creating your
-  personalized workout program...
+
+    🤖 AI Coach is generating your
+    personalized workout...
+
   </div>
   `;
 
   const prompt = `
-Create a ${days}-day ${split} workout.
+Create a ${days}-day ${split} workout plan.
 
 Goal: ${goal}
 Level: ${level}
 
 Format:
 
-DAY 1
+DAY 1: CHEST
 - Exercise
 - Sets x Reps
 
@@ -286,67 +315,6 @@ Keep concise and professional.
     const text =
     data.text || "No response";
 
-    const lines =
-    text.split("\n")
-    .filter(line => line.trim());
-
-    let html = "";
-
-    lines.forEach(line => {
-
-      if(
-        line.toLowerCase().includes("day")
-      ){
-
-        html += `
-        <div class="day-card">
-
-        <div class="day-title">
-        ${line}
-        </div>
-        `;
-
-      }
-
-      else{
-
-        html += `
-        <div class="exercise">
-        ${line}
-        </div>
-        `;
-
-      }
-
-    });
-
-    html += `
-    </div>
-
-    <div class="lock-box">
-
-    ⚠️ This workout plan will remain
-    fixed until your workout cycle ends.
-
-    </div>
-
-    <button class="confirm-btn"
-    onclick="lockProgram()">
-
-    ✅ Confirm & Lock Program
-
-    </button>
-
-    <button class="next-btn"
-    onclick="goBudget()">
-
-    Continue to Budget Planning →
-
-    </button>
-    `;
-
-    result.innerHTML = html;
-
     localStorage.setItem(
       "generatedWorkout",
       text
@@ -372,6 +340,82 @@ Keep concise and professional.
       days
     );
 
+    const lines =
+    text.split("\n")
+    .filter(line => line.trim());
+
+    let html = "";
+
+    let currentCard = false;
+
+    lines.forEach(line => {
+
+      const cleanLine =
+      line.trim();
+
+      if(
+        cleanLine.toLowerCase().includes("day")
+      ){
+
+        if(currentCard){
+          html += `</div>`;
+        }
+
+        html += `
+        <div class="day-card">
+
+          <div class="day-title">
+            ${cleanLine}
+          </div>
+        `;
+
+        currentCard = true;
+
+      }
+
+      else{
+
+        html += `
+        <div class="exercise">
+          ${cleanLine}
+        </div>
+        `;
+
+      }
+
+    });
+
+    if(currentCard){
+      html += `</div>`;
+    }
+
+    html += `
+
+    <div class="lock-box">
+
+      ⚠️ This workout program will remain
+      fixed until your workout cycle ends.
+
+    </div>
+
+    <button class="confirm-btn"
+    onclick="lockProgram()">
+
+      ✅ Confirm & Lock Program
+
+    </button>
+
+    <button class="next-btn"
+    onclick="goBudget()">
+
+      Continue to Budget Planning →
+
+    </button>
+
+    `;
+
+    result.innerHTML = html;
+
   }
 
   catch(err){
@@ -379,12 +423,13 @@ Keep concise and professional.
     console.log(err);
 
     result.innerHTML = `
-    <div class="box"
-    style="color:red;">
 
-    ⚠️ ${err.message}
+    <div class="error-box">
+
+      ⚠️ ${err.message}
 
     </div>
+
     `;
 
   }

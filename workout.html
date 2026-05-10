@@ -87,10 +87,6 @@ button{
   color:black;
 }
 
-.generate-btn:hover{
-  transform:translateY(-2px);
-}
-
 .confirm-btn{
   background:#00ff88;
   color:black;
@@ -123,15 +119,6 @@ button{
 .exercise{
   padding:10px 0;
   border-bottom:1px solid rgba(255,255,255,0.06);
-  line-height:1.7;
-}
-
-.tip-box{
-  margin-top:20px;
-  background:#111;
-  border-radius:14px;
-  padding:15px;
-  color:#ccc;
   line-height:1.7;
 }
 
@@ -234,7 +221,7 @@ button{
 <script>
 
 const WORKER_URL =
-"https://pavenfitzz-ai.pavendansg.workers.dev";
+"https://pavenfitzz-ai.pavendansg.workers.dev/";
 
 async function generateWorkout(){
 
@@ -261,22 +248,18 @@ async function generateWorkout(){
   `;
 
   const prompt = `
-Create a PROFESSIONAL ${days}-day ${split}
-workout plan.
+Create a ${days}-day ${split} workout.
 
 Goal: ${goal}
 Level: ${level}
 
-IMPORTANT:
-- This is a fixed weekly program
-- Clear DAY structure
-- 5 exercises per day
-- Include sets and reps
-- Short exercise guidance
-- Practical gym workout
-- Easy to follow
-- Professional clean format
-- Keep response organized
+Format:
+
+DAY 1
+- Exercise
+- Sets x Reps
+
+Keep concise and professional.
 `;
 
   try{
@@ -297,6 +280,8 @@ IMPORTANT:
 
     const data =
     await res.json();
+
+    console.log(data);
 
     const text =
     data.text || "No response";
@@ -342,9 +327,6 @@ IMPORTANT:
 
     ⚠️ This workout plan will remain
     fixed until your workout cycle ends.
-
-    Follow the same program daily for
-    proper progress and consistency.
 
     </div>
 
@@ -394,10 +376,14 @@ IMPORTANT:
 
   catch(err){
 
+    console.log(err);
+
     result.innerHTML = `
     <div class="box"
     style="color:red;">
+
     ⚠️ ${err.message}
+
     </div>
     `;
 

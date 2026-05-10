@@ -250,6 +250,21 @@ select{
 const WORKER_URL =
 "https://pavenfitzz-ai.pavendansg.workers.dev/";
 
+window.onload = function(){
+
+  const savedWorkout =
+  localStorage.getItem(
+    "generatedWorkout"
+  );
+
+  if(savedWorkout){
+
+    renderWorkout(savedWorkout);
+
+  }
+
+}
+
 async function generateWorkout(){
 
   const goal =
@@ -282,13 +297,18 @@ Create a ${days}-day ${split} workout plan.
 Goal: ${goal}
 Level: ${level}
 
-Format:
+STRICT RULES:
+- Professional gym workout
+- Clear DAY format
+- 5 exercises per day
+- Sets and reps
+- Keep concise
+- No explanations
 
-DAY 1: CHEST
-- Exercise
-- Sets x Reps
+FORMAT:
 
-Keep concise and professional.
+DAY 1:
+- Exercise — Sets x Reps
 `;
 
   try{
@@ -340,81 +360,7 @@ Keep concise and professional.
       days
     );
 
-    const lines =
-    text.split("\n")
-    .filter(line => line.trim());
-
-    let html = "";
-
-    let currentCard = false;
-
-    lines.forEach(line => {
-
-      const cleanLine =
-      line.trim();
-
-      if(
-        cleanLine.toLowerCase().includes("day")
-      ){
-
-        if(currentCard){
-          html += `</div>`;
-        }
-
-        html += `
-        <div class="day-card">
-
-          <div class="day-title">
-            ${cleanLine}
-          </div>
-        `;
-
-        currentCard = true;
-
-      }
-
-      else{
-
-        html += `
-        <div class="exercise">
-          ${cleanLine}
-        </div>
-        `;
-
-      }
-
-    });
-
-    if(currentCard){
-      html += `</div>`;
-    }
-
-    html += `
-
-    <div class="lock-box">
-
-      ⚠️ This workout program will remain
-      fixed until your workout cycle ends.
-
-    </div>
-
-    <button class="confirm-btn"
-    onclick="lockProgram()">
-
-      ✅ Confirm & Lock Program
-
-    </button>
-
-    <button class="next-btn"
-    onclick="goBudget()">
-
-      Continue to Budget Planning →
-
-    </button>
-
-    `;
-
-    result.innerHTML = html;
+    renderWorkout(text);
 
   }
 
@@ -433,6 +379,92 @@ Keep concise and professional.
     `;
 
   }
+
+}
+
+function renderWorkout(text){
+
+  const result =
+  document.getElementById(
+    "workoutResult"
+  );
+
+  const lines =
+  text.split("\n")
+  .filter(line => line.trim());
+
+  let html = "";
+
+  let currentCard = false;
+
+  lines.forEach(line => {
+
+    const cleanLine =
+    line.trim();
+
+    if(
+      cleanLine.toLowerCase()
+      .includes("day")
+    ){
+
+      if(currentCard){
+        html += `</div>`;
+      }
+
+      html += `
+      <div class="day-card">
+
+        <div class="day-title">
+          ${cleanLine}
+        </div>
+      `;
+
+      currentCard = true;
+
+    }
+
+    else{
+
+      html += `
+      <div class="exercise">
+        ${cleanLine}
+      </div>
+      `;
+
+    }
+
+  });
+
+  if(currentCard){
+    html += `</div>`;
+  }
+
+  html += `
+
+  <div class="lock-box">
+
+  ⚠️ This workout program will remain
+  fixed until your workout cycle ends.
+
+  </div>
+
+  <button class="confirm-btn"
+  onclick="lockProgram()">
+
+  ✅ Confirm & Lock Program
+
+  </button>
+
+  <button class="next-btn"
+  onclick="goBudget()">
+
+  Continue to Budget Planning →
+
+  </button>
+
+  `;
+
+  result.innerHTML = html;
 
 }
 

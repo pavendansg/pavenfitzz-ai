@@ -3,59 +3,69 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PavenFitzz — Budget Planner</title>
+<title>PavenFitzz — Budget</title>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Syne:wght@400;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 :root{--bg:#080808;--card:#101010;--green:#00ff88;--blue:#00c3ff;--gold:#ffd000;--red:#ff4455;--border:rgba(255,255,255,0.07);--muted:#666;}
 *{box-sizing:border-box;margin:0;padding:0;}
 body{background:var(--bg);color:#f0f0f0;font-family:'Syne',sans-serif;min-height:100vh;}
-.wrap{max-width:900px;margin:auto;padding:28px 20px 60px;}
-.header{text-align:center;margin-bottom:36px;}
-.logo{font-size:50px;}
-.brand{font-family:'Bebas Neue',sans-serif;font-size:42px;letter-spacing:3px;background:linear-gradient(90deg,var(--gold),#ff9900);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
-.tagline{color:var(--muted);font-size:13px;letter-spacing:2px;margin-top:4px;}
-.nav{display:flex;gap:10px;justify-content:center;margin-bottom:36px;flex-wrap:wrap;}
-.nav a{text-decoration:none;padding:9px 20px;border-radius:50px;font-size:13px;font-weight:700;letter-spacing:1px;border:1px solid var(--border);color:var(--muted);transition:all .25s;}
+.wrap{max-width:860px;margin:auto;padding:24px 16px 60px;}
+.header{text-align:center;margin-bottom:28px;}
+.logo{font-size:44px;}
+.brand{font-family:'Bebas Neue',sans-serif;font-size:38px;letter-spacing:3px;background:linear-gradient(90deg,var(--gold),#ff9900);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.tagline{color:var(--muted);font-size:12px;letter-spacing:2px;margin-top:2px;}
+.nav{display:flex;gap:8px;justify-content:center;margin-bottom:28px;flex-wrap:wrap;}
+.nav a{text-decoration:none;padding:8px 18px;border-radius:50px;font-size:12px;font-weight:700;letter-spacing:1px;border:1px solid var(--border);color:var(--muted);transition:all .2s;}
 .nav a:hover{border-color:var(--gold);color:var(--gold);}
 .nav a.active{background:var(--gold);color:#000;border-color:var(--gold);}
-.info-banner{background:linear-gradient(135deg,#1a1400,#120f00);border:1px solid rgba(255,208,0,0.2);border-radius:18px;padding:18px 22px;margin-bottom:20px;display:flex;gap:16px;align-items:flex-start;}
-.info-text{font-size:14px;line-height:1.7;color:#ccc;}
-.info-text strong{color:var(--gold);}
-.min-hint{background:#0d0d0d;border:1px solid rgba(0,255,136,0.15);border-radius:12px;padding:14px 18px;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center;}
-.min-hint-label{font-size:12px;color:var(--muted);font-family:'DM Mono',monospace;}
-.min-hint-val{font-size:14px;font-weight:700;color:var(--green);}
-.box{background:var(--card);border-radius:24px;padding:28px;border:1px solid var(--border);}
-.input-label{display:block;margin-top:22px;margin-bottom:8px;font-weight:700;color:var(--muted);letter-spacing:2px;font-size:11px;font-family:'DM Mono',monospace;text-transform:uppercase;}
-input[type="number"],select{width:100%;padding:15px 16px;border:1px solid #222;border-radius:12px;background:#0d0d0d;color:white;font-size:16px;font-family:'Syne',sans-serif;outline:none;transition:border-color .2s;}
+.info-strip{background:#0d0d0d;border:1px solid rgba(255,208,0,0.15);border-radius:12px;padding:13px 18px;margin-bottom:16px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;}
+.info-item{font-size:12px;color:var(--muted);font-family:'DM Mono',monospace;}
+.info-item span{color:var(--gold);font-weight:700;}
+.box{background:var(--card);border-radius:20px;padding:24px;border:1px solid var(--border);}
+.input-label{display:block;margin-top:18px;margin-bottom:6px;font-weight:700;color:var(--muted);letter-spacing:2px;font-size:11px;font-family:'DM Mono',monospace;text-transform:uppercase;}
+input[type="number"],select{width:100%;padding:13px 16px;border:1px solid #222;border-radius:12px;background:#0d0d0d;color:white;font-size:15px;font-family:'Syne',sans-serif;outline:none;transition:border-color .2s;}
 input[type="number"]:focus,select:focus{border-color:var(--gold);}
 select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23666' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;cursor:pointer;}
-.quick-btns{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap;}
-.quick-btn{padding:8px 16px;border-radius:50px;border:1px solid rgba(255,208,0,0.3);background:transparent;color:var(--gold);font-family:'Syne',sans-serif;font-size:13px;font-weight:700;cursor:pointer;transition:all .2s;}
-.quick-btn:hover{background:var(--gold);color:#000;}
-.generate-btn{width:100%;padding:18px;border:none;border-radius:16px;margin-top:28px;font-size:17px;font-weight:800;cursor:pointer;background:linear-gradient(90deg,var(--gold),#ff9900);color:#000;font-family:'Bebas Neue',sans-serif;letter-spacing:2px;transition:all .2s;}
-.generate-btn:hover{transform:translateY(-2px);}
-.generate-btn:disabled{opacity:0.5;cursor:not-allowed;transform:none;}
-.loading{text-align:center;padding:50px;color:var(--gold);font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:2px;}
-.loading-dots{display:flex;justify-content:center;gap:8px;margin-top:16px;}
-.loading-dots span{width:10px;height:10px;background:var(--gold);border-radius:50%;animation:bounce 1s ease infinite;}
-.loading-dots span:nth-child(2){animation-delay:.15s;}
-.loading-dots span:nth-child(3){animation-delay:.3s;}
-@keyframes bounce{0%,100%{transform:translateY(0);opacity:.3}50%{transform:translateY(-8px);opacity:1}}
-.result{margin-top:28px;}
-.section-card{background:var(--card);border-left:4px solid var(--gold);border-radius:18px;padding:22px;margin-bottom:16px;border:1px solid var(--border);}
-.section-title{color:var(--gold);font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:1.5px;margin-bottom:14px;}
-.result-line{padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.05);line-height:1.8;font-size:15px;color:#ccc;display:flex;align-items:flex-start;gap:8px;}
-.result-line:last-child{border-bottom:none;}
-.r-dot{width:5px;height:5px;background:var(--gold);border-radius:50%;margin-top:10px;flex-shrink:0;}
-.total-bar{background:linear-gradient(135deg,#1a1100,#120c00);border:1px solid rgba(255,208,0,0.3);border-radius:16px;padding:20px;margin-bottom:16px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;}
-.total-item{text-align:center;}
-.total-val{font-family:'Bebas Neue',sans-serif;font-size:26px;color:var(--gold);letter-spacing:1px;}
-.total-label{font-size:11px;color:var(--muted);font-family:'DM Mono',monospace;text-transform:uppercase;letter-spacing:1px;margin-top:2px;}
-.lock-note{background:#0d0d0d;border-radius:14px;padding:16px 18px;margin:16px 0;color:#888;font-size:14px;line-height:1.7;}
-.lock-note strong{color:var(--gold);}
-.btn-next{width:100%;padding:17px;border:none;border-radius:14px;font-size:15px;font-weight:800;cursor:pointer;font-family:'Syne',sans-serif;background:linear-gradient(90deg,var(--green),var(--blue));color:#000;transition:all .2s;}
+.quick-row{display:flex;gap:8px;margin-top:8px;flex-wrap:wrap;}
+.q-btn{padding:7px 14px;border-radius:50px;border:1px solid rgba(255,208,0,0.3);background:transparent;color:var(--gold);font-family:'Syne',sans-serif;font-size:12px;font-weight:700;cursor:pointer;transition:all .2s;}
+.q-btn:hover{background:var(--gold);color:#000;}
+.min-note{font-size:12px;color:var(--muted);margin-top:8px;font-family:'DM Mono',monospace;}
+.min-note span{color:var(--green);}
+.gen-btn{width:100%;padding:16px;border:none;border-radius:14px;margin-top:22px;font-size:16px;font-weight:800;cursor:pointer;background:linear-gradient(90deg,var(--gold),#ff9900);color:#000;font-family:'Bebas Neue',sans-serif;letter-spacing:2px;transition:all .2s;}
+.gen-btn:hover{transform:translateY(-2px);}
+.gen-btn:disabled{opacity:0.4;cursor:not-allowed;transform:none;}
+.loading{text-align:center;padding:40px;color:var(--gold);font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:2px;}
+.dots{display:flex;justify-content:center;gap:8px;margin-top:14px;}
+.dots span{width:9px;height:9px;background:var(--gold);border-radius:50%;animation:bop 1s ease infinite;}
+.dots span:nth-child(2){animation-delay:.15s;}
+.dots span:nth-child(3){animation-delay:.3s;}
+@keyframes bop{0%,100%{transform:translateY(0);opacity:.3}50%{transform:translateY(-8px);opacity:1}}
+.result{margin-top:24px;}
+.totals-row{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:18px;}
+.total-card{background:#0d0d0d;border:1px solid var(--border);border-radius:14px;padding:14px;text-align:center;}
+.total-val{font-family:'Bebas Neue',sans-serif;font-size:24px;letter-spacing:1px;}
+.total-val.gold{color:var(--gold);}
+.total-val.green{color:var(--green);}
+.total-val.blue{color:var(--blue);}
+.total-label{font-size:10px;color:var(--muted);font-family:'DM Mono',monospace;text-transform:uppercase;letter-spacing:1px;margin-top:3px;}
+.section{background:var(--card);border:1px solid var(--border);border-left:3px solid var(--gold);border-radius:16px;padding:18px;margin-bottom:12px;}
+.section-title{color:var(--gold);font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:1.5px;margin-bottom:12px;}
+.item-row{padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.04);display:flex;justify-content:space-between;align-items:center;font-size:14px;}
+.item-row:last-child{border-bottom:none;}
+.item-name{color:#ccc;flex:1;}
+.item-price{color:var(--gold);font-family:'DM Mono',monospace;font-size:13px;font-weight:700;margin-left:10px;}
+.meal-row{padding:9px 0;border-bottom:1px solid rgba(255,255,255,0.04);font-size:14px;color:#ccc;line-height:1.7;}
+.meal-row:last-child{border-bottom:none;}
+.meal-label{color:var(--gold);font-weight:700;font-size:12px;font-family:'DM Mono',monospace;text-transform:uppercase;letter-spacing:1px;margin-bottom:3px;}
+.macro-pill{display:inline-block;background:rgba(0,255,136,0.08);border:1px solid rgba(0,255,136,0.2);color:var(--green);font-size:11px;font-family:'DM Mono',monospace;padding:2px 8px;border-radius:50px;margin-left:6px;}
+.locked-note{background:#0d0d0d;border-radius:10px;padding:12px 14px;margin-top:14px;font-size:13px;color:var(--muted);line-height:1.7;}
+.locked-note strong{color:var(--gold);}
+.btn-next{width:100%;padding:15px;border:none;border-radius:14px;font-size:15px;font-weight:800;cursor:pointer;font-family:'Syne',sans-serif;background:linear-gradient(90deg,var(--green),var(--blue));color:#000;margin-top:14px;transition:all .2s;}
 .btn-next:hover{transform:translateY(-2px);}
-.error-box{background:#1a0a0a;color:#ff7777;padding:20px;border-radius:16px;margin-top:20px;border:1px solid rgba(255,68,85,0.3);}
+.error-box{background:#1a0a0a;color:#ff7777;padding:16px;border-radius:12px;margin-top:14px;border:1px solid rgba(255,68,85,0.3);font-size:14px;}
+.locked-banner{background:linear-gradient(135deg,#1a1200,#120d00);border:1px solid rgba(255,208,0,0.2);border-radius:12px;padding:14px 18px;margin-bottom:16px;display:flex;align-items:center;gap:12px;}
+.locked-banner strong{color:var(--gold);}
+.locked-banner p{font-size:13px;color:#aaa;line-height:1.6;}
 </style>
 </head>
 <body>
@@ -63,90 +73,219 @@ select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='ht
   <div class="header">
     <div class="logo">💰</div>
     <div class="brand">Budget Planner</div>
-    <div class="tagline">SMART GROCERY PLANNING FOR YOUR FITNESS GOAL</div>
+    <div class="tagline">WEEKLY GROCERY + DIET PLAN · CHENNAI PRICES</div>
   </div>
   <div class="nav">
-    <a href="home.html">🏠 Home</a>
     <a href="workout.html">💪 Workout</a>
     <a href="budget.html" class="active">💰 Budget</a>
     <a href="meal.html">🍗 Meal</a>
+    <a href="home.html">🏠 Home</a>
   </div>
-  <div class="info-banner">
-    <div style="font-size:22px;">📍</div>
-    <div class="info-text"><strong>Chennai Budget Mode ON.</strong> Prices based on Koyambedu / local kirana markets. Plan matches your <strong id="splitInfo">workout split</strong>.</div>
-  </div>
-  <div class="min-hint">
-    <span class="min-hint-label">📊 Minimum weekly budget for Chennai</span>
-    <span class="min-hint-val" id="minBudgetHint">₹700 / week</span>
-  </div>
-  <div class="box">
-    <label class="input-label">Weekly Budget (₹)</label>
-    <input type="number" id="budget" placeholder="Min ₹700" min="700" oninput="updateMin()">
-    <div class="quick-btns">
-      <button class="quick-btn" onclick="setBudget(700)">₹700 Min</button>
-      <button class="quick-btn" onclick="setBudget(1000)">₹1000</button>
-      <button class="quick-btn" onclick="setBudget(1500)">₹1500</button>
-      <button class="quick-btn" onclick="setBudget(2000)">₹2000</button>
+
+  <div id="mainContent">
+    <div class="info-strip">
+      <div class="info-item">Goal: <span id="goalInfo">—</span></div>
+      <div class="info-item">Split: <span id="splitInfo">—</span></div>
+      <div class="info-item">Workout Days: <span id="daysInfo">—</span></div>
     </div>
-    <label class="input-label">Food Preference</label>
-    <select id="foodType"><option>Non-Veg</option><option>Veg</option></select>
-    <label class="input-label">Supplements</label>
-    <select id="supplements"><option>No</option><option>Yes (Basic)</option></select>
-    <button class="generate-btn" id="genBtn" onclick="generateBudgetPlan()">Generate Budget Plan 🔥</button>
+    <div class="box">
+      <label class="input-label">Weekly Budget (₹)</label>
+      <input type="number" id="budget" placeholder="Enter amount">
+      <div class="quick-row">
+        <button class="q-btn" onclick="setBudget(500)">₹500</button>
+        <button class="q-btn" onclick="setBudget(700)">₹700</button>
+        <button class="q-btn" onclick="setBudget(1000)">₹1000</button>
+        <button class="q-btn" onclick="setBudget(1500)">₹1500</button>
+        <button class="q-btn" onclick="setBudget(2000)">₹2000</button>
+      </div>
+      <div class="min-note">Minimum for your goal: <span id="minNote">—</span></div>
+      <label class="input-label">Food Preference</label>
+      <select id="foodType">
+        <option>Non-Veg</option>
+        <option>Veg</option>
+      </select>
+      <button class="gen-btn" id="genBtn" onclick="generateBudget()">Generate Budget Plan 🔥</button>
+    </div>
+    <div id="budgetResult" class="result"></div>
   </div>
-  <div id="budgetResult" class="result"></div>
 </div>
+
 <script>
-const WORKER_URL = "https://pavenfitzz-ai.pavendansg.workers.dev/";
-const goal = localStorage.getItem("goal") || "Bulk";
+const WORKER = "https://pavenfitzz-ai.pavendansg.workers.dev/";
+const goal  = localStorage.getItem("goal")  || "Bulk";
 const split = localStorage.getItem("split") || "PPL";
-const days = parseInt(localStorage.getItem("days") || 4);
-document.getElementById("splitInfo").innerText = split + " (" + days + " days/week)";
-const minBudgets = {Bulk:900,Cut:700,Maintain:750,Athletic:850};
-const minWeekly = minBudgets[goal] || 800;
-document.getElementById("minBudgetHint").innerText = "₹" + minWeekly + " / week (for " + goal + " goal)";
-document.getElementById("budget").placeholder = "Min ₹" + minWeekly;
-function setBudget(v){document.getElementById("budget").value=v;}
-function updateMin(){const b=parseInt(document.getElementById("budget").value);document.getElementById("budget").style.borderColor=b&&b<minWeekly?"var(--red)":"#222";}
-window.onload=function(){const saved=localStorage.getItem("generatedBudget");const savedDate=localStorage.getItem("budgetDate");if(saved&&savedDate===new Date().toDateString())renderBudget(saved);};
-async function generateBudgetPlan(){
-  const budget=parseInt(document.getElementById("budget").value);
-  const foodType=document.getElementById("foodType").value;
-  const supplements=document.getElementById("supplements").value;
-  const btn=document.getElementById("genBtn");
-  const result=document.getElementById("budgetResult");
-  if(!budget||budget<minWeekly){alert("⚠️ Minimum budget for "+goal+" goal is ₹"+minWeekly+"/week");return;}
-  btn.disabled=true;
-  result.innerHTML=`<div class="loading">🤖 Building Your Weekly Grocery Plan<div class="loading-dots"><span></span><span></span><span></span></div></div>`;
-  const dailyBudget=Math.floor(budget/7);
-  const prompt=`Create a REALISTIC weekly Indian ${foodType} fitness grocery plan. City: Chennai. Goal: ${goal}. Workout: ${split} — ${days} training days/week. Weekly budget: Rs.${budget} total (Rs.${dailyBudget}/day). Supplements: ${supplements}. STRICT: Total shopping list UNDER Rs.${budget}. Use Chennai Koyambedu market prices. Min 2500 cal/day. Min ${goal==="Cut"?"160":"110"}g protein/day. Only cheap Indian foods. FORMAT: Weekly Shopping List: - Item — Qty — Rs.price. Meal Plan (all ${days} training days): Breakfast: Lunch: Snack: Dinner: Weekly Totals: Total Weekly Cost: Daily Calories: Daily Protein:`;
-  try{
-    const res=await fetch(WORKER_URL,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({prompt})});
-    const data=await res.json();
-    const text=data.text||"No response";
-    localStorage.setItem("generatedBudget",text);
-    localStorage.setItem("budgetDate",new Date().toDateString());
-    localStorage.setItem("weeklyBudget",budget);
-    localStorage.setItem("budget",budget);
-    renderBudget(text);
-  }catch(err){result.innerHTML=`<div class="error-box">⚠️ ${err.message}</div>`;}
-  btn.disabled=false;
+const days  = parseInt(localStorage.getItem("days") || 4);
+
+const MIN_BUDGETS = {Bulk:700, Cut:600, Maintain:600, Athletic:750};
+const CALORIE_TARGETS = {Bulk:3000, Cut:1800, Maintain:2400, Athletic:2600};
+const PROTEIN_TARGETS = {Bulk:140,  Cut:160,  Maintain:120,  Athletic:150};
+
+document.getElementById("goalInfo").innerText  = goal;
+document.getElementById("splitInfo").innerText = split;
+document.getElementById("daysInfo").innerText  = days + " days";
+document.getElementById("minNote").innerText   = "₹" + (MIN_BUDGETS[goal]||600) + "/week";
+
+function setBudget(v) { document.getElementById("budget").value = v; }
+
+window.onload = function() {
+  const saved     = localStorage.getItem("budgetData");
+  const savedDate = localStorage.getItem("budgetLockStart");
+  const lockedSplit = localStorage.getItem("lockedSplit");
+  const totalDays = parseInt(localStorage.getItem("days") || 4);
+
+  if (saved && savedDate && lockedSplit) {
+    const start = new Date(savedDate);
+    const end   = new Date(start);
+    end.setDate(end.getDate() + totalDays);
+    if (new Date() < end) {
+      document.getElementById("mainContent").innerHTML =
+        `<div class="locked-banner">
+          <div style="font-size:24px;">🔒</div>
+          <div><strong>Budget Locked</strong><p>Your budget plan is fixed till your ${lockedSplit} split ends. Resets ${end.toDateString()}.</p></div>
+        </div>` + renderBudgetHTML(JSON.parse(saved));
+      return;
+    } else {
+      localStorage.removeItem("budgetData");
+      localStorage.removeItem("budgetLockStart");
+    }
+  }
+};
+
+async function generateBudget() {
+  const budget   = parseInt(document.getElementById("budget").value);
+  const foodType = document.getElementById("foodType").value;
+  const minBudget = MIN_BUDGETS[goal] || 600;
+  const calTarget = CALORIE_TARGETS[goal] || 2500;
+  const protTarget = PROTEIN_TARGETS[goal] || 130;
+
+  if (!budget || budget < minBudget) {
+    alert("⚠️ Minimum budget for " + goal + " goal is ₹" + minBudget + "/week");
+    return;
+  }
+
+  const btn = document.getElementById("genBtn");
+  btn.disabled = true;
+  document.getElementById("budgetResult").innerHTML =
+    `<div class="loading">🤖 Building Your Budget Plan<div class="dots"><span></span><span></span><span></span></div></div>`;
+
+  const dailyBudget = Math.floor(budget / 7);
+  const prompt = `You are an Indian fitness nutrition expert. Create a STRICT budget grocery and diet plan.
+City: Chennai (Koyambedu market prices).
+Goal: ${goal}. Workout: ${split} (${days} training days/week).
+Weekly budget: EXACTLY Rs.${budget} total. Daily: Rs.${dailyBudget}.
+Food type: ${foodType}.
+Daily targets: ${calTarget} calories, ${protTarget}g protein minimum.
+
+RULES:
+- Shopping list TOTAL must be UNDER Rs.${budget}
+- Use only affordable Chennai market foods
+- Every item must have realistic Chennai price
+- Hit at least ${calTarget} cal and ${protTarget}g protein per day
+
+FORMAT (use exactly this):
+
+WEEKLY SHOPPING LIST:
+- Eggs (30 count) — Rs.180
+- Rice (2kg) — Rs.80
+[list all items with prices]
+
+TOTAL COST: Rs.X
+
+DAILY MEAL PLAN:
+Breakfast: [food] — [calories]cal [protein]g protein
+Lunch: [food] — [calories]cal [protein]g protein  
+Snack: [food] — [calories]cal [protein]g protein
+Dinner: [food] — [calories]cal [protein]g protein
+
+DAILY TOTALS:
+Calories: Xkcal
+Protein: Xg
+Carbs: Xg
+Fat: Xg`;
+
+  try {
+    const res  = await fetch(WORKER, {method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({prompt})});
+    const data = await res.json();
+    const text = data.text || "";
+    if (!text) throw new Error("No response");
+
+    const parsed = parseBudget(text, budget);
+    localStorage.setItem("budgetData", JSON.stringify(parsed));
+    localStorage.setItem("budgetLockStart", new Date().toISOString());
+    localStorage.setItem("weeklyBudget", budget);
+    localStorage.setItem("budgetFoods", parsed.groceryItems.map(i=>i.name).join(", "));
+
+    document.getElementById("budgetResult").innerHTML = renderBudgetHTML(parsed);
+  } catch(err) {
+    document.getElementById("budgetResult").innerHTML = `<div class="error-box">⚠️ ${err.message}</div>`;
+  }
+  btn.disabled = false;
 }
-function renderBudget(text){
-  const result=document.getElementById("budgetResult");
-  const budget=document.getElementById("budget")?.value||localStorage.getItem("weeklyBudget")||"?";
-  const lines=text.split("\n").filter(l=>l.trim());
-  let html="";let inSection=false;
-  lines.forEach(line=>{
-    const clean=line.trim();
-    const isHeader=clean.match(/^(weekly shopping|meal plan|breakfast|lunch|snack|dinner|weekly total|total)/i);
-    if(isHeader){if(inSection)html+=`</div>`;html+=`<div class="section-card"><div class="section-title">${clean.replace(/[*#]/g,'')}</div>`;inSection=true;}
-    else if(clean){html+=`<div class="result-line"><div class="r-dot"></div><span>${clean.replace(/^[-•*]\s*/,'')}</span></div>`;}
+
+function parseBudget(text, budget) {
+  const lines = text.split("\n").map(l => l.trim()).filter(Boolean);
+  let groceryItems = [], meals = [], dailyTotals = {};
+  let section = "";
+
+  lines.forEach(line => {
+    if (line.match(/shopping list/i)) { section = "grocery"; return; }
+    if (line.match(/meal plan/i))     { section = "meals"; return; }
+    if (line.match(/daily total/i))   { section = "totals"; return; }
+    if (line.match(/^total cost/i))   { return; }
+
+    if (section === "grocery" && line.match(/^-/)) {
+      const parts = line.replace(/^-\s*/,"").split("—");
+      groceryItems.push({ name: parts[0]?.trim()||line, price: parts[1]?.trim()||"" });
+    }
+    if (section === "meals" && line.match(/^(breakfast|lunch|snack|dinner|pre|post)/i)) {
+      const parts = line.split(":");
+      const label = parts[0]?.trim();
+      const content = parts.slice(1).join(":").trim();
+      meals.push({ label, content });
+    }
+    if (section === "totals") {
+      if (line.match(/^calories/i)) { const m = line.match(/(\d+)/); if(m) dailyTotals.cal = m[1]; }
+      if (line.match(/^protein/i))  { const m = line.match(/(\d+)/); if(m) dailyTotals.prot = m[1]; }
+      if (line.match(/^carbs/i))    { const m = line.match(/(\d+)/); if(m) dailyTotals.carbs = m[1]; }
+      if (line.match(/^fat/i))      { const m = line.match(/(\d+)/); if(m) dailyTotals.fat = m[1]; }
+    }
   });
-  if(inSection)html+=`</div>`;
-  html+=`<div class="total-bar"><div class="total-item"><div class="total-val">₹${budget}</div><div class="total-label">Weekly Budget</div></div><div class="total-item"><div class="total-val">${days}</div><div class="total-label">Training Days</div></div><div class="total-item"><div class="total-val">${goal}</div><div class="total-label">Your Goal</div></div></div>`;
-  html+=`<div class="lock-note"><strong>✅ Budget locked for this week.</strong> Grocery list matches your ${days}-day ${split} split.</div><button class="btn-next" onclick="window.location.href='meal.html'">Continue to Meal Planner →</button>`;
-  result.innerHTML=html;
+
+  return { budget, groceryItems, meals, dailyTotals };
+}
+
+function renderBudgetHTML(data) {
+  const calTarget  = CALORIE_TARGETS[goal] || 2500;
+  const protTarget = PROTEIN_TARGETS[goal] || 130;
+
+  let html = `
+    <div class="totals-row">
+      <div class="total-card"><div class="total-val gold">₹${data.budget}</div><div class="total-label">Weekly Budget</div></div>
+      <div class="total-card"><div class="total-val green">${data.dailyTotals.cal || calTarget}kcal</div><div class="total-label">Daily Calories</div></div>
+      <div class="total-card"><div class="total-val blue">${data.dailyTotals.prot || protTarget}g</div><div class="total-label">Daily Protein</div></div>
+    </div>`;
+
+  if (data.groceryItems.length > 0) {
+    html += `<div class="section"><div class="section-title">🛒 Weekly Shopping List</div>`;
+    data.groceryItems.forEach(item => {
+      html += `<div class="item-row"><span class="item-name">${item.name}</span><span class="item-price">${item.price}</span></div>`;
+    });
+    html += `</div>`;
+  }
+
+  if (data.meals.length > 0) {
+    html += `<div class="section"><div class="section-title">🍽️ Daily Meal Plan</div>`;
+    data.meals.forEach(meal => {
+      html += `<div class="meal-row"><div class="meal-label">${meal.label}</div><div>${meal.content}</div></div>`;
+    });
+    html += `</div>`;
+  }
+
+  html += `
+    <div class="locked-note"><strong>🔒 Budget locked till split ends.</strong> Use this grocery list and meal plan throughout your ${split} split.</div>
+    <button class="btn-next" onclick="window.location.href='meal.html'">Continue to Meal Planner →</button>`;
+
+  return html;
 }
 </script>
 </body>

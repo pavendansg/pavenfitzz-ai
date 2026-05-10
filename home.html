@@ -1,506 +1,161 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
 <meta charset="UTF-8">
-<meta name="viewport"
-content="width=device-width, initial-scale=1.0">
-
-<title>PavenFitzz Home</title>
-
-<link rel="stylesheet" href="ai.css">
-
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PavenFitzz — Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Syne:wght@400;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-
-body{
-  margin:0;
-  font-family:Arial,sans-serif;
-  background:#0b0b0b;
-  color:white;
+:root {
+  --bg: #080808; --card: #101010; --green: #00ff88; --blue: #00c3ff;
+  --gold: #ffd000; --red: #ff4455; --border: rgba(255,255,255,0.07); --muted: #666;
 }
-
-.container{
-  max-width:1000px;
-  margin:auto;
-  padding:20px;
-}
-
-.header{
-  text-align:center;
-  margin-bottom:30px;
-}
-
-.logo{
-  font-size:60px;
-  margin-bottom:10px;
-}
-
-.title{
-  font-size:36px;
-  font-weight:700;
-}
-
-.subtitle{
-  color:#aaa;
-  margin-top:10px;
-}
-
-.grid{
-  display:grid;
-  grid-template-columns:
-  repeat(auto-fit,minmax(250px,1fr));
-  gap:20px;
-}
-
-.card{
-  background:#151515;
-  border-radius:20px;
-  padding:22px;
-  border:1px solid rgba(255,255,255,0.08);
-  box-shadow:0 0 20px rgba(0,0,0,0.4);
-}
-
-.card-title{
-  color:#00ff88;
-  font-size:22px;
-  font-weight:700;
-  margin-bottom:18px;
-}
-
-.stat{
-  margin-bottom:14px;
-}
-
-.stat-label{
-  color:#aaa;
-  margin-bottom:5px;
-}
-
-.stat-value{
-  font-size:22px;
-  font-weight:700;
-}
-
-.workout-box{
-  margin-top:15px;
-  background:#1c1c1c;
-  border-radius:14px;
-  padding:15px;
-  line-height:1.8;
-}
-
-button{
-  width:100%;
-  padding:15px;
-  border:none;
-  border-radius:14px;
-  font-size:16px;
-  font-weight:700;
-  cursor:pointer;
-  transition:.3s;
-  margin-top:18px;
-}
-
-.complete-btn{
-  background:#00ff88;
-  color:black;
-}
-
-.water-btn{
-  background:#00c3ff;
-  color:black;
-}
-
-.reset-btn{
-  background:#ff4444;
-  color:white;
-}
-
-.progress-bar{
-  width:100%;
-  height:12px;
-  background:#222;
-  border-radius:20px;
-  overflow:hidden;
-  margin-top:8px;
-}
-
-.progress-fill{
-  height:100%;
-  background:#00ff88;
-}
-
-.quote-box{
-  margin-top:25px;
-  background:linear-gradient(
-  90deg,
-  #00ff88,
-  #00c3ff
-  );
-
-  color:black;
-
-  padding:20px;
-  border-radius:18px;
-  font-weight:700;
-  text-align:center;
-  line-height:1.7;
-}
-
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: var(--bg); color: #f0f0f0; font-family: 'Syne', sans-serif; min-height: 100vh; }
+.wrap { max-width: 1000px; margin: auto; padding: 28px 20px 60px; }
+.header { text-align: center; margin-bottom: 40px; }
+.logo { font-size: 52px; display: inline-block; animation: pulse 2s infinite; }
+@keyframes pulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.08)} }
+.brand { font-family: 'Bebas Neue', sans-serif; font-size: 46px; letter-spacing: 3px; background: linear-gradient(90deg, var(--green), var(--blue)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+.tagline { color: var(--muted); font-size: 14px; letter-spacing: 2px; margin-top: 4px; }
+.nav { display: flex; gap: 10px; justify-content: center; margin-bottom: 36px; flex-wrap: wrap; }
+.nav a { text-decoration: none; padding: 10px 22px; border-radius: 50px; font-size: 13px; font-weight: 700; letter-spacing: 1px; border: 1px solid var(--border); color: var(--muted); transition: all .25s; }
+.nav a:hover { border-color: var(--green); color: var(--green); }
+.nav a.active { background: var(--green); color: #000; border-color: var(--green); }
+.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
+.card { background: var(--card); border: 1px solid var(--border); border-radius: 22px; padding: 24px; transition: transform .2s; }
+.card:hover { transform: translateY(-2px); }
+.card-icon { font-size: 28px; margin-bottom: 12px; }
+.card-title { font-family: 'Bebas Neue', sans-serif; font-size: 20px; letter-spacing: 1.5px; color: var(--green); margin-bottom: 18px; }
+.stat { margin-bottom: 14px; }
+.stat-label { font-size: 11px; letter-spacing: 2px; color: var(--muted); text-transform: uppercase; margin-bottom: 4px; font-family: 'DM Mono', monospace; }
+.stat-value { font-size: 24px; font-weight: 800; }
+.bar-wrap { background: #1a1a1a; border-radius: 20px; height: 10px; overflow: hidden; margin-top: 8px; }
+.bar-fill { height: 100%; border-radius: 20px; background: linear-gradient(90deg, var(--green), var(--blue)); transition: width .5s ease; }
+.workout-box { background: #0d0d0d; border-radius: 14px; padding: 16px; line-height: 1.9; font-size: 14px; color: #ccc; margin-top: 4px; font-family: 'DM Mono', monospace; max-height: 180px; overflow-y: auto; }
+.nutrition-card { margin-top: 16px; }
+.nut-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+.nut-item { background: #0d0d0d; border-radius: 14px; padding: 16px; text-align: center; }
+.nut-val { font-size: 22px; font-weight: 800; color: var(--green); }
+.nut-label { font-size: 11px; color: var(--muted); margin-top: 4px; letter-spacing: 1px; }
+.quote { margin-top: 16px; background: linear-gradient(135deg, #0a1f13, #071520); border: 1px solid rgba(0,255,136,0.15); border-radius: 20px; padding: 24px; text-align: center; font-size: 15px; line-height: 1.8; color: #bbb; font-style: italic; }
+.quote strong { color: var(--green); font-style: normal; }
+.btn { display: block; width: 100%; padding: 15px; border: none; border-radius: 14px; font-size: 15px; font-weight: 700; cursor: pointer; transition: all .2s; margin-top: 14px; font-family: 'Syne', sans-serif; }
+.btn-green { background: var(--green); color: #000; }
+.btn-green:hover { background: #00ffaa; transform: translateY(-1px); }
+.btn-blue { background: var(--blue); color: #000; }
+.btn-blue:hover { opacity: 0.9; transform: translateY(-1px); }
+.btn-red { background: transparent; color: var(--red); border: 1px solid var(--red); margin-top: 20px; }
+.btn-red:hover { background: var(--red); color: #fff; }
+.streak-badge { display: inline-block; background: linear-gradient(90deg, #ff6600, #ffd000); color: #000; font-weight: 800; font-size: 28px; padding: 6px 18px; border-radius: 50px; }
+.section-label { font-size: 11px; letter-spacing: 3px; color: var(--muted); text-transform: uppercase; margin: 28px 0 14px; font-family: 'DM Mono', monospace; }
+.drops { display: flex; gap: 6px; margin-top: 10px; flex-wrap: wrap; }
+.drop { width: 32px; height: 32px; border-radius: 50% 50% 50% 0; transform: rotate(-45deg); background: #1a1a1a; border: 1px solid #333; transition: all .3s; }
+.drop.filled { background: var(--blue); border-color: var(--blue); box-shadow: 0 0 8px rgba(0,195,255,0.4); }
 </style>
-
 </head>
-
 <body>
-
-<div class="container">
-
+<div class="wrap">
   <div class="header">
-
     <div class="logo">🔥</div>
-
-    <div class="title">
-      Welcome Back
-    </div>
-
-    <div class="subtitle">
-      Your AI Fitness Journey Dashboard
-    </div>
-
+    <div class="brand">PavenFitzz</div>
+    <div class="tagline">AI FITNESS COACH · YOUR JOURNEY DASHBOARD</div>
   </div>
-
+  <div class="nav">
+    <a href="home.html" class="active">🏠 Home</a>
+    <a href="workout.html">💪 Workout</a>
+    <a href="budget.html">💰 Budget</a>
+    <a href="meal.html">🍗 Meal</a>
+  </div>
   <div class="grid">
-
-    <!-- PROFILE -->
     <div class="card">
-
-      <div class="card-title">
-        👤 Profile
-      </div>
-
-      <div class="stat">
-
-        <div class="stat-label">
-          Goal
-        </div>
-
-        <div class="stat-value"
-        id="goalText">
-        </div>
-
-      </div>
-
-      <div class="stat">
-
-        <div class="stat-label">
-          Workout Split
-        </div>
-
-        <div class="stat-value"
-        id="splitText">
-        </div>
-
-      </div>
-
-      <div class="stat">
-
-        <div class="stat-label">
-          Budget
-        </div>
-
-        <div class="stat-value"
-        id="budgetText">
-        </div>
-
-      </div>
-
+      <div class="card-icon">👤</div>
+      <div class="card-title">Profile</div>
+      <div class="stat"><div class="stat-label">Goal</div><div class="stat-value" id="goalText">—</div></div>
+      <div class="stat"><div class="stat-label">Workout Split</div><div class="stat-value" id="splitText">—</div></div>
+      <div class="stat"><div class="stat-label">Weekly Budget</div><div class="stat-value" id="budgetText">—</div></div>
+      <button class="btn btn-green" onclick="window.location.href='workout.html'">Edit Program →</button>
     </div>
-
-    <!-- STREAK -->
     <div class="card">
-
-      <div class="card-title">
-        🔥 Progress
-      </div>
-
+      <div class="card-icon">🔥</div>
+      <div class="card-title">Progress</div>
       <div class="stat">
-
-        <div class="stat-label">
-          Workout Streak
-        </div>
-
-        <div class="stat-value"
-        id="streakText">
-
-        0 Days
-
-        </div>
-
+        <div class="stat-label">Workout Streak</div>
+        <div class="streak-badge" id="streakText">0</div>
+        <span style="font-size:13px;color:var(--muted);margin-left:6px;">days</span>
       </div>
-
-      <div class="stat">
-
-        <div class="stat-label">
-          Water Intake
-        </div>
-
-        <div class="stat-value"
-        id="waterText">
-
-        0L / 4L
-
-        </div>
-
+      <div class="stat" style="margin-top:16px;">
+        <div class="stat-label">Water Intake Today</div>
+        <div style="font-size:20px;font-weight:700;" id="waterText">0 / 4L</div>
+        <div class="drops" id="drops"></div>
       </div>
-
-      <div class="progress-bar">
-
-        <div class="progress-fill"
-        id="waterProgress"
-        style="width:0%;">
-
-        </div>
-
-      </div>
-
-      <button class="water-btn"
-      onclick="drinkWater()">
-
-      + Drink Water 💧
-
-      </button>
-
+      <button class="btn btn-blue" onclick="drinkWater()">+ Add Water 💧</button>
     </div>
-
-    <!-- WORKOUT -->
     <div class="card">
-
-      <div class="card-title">
-        💪 Today's Workout
-      </div>
-
-      <div class="workout-box"
-      id="workoutBox">
-
-      Loading workout...
-
-      </div>
-
-      <button class="complete-btn"
-      onclick="completeWorkout()">
-
-      Mark Workout Complete ✅
-
-      </button>
-
+      <div class="card-icon">💪</div>
+      <div class="card-title">Today's Workout</div>
+      <div class="workout-box" id="workoutBox">No workout loaded yet. Go to Workout page to generate your plan.</div>
+      <button class="btn btn-green" onclick="completeWorkout()">Mark Complete ✅</button>
     </div>
-
   </div>
-
-  <!-- NUTRITION -->
-  <div class="card"
-  style="margin-top:25px;">
-
-    <div class="card-title">
-      🍽️ Nutrition Targets
+  <div class="section-label">Nutrition Targets</div>
+  <div class="card nutrition-card">
+    <div class="card-title">🍽️ Daily Nutrition</div>
+    <div class="nut-grid">
+      <div class="nut-item"><div class="nut-val" id="calTarget">3200</div><div class="nut-label">CALORIES</div></div>
+      <div class="nut-item"><div class="nut-val" id="protTarget">140g</div><div class="nut-label">PROTEIN</div></div>
+      <div class="nut-item"><div class="nut-val">8 hrs</div><div class="nut-label">SLEEP GOAL</div></div>
     </div>
-
-    <div class="grid">
-
-      <div>
-
-        <div class="stat-label">
-          Calories
-        </div>
-
-        <div class="stat-value">
-
-        3200 kcal
-
-        </div>
-
-      </div>
-
-      <div>
-
-        <div class="stat-label">
-          Protein
-        </div>
-
-        <div class="stat-value">
-
-        140g
-
-        </div>
-
-      </div>
-
-      <div>
-
-        <div class="stat-label">
-          Sleep Goal
-        </div>
-
-        <div class="stat-value">
-
-        8 Hours
-
-        </div>
-
-      </div>
-
-    </div>
-
   </div>
-
-  <!-- MOTIVATION -->
-  <div class="quote-box">
-
-    “Discipline beats motivation.
-    Small daily progress creates
-    massive long-term results.” 🔥
-
-  </div>
-
-  <!-- RESET -->
-  <button class="reset-btn"
-  onclick="resetJourney()">
-
-  Reset Fitness Journey ❌
-
-  </button>
-
+  <div class="quote"><strong>"Discipline beats motivation.</strong><br>Small daily progress creates massive long-term results. Stay locked in, Chennai grinder. 🔥</div>
+  <button class="btn btn-red" onclick="resetJourney()">Reset Fitness Journey ❌</button>
 </div>
-
 <script>
-
-const goal =
-localStorage.getItem("goal")
-|| "Bulk";
-
-const split =
-localStorage.getItem("split")
-|| "PPL";
-
-const budget =
-localStorage.getItem("budget")
-|| "₹200";
-
-const workout =
-localStorage.getItem(
-  "generatedWorkout"
-)
-|| "No workout found";
-
-let streak =
-localStorage.getItem("streak")
-|| 0;
-
-let water =
-localStorage.getItem("water")
-|| 0;
-
-document.getElementById(
-  "goalText"
-).innerText = goal;
-
-document.getElementById(
-  "splitText"
-).innerText = split;
-
-document.getElementById(
-  "budgetText"
-).innerText = "₹" + budget;
-
-document.getElementById(
-  "streakText"
-).innerText =
-streak + " Days";
-
-document.getElementById(
-  "waterText"
-).innerText =
-water + "L / 4L";
-
-document.getElementById(
-  "waterProgress"
-).style.width =
-(water / 4) * 100 + "%";
-
-const shortWorkout =
-workout
-.split("\n")
-.slice(0,8)
-.join("<br>");
-
-document.getElementById(
-  "workoutBox"
-).innerHTML = shortWorkout;
-
-function completeWorkout(){
-
-  streak++;
-
-  localStorage.setItem(
-    "streak",
-    streak
-  );
-
-  document.getElementById(
-    "streakText"
-  ).innerText =
-  streak + " Days";
-
-  alert(
-    "🔥 Workout Completed!"
-  );
-
-}
-
-function drinkWater(){
-
-  if(water < 4){
-
-    water++;
-
-    localStorage.setItem(
-      "water",
-      water
-    );
-
-    document.getElementById(
-      "waterText"
-    ).innerText =
-    water + "L / 4L";
-
-    document.getElementById(
-      "waterProgress"
-    ).style.width =
-    (water / 4) * 100 + "%";
-
+function load() {
+  const goal = localStorage.getItem("goal") || "—";
+  const split = localStorage.getItem("split") || "—";
+  const budget = localStorage.getItem("weeklyBudget") || localStorage.getItem("budget") || "—";
+  const workout = localStorage.getItem("generatedWorkout") || "";
+  const streak = parseInt(localStorage.getItem("streak") || 0);
+  const water = parseInt(localStorage.getItem("water") || 0);
+  document.getElementById("goalText").innerText = goal;
+  document.getElementById("splitText").innerText = split;
+  document.getElementById("budgetText").innerText = budget !== "—" ? "₹" + budget + " / week" : "—";
+  document.getElementById("streakText").innerText = streak;
+  document.getElementById("waterText").innerText = water + " / 4L";
+  const cals = { Bulk: "3200", Cut: "2000", Maintain: "2600", Athletic: "2800" };
+  const prot = { Bulk: "140g", Cut: "160g", Maintain: "120g", Athletic: "150g" };
+  document.getElementById("calTarget").innerText = cals[goal] || "2800";
+  document.getElementById("protTarget").innerText = prot[goal] || "130g";
+  if (workout) {
+    const lines = workout.split("\n").filter(l => l.trim()).slice(0, 10).join("<br>");
+    document.getElementById("workoutBox").innerHTML = lines;
   }
-
-}
-
-function resetJourney(){
-
-  const confirmReset =
-  confirm(
-    "Reset your full fitness journey?"
-  );
-
-  if(confirmReset){
-
-    localStorage.clear();
-
-    window.location.href =
-    "dashboard.html";
-
+  const drops = document.getElementById("drops");
+  drops.innerHTML = "";
+  for (let i = 0; i < 8; i++) {
+    const d = document.createElement("div");
+    d.className = "drop" + (i < water * 2 ? " filled" : "");
+    drops.appendChild(d);
   }
-
 }
-
+function drinkWater() {
+  let w = parseInt(localStorage.getItem("water") || 0);
+  if (w < 4) { w++; localStorage.setItem("water", w); load(); }
+  else alert("💧 You've hit your 4L goal!");
+}
+function completeWorkout() {
+  let s = parseInt(localStorage.getItem("streak") || 0);
+  s++; localStorage.setItem("streak", s);
+  document.getElementById("streakText").innerText = s;
+  alert("🔥 Workout Complete! " + s + " day streak!");
+}
+function resetJourney() {
+  if (confirm("Reset your full fitness journey? This cannot be undone.")) {
+    localStorage.clear(); load(); alert("Journey reset. Start fresh! 💪");
+  }
+}
+load();
 </script>
-
 </body>
 </html>

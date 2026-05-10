@@ -8,143 +8,170 @@ content="width=device-width, initial-scale=1.0">
 
 <title>PavenFitzz Budget Planner</title>
 
-<link rel="stylesheet" href="ai.css">
-
 <style>
 
 body{
   margin:0;
   font-family:Arial,sans-serif;
-  background:#0b0b0b;
+  background:#050505;
   color:white;
 }
 
 .container{
-  max-width:900px;
+  max-width:950px;
   margin:auto;
   padding:20px;
 }
 
 .ai-header{
   text-align:center;
-  margin-bottom:30px;
+  margin-bottom:35px;
 }
 
 .ai-logo{
-  font-size:60px;
-  margin-bottom:10px;
+  font-size:70px;
 }
 
 .ai-title{
-  font-size:34px;
+  font-size:42px;
   font-weight:700;
+  color:#ffd000;
+  margin-top:10px;
 }
 
 .ai-subtitle{
   color:#aaa;
-  margin-top:10px;
+  margin-top:12px;
+  font-size:17px;
+}
+
+.goal-box{
+  background:linear-gradient(
+  90deg,
+  #082a18,
+  #062012
+  );
+
+  border:1px solid #00ff88;
+  border-radius:20px;
+  padding:22px;
+  margin-bottom:28px;
+  line-height:1.9;
+  font-size:18px;
 }
 
 .box{
-  background:#151515;
-  border-radius:20px;
-  padding:25px;
-  margin-bottom:25px;
+  background:#131313;
+  border-radius:24px;
+  padding:28px;
   border:1px solid rgba(255,255,255,0.08);
-  box-shadow:0 0 20px rgba(0,0,0,0.4);
+  box-shadow:0 0 25px rgba(0,0,0,0.5);
 }
 
 .input-label{
   display:block;
-  margin-top:18px;
+  margin-top:22px;
   margin-bottom:10px;
-  font-weight:600;
+  color:#888;
+  font-weight:700;
+  letter-spacing:1px;
 }
 
 input,select{
   width:100%;
-  padding:14px;
-  border:none;
-  border-radius:12px;
-  background:#222;
-  color:white;
-  font-size:16px;
-}
-
-button{
-  width:100%;
   padding:16px;
   border:none;
   border-radius:14px;
-  margin-top:25px;
-  font-size:16px;
-  font-weight:700;
-  cursor:pointer;
-  transition:.3s;
+  background:#222;
+  color:white;
+  font-size:17px;
 }
 
 .generate-btn{
-  background:linear-gradient(90deg,#00ff88,#00c3ff);
-  color:black;
-}
+  width:100%;
+  padding:18px;
+  border:none;
+  border-radius:18px;
+  margin-top:30px;
+  font-size:18px;
+  font-weight:700;
+  cursor:pointer;
 
-.generate-btn:hover{
-  transform:translateY(-2px);
-}
+  background:linear-gradient(
+  90deg,
+  #00ff88,
+  #00c3ff
+  );
 
-.next-btn{
-  background:#00c3ff;
   color:black;
 }
 
 .result{
-  margin-top:25px;
+  margin-top:30px;
 }
 
 .section-card{
-  background:#1b1b1b;
-  border-radius:16px;
-  padding:18px;
-  margin-bottom:18px;
+  background:#131313;
   border-left:5px solid #00ff88;
+  border-radius:20px;
+  padding:22px;
+  margin-bottom:20px;
 }
 
 .section-title{
   color:#00ff88;
-  font-size:22px;
+  font-size:24px;
   font-weight:700;
-  margin-bottom:12px;
+  margin-bottom:15px;
 }
 
 .result-line{
-  padding:10px 0;
+  padding:12px 0;
   border-bottom:1px solid rgba(255,255,255,0.06);
-  line-height:1.7;
-}
-
-.tip-box{
-  margin-top:20px;
-  background:#111;
-  border-radius:14px;
-  padding:16px;
-  color:#ccc;
-  line-height:1.7;
+  line-height:1.8;
 }
 
 .loading{
   text-align:center;
-  padding:30px;
+  padding:35px;
   color:#00ff88;
   font-size:18px;
 }
 
-.goal-box{
-  background:#0f2417;
-  border:1px solid #00ff88;
-  border-radius:14px;
-  padding:15px;
-  margin-bottom:20px;
-  line-height:1.7;
+.tip-box{
+  background:#101010;
+  border-radius:18px;
+  padding:20px;
+  margin-top:22px;
+  line-height:1.8;
+  color:#bbb;
+}
+
+.next-btn{
+  width:100%;
+  padding:18px;
+  border:none;
+  border-radius:18px;
+  margin-top:22px;
+  font-size:18px;
+  font-weight:700;
+  cursor:pointer;
+
+  background:linear-gradient(
+  90deg,
+  #ffd000,
+  #ff9900
+  );
+
+  color:black;
+}
+
+.error-box{
+  background:#2a1111;
+  color:#ff7777;
+  padding:20px;
+  border-radius:18px;
+  margin-top:20px;
 }
 
 </style>
@@ -164,7 +191,8 @@ button{
     </div>
 
     <div class="ai-subtitle">
-      Smart nutrition based on your workout goal
+      Smart nutrition based on your
+      workout goal
     </div>
 
   </div>
@@ -184,7 +212,7 @@ button{
   <div class="box">
 
     <label class="input-label">
-      Daily Budget (₹)
+      DAILY BUDGET (₹)
     </label>
 
     <input type="number"
@@ -192,7 +220,7 @@ button{
     placeholder="e.g. 200">
 
     <label class="input-label">
-      Food Preference
+      FOOD PREFERENCE
     </label>
 
     <select id="foodType">
@@ -203,7 +231,7 @@ button{
     </select>
 
     <label class="input-label">
-      Supplements
+      SUPPLEMENTS
     </label>
 
     <select id="supplements">
@@ -216,7 +244,7 @@ button{
     <button class="generate-btn"
     onclick="generateBudgetPlan()">
 
-    Generate Budget Plan 🔥
+      Generate Budget Plan 🔥
 
     </button>
 
@@ -230,7 +258,7 @@ button{
 <script>
 
 const WORKER_URL =
-"https://pavenfitzz-ai.pavendansg.workers.dev";
+"https://pavenfitzz-ai.pavendansg.workers.dev/";
 
 const goal =
 localStorage.getItem("goal")
@@ -268,7 +296,7 @@ async function generateBudgetPlan(){
   if(!budget || budget < 50){
 
     alert(
-      "Enter a valid budget"
+      "Enter valid budget"
     );
 
     return;
@@ -294,18 +322,13 @@ Budget: Rs.${budget}/day
 Food Type: ${foodType}
 Supplements: ${supplements}
 
-IMPORTANT RULES:
-- Stay UNDER the budget
+IMPORTANT:
+- Stay UNDER budget
 - Cheap Indian foods only
-- First give shopping list with prices
-- Then create meal plan using ONLY those foods
-- Include:
-Breakfast
-Lunch
-Snack
-Dinner
+- Shopping list with prices
+- Meal plan using SAME foods
+- Include breakfast lunch snack dinner
 - Mention protein briefly
-- No expensive foods
 - Professional clean format
 - Bullet style only
 `;
@@ -329,74 +352,15 @@ Dinner
     const data =
     await res.json();
 
+    console.log(data);
+
     const text =
     data.text || "No response";
 
-    const lines =
-    text.split("\n")
-    .filter(line => line.trim());
-
-    let html = "";
-
-    lines.forEach(line => {
-
-      if(
-        line.toLowerCase().includes("shopping")
-        ||
-        line.toLowerCase().includes("breakfast")
-        ||
-        line.toLowerCase().includes("lunch")
-        ||
-        line.toLowerCase().includes("dinner")
-        ||
-        line.toLowerCase().includes("snack")
-      ){
-
-        html += `
-        <div class="section-card">
-
-        <div class="section-title">
-        ${line}
-        </div>
-        `;
-
-      }
-
-      else{
-
-        html += `
-        <div class="result-line">
-        ${line}
-        </div>
-        `;
-
-      }
-
-    });
-
-    html += `
-    </div>
-
-    <div class="tip-box">
-
-    ⚠️ Follow this nutrition structure
-    consistently with your workout
-    program for best results.
-
-    Keep hydration high and maintain
-    proper sleep for recovery.
-
-    </div>
-
-    <button class="next-btn"
-    onclick="goMealPlanner()">
-
-    Continue to Meal Planner →
-
-    </button>
-    `;
-
-    result.innerHTML = html;
+    localStorage.setItem(
+      "generatedBudget",
+      text
+    );
 
     localStorage.setItem(
       "budget",
@@ -408,13 +372,97 @@ Dinner
       foodType
     );
 
+    const lines =
+    text.split("\n")
+    .filter(line => line.trim());
+
+    let html = "";
+
+    let currentSection = false;
+
+    lines.forEach(line => {
+
+      const cleanLine =
+      line.trim();
+
+      if(
+        cleanLine.toLowerCase().includes("shopping")
+        ||
+        cleanLine.toLowerCase().includes("breakfast")
+        ||
+        cleanLine.toLowerCase().includes("lunch")
+        ||
+        cleanLine.toLowerCase().includes("dinner")
+        ||
+        cleanLine.toLowerCase().includes("snack")
+      ){
+
+        if(currentSection){
+          html += `</div>`;
+        }
+
+        html += `
+        <div class="section-card">
+
+          <div class="section-title">
+          ${cleanLine}
+          </div>
+        `;
+
+        currentSection = true;
+
+      }
+
+      else{
+
+        html += `
+        <div class="result-line">
+
+        ${cleanLine}
+
+        </div>
+        `;
+
+      }
+
+    });
+
+    if(currentSection){
+      html += `</div>`;
+    }
+
+    html += `
+
+    <div class="tip-box">
+
+    ⚠️ Follow this nutrition
+    structure consistently with
+    your workout program.
+
+    Hydration and sleep are essential
+    for recovery and muscle growth.
+
+    </div>
+
+    <button class="next-btn"
+    onclick="goMealPlanner()">
+
+    Continue to Meal Planner →
+
+    </button>
+
+    `;
+
+    result.innerHTML = html;
+
   }
 
   catch(err){
 
+    console.log(err);
+
     result.innerHTML = `
-    <div class="box"
-    style="color:red;">
+    <div class="error-box">
 
     ⚠️ ${err.message}
 

@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>PavenFitzz Home</title>
+
+<link rel="stylesheet" href="ai.css">
+
+<style>
+
+body{
+  margin:0;
+  font-family:Arial,sans-serif;
+  background:#0b0b0b;
+  color:white;
+}
+
+.container{
+  max-width:1000px;
+  margin:auto;
+  padding:20px;
+}
+
+.header{
+  text-align:center;
+  margin-bottom:30px;
+}
+
+.logo{
+  font-size:60px;
+  margin-bottom:10px;
+}
+
+.title{
+  font-size:36px;
+  font-weight:700;
+}
+
+.subtitle{
+  color:#aaa;
+  margin-top:10px;
+}
+
+.grid{
+  display:grid;
+  grid-template-columns:
+  repeat(auto-fit,minmax(250px,1fr));
+  gap:20px;
+}
+
+.card{
+  background:#151515;
+  border-radius:20px;
+  padding:22px;
+  border:1px solid rgba(255,255,255,0.08);
+  box-shadow:0 0 20px rgba(0,0,0,0.4);
+}
+
+.card-title{
+  color:#00ff88;
+  font-size:22px;
+  font-weight:700;
+  margin-bottom:18px;
+}
+
+.stat{
+  margin-bottom:14px;
+}
+
+.stat-label{
+  color:#aaa;
+  margin-bottom:5px;
+}
+
+.stat-value{
+  font-size:22px;
+  font-weight:700;
+}
+
+.workout-box{
+  margin-top:15px;
+  background:#1c1c1c;
+  border-radius:14px;
+  padding:15px;
+  line-height:1.8;
+}
+
+button{
+  width:100%;
+  padding:15px;
+  border:none;
+  border-radius:14px;
+  font-size:16px;
+  font-weight:700;
+  cursor:pointer;
+  transition:.3s;
+  margin-top:18px;
+}
+
+.complete-btn{
+  background:#00ff88;
+  color:black;
+}
+
+.water-btn{
+  background:#00c3ff;
+  color:black;
+}
+
+.reset-btn{
+  background:#ff4444;
+  color:white;
+}
+
+.progress-bar{
+  width:100%;
+  height:12px;
+  background:#222;
+  border-radius:20px;
+  overflow:hidden;
+  margin-top:8px;
+}
+
+.progress-fill{
+  height:100%;
+  background:#00ff88;
+}
+
+.quote-box{
+  margin-top:25px;
+  background:linear-gradient(
+  90deg,
+  #00ff88,
+  #00c3ff
+  );
+
+  color:black;
+
+  padding:20px;
+  border-radius:18px;
+  font-weight:700;
+  text-align:center;
+  line-height:1.7;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+  <div class="header">
+
+    <div class="logo">🔥</div>
+
+    <div class="title">
+      Welcome Back
+    </div>
+
+    <div class="subtitle">
+      Your AI Fitness Journey Dashboard
+    </div>
+
+  </div>
+
+  <div class="grid">
+
+    <!-- PROFILE -->
+    <div class="card">
+
+      <div class="card-title">
+        👤 Profile
+      </div>
+
+      <div class="stat">
+
+        <div class="stat-label">
+          Goal
+        </div>
+
+        <div class="stat-value"
+        id="goalText">
+        </div>
+
+      </div>
+
+      <div class="stat">
+
+        <div class="stat-label">
+          Workout Split
+        </div>
+
+        <div class="stat-value"
+        id="splitText">
+        </div>
+
+      </div>
+
+      <div class="stat">
+
+        <div class="stat-label">
+          Budget
+        </div>
+
+        <div class="stat-value"
+        id="budgetText">
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- STREAK -->
+    <div class="card">
+
+      <div class="card-title">
+        🔥 Progress
+      </div>
+
+      <div class="stat">
+
+        <div class="stat-label">
+          Workout Streak
+        </div>
+
+        <div class="stat-value"
+        id="streakText">
+
+        0 Days
+
+        </div>
+
+      </div>
+
+      <div class="stat">
+
+        <div class="stat-label">
+          Water Intake
+        </div>
+
+        <div class="stat-value"
+        id="waterText">
+
+        0L / 4L
+
+        </div>
+
+      </div>
+
+      <div class="progress-bar">
+
+        <div class="progress-fill"
+        id="waterProgress"
+        style="width:0%;">
+
+        </div>
+
+      </div>
+
+      <button class="water-btn"
+      onclick="drinkWater()">
+
+      + Drink Water 💧
+
+      </button>
+
+    </div>
+
+    <!-- WORKOUT -->
+    <div class="card">
+
+      <div class="card-title">
+        💪 Today's Workout
+      </div>
+
+      <div class="workout-box"
+      id="workoutBox">
+
+      Loading workout...
+
+      </div>
+
+      <button class="complete-btn"
+      onclick="completeWorkout()">
+
+      Mark Workout Complete ✅
+
+      </button>
+
+    </div>
+
+  </div>
+
+  <!-- NUTRITION -->
+  <div class="card"
+  style="margin-top:25px;">
+
+    <div class="card-title">
+      🍽️ Nutrition Targets
+    </div>
+
+    <div class="grid">
+
+      <div>
+
+        <div class="stat-label">
+          Calories
+        </div>
+
+        <div class="stat-value">
+
+        3200 kcal
+
+        </div>
+
+      </div>
+
+      <div>
+
+        <div class="stat-label">
+          Protein
+        </div>
+
+        <div class="stat-value">
+
+        140g
+
+        </div>
+
+      </div>
+
+      <div>
+
+        <div class="stat-label">
+          Sleep Goal
+        </div>
+
+        <div class="stat-value">
+
+        8 Hours
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- MOTIVATION -->
+  <div class="quote-box">
+
+    “Discipline beats motivation.
+    Small daily progress creates
+    massive long-term results.” 🔥
+
+  </div>
+
+  <!-- RESET -->
+  <button class="reset-btn"
+  onclick="resetJourney()">
+
+  Reset Fitness Journey ❌
+
+  </button>
+
+</div>
+
+<script>
+
+const goal =
+localStorage.getItem("goal")
+|| "Bulk";
+
+const split =
+localStorage.getItem("split")
+|| "PPL";
+
+const budget =
+localStorage.getItem("budget")
+|| "₹200";
+
+const workout =
+localStorage.getItem(
+  "generatedWorkout"
+)
+|| "No workout found";
+
+let streak =
+localStorage.getItem("streak")
+|| 0;
+
+let water =
+localStorage.getItem("water")
+|| 0;
+
+document.getElementById(
+  "goalText"
+).innerText = goal;
+
+document.getElementById(
+  "splitText"
+).innerText = split;
+
+document.getElementById(
+  "budgetText"
+).innerText = "₹" + budget;
+
+document.getElementById(
+  "streakText"
+).innerText =
+streak + " Days";
+
+document.getElementById(
+  "waterText"
+).innerText =
+water + "L / 4L";
+
+document.getElementById(
+  "waterProgress"
+).style.width =
+(water / 4) * 100 + "%";
+
+const shortWorkout =
+workout
+.split("\n")
+.slice(0,8)
+.join("<br>");
+
+document.getElementById(
+  "workoutBox"
+).innerHTML = shortWorkout;
+
+function completeWorkout(){
+
+  streak++;
+
+  localStorage.setItem(
+    "streak",
+    streak
+  );
+
+  document.getElementById(
+    "streakText"
+  ).innerText =
+  streak + " Days";
+
+  alert(
+    "🔥 Workout Completed!"
+  );
+
+}
+
+function drinkWater(){
+
+  if(water < 4){
+
+    water++;
+
+    localStorage.setItem(
+      "water",
+      water
+    );
+
+    document.getElementById(
+      "waterText"
+    ).innerText =
+    water + "L / 4L";
+
+    document.getElementById(
+      "waterProgress"
+    ).style.width =
+    (water / 4) * 100 + "%";
+
+  }
+
+}
+
+function resetJourney(){
+
+  const confirmReset =
+  confirm(
+    "Reset your full fitness journey?"
+  );
+
+  if(confirmReset){
+
+    localStorage.clear();
+
+    window.location.href =
+    "dashboard.html";
+
+  }
+
+}
+
+</script>
+
+</body>
+</html>

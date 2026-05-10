@@ -276,6 +276,32 @@ document.getElementById(
   "splitText"
 ).innerText = split;
 
+window.onload = function(){
+
+  const savedBudget =
+  localStorage.getItem(
+    "generatedBudget"
+  );
+
+  const savedDate =
+  localStorage.getItem(
+    "budgetDate"
+  );
+
+  const today =
+  new Date().toDateString();
+
+  if(
+    savedBudget &&
+    savedDate === today
+  ){
+
+    renderBudget(savedBudget);
+
+  }
+
+}
+
 async function generateBudgetPlan(){
 
   const budget =
@@ -313,26 +339,24 @@ async function generateBudgetPlan(){
   `;
 
   const prompt = `
-Create a VERY CHEAP Indian diet plan.
+Create a REALISTIC Indian BULKING diet.
 
 Goal: ${goal}
-Workout Split: ${split}
 Budget Limit: Rs.${budget}
 Food Type: ${foodType}
 
 STRICT RULES:
-- TOTAL COST MUST NEVER EXCEED Rs.${budget}
-- Use realistic Indian prices
-- Use cheap Indian foods only
-- Maximum 6 food items
+- TOTAL COST MUST STAY under Rs.${budget}
+- Minimum 2500 calories
+- Minimum 110g protein
+- Use cheap Indian foods
+- Same meals for entire day
+- NO random expensive items
 - NO whey protein
-- NO protein powder
-- NO mass gainer
-- NO expensive supplements
-- NO explanations
-- Keep response SHORT
+- NO supplements
+- Keep clean and short
 
-FORMAT EXACTLY:
+FORMAT:
 
 Shopping List:
 - item = Rs.price
@@ -351,7 +375,9 @@ Snack:
 Dinner:
 - foods
 
-Total Cost: Rs.amount
+Total Calories:
+Total Protein:
+Total Cost:
 `;
 
   try{
@@ -405,100 +431,11 @@ Total Cost: Rs.amount
     );
 
     localStorage.setItem(
-      "budget",
-      budget
+      "budgetDate",
+      new Date().toDateString()
     );
 
-    localStorage.setItem(
-      "foodType",
-      foodType
-    );
-
-    const lines =
-    text.split("\n")
-    .filter(line => line.trim());
-
-    let html = "";
-
-    let currentSection = false;
-
-    lines.forEach(line => {
-
-      const cleanLine =
-      line.trim();
-
-      if(
-        cleanLine.includes("Shopping")
-        ||
-        cleanLine.includes("Meal")
-        ||
-        cleanLine.includes("Breakfast")
-        ||
-        cleanLine.includes("Lunch")
-        ||
-        cleanLine.includes("Dinner")
-        ||
-        cleanLine.includes("Snack")
-        ||
-        cleanLine.includes("Total")
-      ){
-
-        if(currentSection){
-          html += `</div>`;
-        }
-
-        html += `
-        <div class="section-card">
-
-          <div class="section-title">
-          ${cleanLine}
-          </div>
-        `;
-
-        currentSection = true;
-
-      }
-
-      else{
-
-        html += `
-        <div class="result-line">
-
-        ${cleanLine}
-
-        </div>
-        `;
-
-      }
-
-    });
-
-    if(currentSection){
-      html += `</div>`;
-    }
-
-    html += `
-
-    <div class="tip-box">
-
-    ✅ Stay consistent with your
-    nutrition and workout plan.
-
-    Sleep and hydration are important
-    for muscle recovery and growth.
-
-    </div>
-
-    <button class="next-btn"
-    onclick="goMealPlanner()">
-
-    Continue to Meal Planner →
-
-    </button>
-
-    `;
-
-    result.innerHTML = html;
+    renderBudget(text);
 
   }
 
@@ -515,6 +452,105 @@ Total Cost: Rs.amount
     `;
 
   }
+
+}
+
+function renderBudget(text){
+
+  const result =
+  document.getElementById(
+    "budgetResult"
+  );
+
+  const lines =
+  text.split("\n")
+  .filter(line => line.trim());
+
+  let html = "";
+
+  let currentSection = false;
+
+  lines.forEach(line => {
+
+    const cleanLine =
+    line.trim();
+
+    if(
+      cleanLine.includes("Shopping")
+      ||
+      cleanLine.includes("Meal")
+      ||
+      cleanLine.includes("Breakfast")
+      ||
+      cleanLine.includes("Lunch")
+      ||
+      cleanLine.includes("Dinner")
+      ||
+      cleanLine.includes("Snack")
+      ||
+      cleanLine.includes("Calories")
+      ||
+      cleanLine.includes("Protein")
+      ||
+      cleanLine.includes("Total")
+    ){
+
+      if(currentSection){
+        html += `</div>`;
+      }
+
+      html += `
+      <div class="section-card">
+
+        <div class="section-title">
+        ${cleanLine}
+        </div>
+      `;
+
+      currentSection = true;
+
+    }
+
+    else{
+
+      html += `
+      <div class="result-line">
+
+      ${cleanLine}
+
+      </div>
+      `;
+
+    }
+
+  });
+
+  if(currentSection){
+    html += `</div>`;
+  }
+
+  html += `
+
+  <div class="tip-box">
+
+  ✅ This nutrition plan is locked
+  for today and will refresh tomorrow.
+
+  Stay consistent with hydration,
+  sleep and training.
+
+  </div>
+
+  <button class="next-btn"
+  onclick="goMealPlanner()">
+
+  Continue to Meal Planner →
+
+  </button>
+
+  `;
+
+  result.innerHTML = html;
 
 }
 

@@ -236,8 +236,8 @@ input,select{
 
     <select id="supplements">
 
-      <option>Yes</option>
       <option>No</option>
+      <option>Yes</option>
 
     </select>
 
@@ -262,11 +262,11 @@ const WORKER_URL =
 
 const goal =
 localStorage.getItem("goal")
-|| "Not Selected";
+|| "Bulk";
 
 const split =
 localStorage.getItem("split")
-|| "Not Selected";
+|| "PPL";
 
 document.getElementById(
   "goalText"
@@ -296,7 +296,7 @@ async function generateBudgetPlan(){
   if(!budget || budget < 50){
 
     alert(
-      "Enter valid budget"
+      "Enter a valid budget"
     );
 
     return;
@@ -313,24 +313,45 @@ async function generateBudgetPlan(){
   `;
 
   const prompt = `
-Create a STRICT Indian muscle-building
-daily diet plan.
+Create a VERY CHEAP Indian diet plan.
 
 Goal: ${goal}
 Workout Split: ${split}
-Budget: Rs.${budget}/day
+Budget Limit: Rs.${budget}
 Food Type: ${foodType}
-Supplements: ${supplements}
 
-IMPORTANT:
-- Stay UNDER budget
-- Cheap Indian foods only
-- Shopping list with prices
-- Meal plan using SAME foods
-- Include breakfast lunch snack dinner
-- Mention protein briefly
-- Professional clean format
-- Bullet style only
+STRICT RULES:
+- TOTAL COST MUST NEVER EXCEED Rs.${budget}
+- Use realistic Indian prices
+- Use cheap Indian foods only
+- Maximum 6 food items
+- NO whey protein
+- NO protein powder
+- NO mass gainer
+- NO expensive supplements
+- NO explanations
+- Keep response SHORT
+
+FORMAT EXACTLY:
+
+Shopping List:
+- item = Rs.price
+
+Meal Plan:
+
+Breakfast:
+- foods
+
+Lunch:
+- foods
+
+Snack:
+- foods
+
+Dinner:
+- foods
+
+Total Cost: Rs.amount
 `;
 
   try{
@@ -356,6 +377,27 @@ IMPORTANT:
 
     const text =
     data.text || "No response";
+
+    if(
+      text.includes("Mass Gainer")
+      ||
+      text.includes("Protein Powder")
+      ||
+      text.includes("Whey")
+    ){
+
+      result.innerHTML = `
+      <div class="error-box">
+
+      ⚠️ AI generated expensive items.
+      Please regenerate.
+
+      </div>
+      `;
+
+      return;
+
+    }
 
     localStorage.setItem(
       "generatedBudget",
@@ -386,15 +428,19 @@ IMPORTANT:
       line.trim();
 
       if(
-        cleanLine.toLowerCase().includes("shopping")
+        cleanLine.includes("Shopping")
         ||
-        cleanLine.toLowerCase().includes("breakfast")
+        cleanLine.includes("Meal")
         ||
-        cleanLine.toLowerCase().includes("lunch")
+        cleanLine.includes("Breakfast")
         ||
-        cleanLine.toLowerCase().includes("dinner")
+        cleanLine.includes("Lunch")
         ||
-        cleanLine.toLowerCase().includes("snack")
+        cleanLine.includes("Dinner")
+        ||
+        cleanLine.includes("Snack")
+        ||
+        cleanLine.includes("Total")
       ){
 
         if(currentSection){
@@ -435,12 +481,11 @@ IMPORTANT:
 
     <div class="tip-box">
 
-    ⚠️ Follow this nutrition
-    structure consistently with
-    your workout program.
+    ✅ Stay consistent with your
+    nutrition and workout plan.
 
-    Hydration and sleep are essential
-    for recovery and muscle growth.
+    Sleep and hydration are important
+    for muscle recovery and growth.
 
     </div>
 

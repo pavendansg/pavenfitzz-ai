@@ -8,8 +8,6 @@ content="width=device-width, initial-scale=1.0">
 
 <title>PavenFitzz Meal Planner</title>
 
-<link rel="stylesheet" href="ai.css">
-
 <style>
 
 body{
@@ -54,15 +52,6 @@ body{
   box-shadow:0 0 20px rgba(0,0,0,0.4);
 }
 
-.info-box{
-  background:#0f2417;
-  border:1px solid #00ff88;
-  border-radius:14px;
-  padding:16px;
-  margin-bottom:20px;
-  line-height:1.7;
-}
-
 .input-label{
   display:block;
   margin-top:18px;
@@ -89,16 +78,16 @@ button{
   font-size:16px;
   font-weight:700;
   cursor:pointer;
-  transition:.3s;
 }
 
 .generate-btn{
-  background:linear-gradient(90deg,#00ff88,#00c3ff);
-  color:black;
-}
+  background:linear-gradient(
+  90deg,
+  #00ff88,
+  #00c3ff
+  );
 
-.generate-btn:hover{
-  transform:translateY(-2px);
+  color:black;
 }
 
 .finish-btn{
@@ -170,6 +159,14 @@ button{
   font-size:22px;
   font-weight:700;
   color:#00ff88;
+}
+
+.error-box{
+  background:#2a1111;
+  color:#ff7777;
+  padding:20px;
+  border-radius:16px;
+  margin-top:20px;
 }
 
 </style>
@@ -289,7 +286,7 @@ button{
 <script>
 
 const WORKER_URL =
-"https://pavenfitzz-ai.pavendansg.workers.dev";
+"https://pavenfitzz-ai.pavendansg.workers.dev/";
 
 const goal =
 localStorage.getItem("goal")
@@ -318,6 +315,32 @@ document.getElementById(
 document.getElementById(
   "budgetText"
 ).innerText = "₹" + budget;
+
+window.onload = function(){
+
+  const savedMeal =
+  localStorage.getItem(
+    "generatedMeal"
+  );
+
+  const savedDate =
+  localStorage.getItem(
+    "mealDate"
+  );
+
+  const today =
+  new Date().toDateString();
+
+  if(
+    savedMeal &&
+    savedDate === today
+  ){
+
+    renderMeal(savedMeal);
+
+  }
+
+}
 
 async function generateMealPlan(){
 
@@ -351,8 +374,7 @@ async function generateMealPlan(){
   `;
 
   const prompt = `
-Create a PROFESSIONAL Indian
-fitness meal plan.
+Create a PROFESSIONAL Indian fitness meal plan.
 
 Goal: ${goal}
 Workout Split: ${split}
@@ -361,21 +383,41 @@ Food Type: ${foodType}
 Workout Time: ${workoutTime}
 Meals Per Day: ${mealsPerDay}
 
-IMPORTANT:
-- Create practical Indian meals
-- Include:
-Breakfast
-Pre Workout
-Post Workout
-Lunch
-Snacks
-Dinner
-- Mention calories and protein briefly
-- Mention hydration guidance
-- Mention sleep/recovery advice
-- Keep professional clean format
-- Bullet style only
-- Realistic and affordable foods
+STRICT RULES:
+- SAME meal plan for entire day
+- Affordable Indian foods only
+- Stay under budget
+- Mention calories for every meal
+- Mention protein for every meal
+- Mention total calories
+- Mention total protein
+- NO chatting
+- NO motivation lines
+- NO long explanations
+- Keep concise and premium
+
+FORMAT:
+
+Breakfast:
+- foods
+
+Pre Workout:
+- foods
+
+Post Workout:
+- foods
+
+Lunch:
+- foods
+
+Snack:
+- foods
+
+Dinner:
+- foods
+
+Total Calories:
+Total Protein:
 `;
 
   try{
@@ -397,92 +439,29 @@ Dinner
     const data =
     await res.json();
 
+    console.log(data);
+
     const text =
     data.text || "No response";
 
-    const lines =
-    text.split("\n")
-    .filter(line => line.trim());
+    localStorage.setItem(
+      "generatedMeal",
+      text
+    );
 
-    let html = "";
+    localStorage.setItem(
+      "mealDate",
+      new Date().toDateString()
+    );
 
-    lines.forEach(line => {
-
-      if(
-        line.toLowerCase().includes("breakfast")
-        ||
-        line.toLowerCase().includes("pre")
-        ||
-        line.toLowerCase().includes("post")
-        ||
-        line.toLowerCase().includes("lunch")
-        ||
-        line.toLowerCase().includes("dinner")
-        ||
-        line.toLowerCase().includes("snack")
-        ||
-        line.toLowerCase().includes("hydration")
-        ||
-        line.toLowerCase().includes("recovery")
-      ){
-
-        html += `
-        <div class="meal-card">
-
-        <div class="meal-title">
-        ${line}
-        </div>
-        `;
-
-      }
-
-      else{
-
-        html += `
-        <div class="result-line">
-        ${line}
-        </div>
-        `;
-
-      }
-
-    });
-
-    html += `
-    </div>
-
-    <div class="tip-box">
-
-    ⚠️ Follow your meal timing
-    consistently with your workout
-    program for maximum progress.
-
-    Proper hydration, sleep and
-    recovery are essential for
-    muscle growth and fat loss.
-
-    Water Goal:
-    ${waterGoal}
-
-    </div>
-
-    <button class="finish-btn"
-    onclick="finishJourney()">
-
-    ✅ Finish Fitness Setup
-
-    </button>
-    `;
-
-    result.innerHTML = html;
+    renderMeal(text);
 
   }
 
   catch(err){
 
     result.innerHTML = `
-    <div class="box"
-    style="color:red;">
+    <div class="error-box">
 
     ⚠️ ${err.message}
 
@@ -490,6 +469,104 @@ Dinner
     `;
 
   }
+
+}
+
+function renderMeal(text){
+
+  const result =
+  document.getElementById(
+    "mealResult"
+  );
+
+  const lines =
+  text.split("\n")
+  .filter(line => line.trim());
+
+  let html = "";
+
+  let currentCard = false;
+
+  lines.forEach(line => {
+
+    const cleanLine =
+    line.trim();
+
+    if(
+      cleanLine.includes("Breakfast")
+      ||
+      cleanLine.includes("Pre")
+      ||
+      cleanLine.includes("Post")
+      ||
+      cleanLine.includes("Lunch")
+      ||
+      cleanLine.includes("Dinner")
+      ||
+      cleanLine.includes("Snack")
+      ||
+      cleanLine.includes("Calories")
+      ||
+      cleanLine.includes("Protein")
+    ){
+
+      if(currentCard){
+        html += `</div>`;
+      }
+
+      html += `
+      <div class="meal-card">
+
+      <div class="meal-title">
+      ${cleanLine}
+      </div>
+      `;
+
+      currentCard = true;
+
+    }
+
+    else{
+
+      html += `
+      <div class="result-line">
+
+      ${cleanLine}
+
+      </div>
+      `;
+
+    }
+
+  });
+
+  if(currentCard){
+    html += `</div>`;
+  }
+
+  html += `
+
+  <div class="tip-box">
+
+  ⚠️ Follow your meal timing
+  consistently with your workout
+  program for maximum progress.
+
+  Water Goal:
+  ${document.getElementById("waterGoal").value}
+
+  </div>
+
+  <button class="finish-btn"
+  onclick="finishJourney()">
+
+  ✅ Finish Fitness Setup
+
+  </button>
+
+  `;
+
+  result.innerHTML = html;
 
 }
 

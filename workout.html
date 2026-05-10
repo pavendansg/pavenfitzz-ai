@@ -1,494 +1,178 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
 <meta charset="UTF-8">
-<meta name="viewport"
-content="width=device-width, initial-scale=1.0">
-
-<title>PavenFitzz Workout Coach</title>
-
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PavenFitzz — Workout Coach</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Syne:wght@400;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-
-body{
-  margin:0;
-  font-family:Arial,sans-serif;
-  background:#0b0b0b;
-  color:white;
-}
-
-.container{
-  max-width:900px;
-  margin:auto;
-  padding:20px;
-}
-
-.ai-header{
-  text-align:center;
-  margin-bottom:35px;
-}
-
-.ai-logo{
-  font-size:65px;
-}
-
-.ai-title{
-  font-size:38px;
-  font-weight:700;
-  margin-top:10px;
-}
-
-.ai-subtitle{
-  color:#aaa;
-  margin-top:10px;
-}
-
-.box{
-  background:#151515;
-  border-radius:24px;
-  padding:28px;
-  border:1px solid rgba(255,255,255,0.08);
-  box-shadow:0 0 25px rgba(0,0,0,0.5);
-}
-
-.input-label{
-  display:block;
-  margin-top:22px;
-  margin-bottom:10px;
-  font-weight:700;
-  color:#888;
-  letter-spacing:1px;
-}
-
-select{
-  width:100%;
-  padding:16px;
-  border:none;
-  border-radius:14px;
-  background:#222;
-  color:white;
-  font-size:17px;
-}
-
-.generate-btn{
-  width:100%;
-  padding:18px;
-  border:none;
-  border-radius:18px;
-  margin-top:28px;
-  font-size:18px;
-  font-weight:700;
-  cursor:pointer;
-
-  background:linear-gradient(
-  90deg,
-  #00ff88,
-  #00c3ff
-  );
-
-  color:black;
-}
-
-.result{
-  margin-top:30px;
-}
-
-.day-card{
-  background:#151515;
-  border-left:5px solid #00ff88;
-  border-radius:20px;
-  padding:22px;
-  margin-bottom:20px;
-}
-
-.day-title{
-  color:#00ff88;
-  font-size:24px;
-  font-weight:700;
-  margin-bottom:15px;
-}
-
-.exercise{
-  padding:12px 0;
-  border-bottom:1px solid rgba(255,255,255,0.06);
-  line-height:1.8;
-}
-
-.loading{
-  text-align:center;
-  padding:35px;
-  color:#00ff88;
-  font-size:18px;
-}
-
-.lock-box{
-  background:#102218;
-  border:1px solid #00ff88;
-  border-radius:16px;
-  padding:18px;
-  margin-top:25px;
-  line-height:1.7;
-}
-
-.confirm-btn{
-  width:100%;
-  padding:16px;
-  border:none;
-  border-radius:16px;
-  margin-top:20px;
-  font-size:17px;
-  font-weight:700;
-  cursor:pointer;
-  background:#00ff88;
-  color:black;
-}
-
-.next-btn{
-  width:100%;
-  padding:16px;
-  border:none;
-  border-radius:16px;
-  margin-top:15px;
-  font-size:17px;
-  font-weight:700;
-  cursor:pointer;
-  background:#00c3ff;
-  color:black;
-}
-
-.error-box{
-  background:#2a1111;
-  color:#ff7777;
-  padding:20px;
-  border-radius:16px;
-  margin-top:20px;
-}
-
+:root { --bg:#080808;--card:#101010;--green:#00ff88;--blue:#00c3ff;--gold:#ffd000;--red:#ff4455;--border:rgba(255,255,255,0.07);--muted:#666; }
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--bg);color:#f0f0f0;font-family:'Syne',sans-serif;min-height:100vh;}
+.wrap{max-width:900px;margin:auto;padding:28px 20px 60px;}
+.header{text-align:center;margin-bottom:36px;}
+.logo{font-size:50px;}
+.brand{font-family:'Bebas Neue',sans-serif;font-size:42px;letter-spacing:3px;background:linear-gradient(90deg,var(--green),var(--blue));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.tagline{color:var(--muted);font-size:13px;letter-spacing:2px;margin-top:4px;}
+.nav{display:flex;gap:10px;justify-content:center;margin-bottom:36px;flex-wrap:wrap;}
+.nav a{text-decoration:none;padding:9px 20px;border-radius:50px;font-size:13px;font-weight:700;letter-spacing:1px;border:1px solid var(--border);color:var(--muted);transition:all .25s;}
+.nav a:hover{border-color:var(--green);color:var(--green);}
+.nav a.active{background:var(--green);color:#000;border-color:var(--green);}
+.box{background:var(--card);border-radius:24px;padding:28px;border:1px solid var(--border);}
+.input-label{display:block;margin-top:22px;margin-bottom:8px;font-weight:700;color:var(--muted);letter-spacing:2px;font-size:11px;font-family:'DM Mono',monospace;text-transform:uppercase;}
+select{width:100%;padding:15px 16px;border:1px solid #222;border-radius:12px;background:#0d0d0d;color:white;font-size:16px;font-family:'Syne',sans-serif;outline:none;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23666' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;cursor:pointer;transition:border-color .2s;}
+select:focus{border-color:var(--green);}
+.generate-btn{width:100%;padding:18px;border:none;border-radius:16px;margin-top:28px;font-size:17px;font-weight:800;cursor:pointer;background:linear-gradient(90deg,var(--green),var(--blue));color:#000;font-family:'Bebas Neue',sans-serif;letter-spacing:2px;transition:all .2s;}
+.generate-btn:hover{transform:translateY(-2px);box-shadow:0 8px 30px rgba(0,255,136,0.25);}
+.generate-btn:disabled{opacity:0.5;cursor:not-allowed;transform:none;}
+.loading{text-align:center;padding:50px;color:var(--green);font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:2px;}
+.loading-dots{display:flex;justify-content:center;gap:8px;margin-top:16px;}
+.loading-dots span{width:10px;height:10px;background:var(--green);border-radius:50%;animation:bounce 1s ease infinite;}
+.loading-dots span:nth-child(2){animation-delay:.15s;}
+.loading-dots span:nth-child(3){animation-delay:.3s;}
+@keyframes bounce{0%,100%{transform:translateY(0);opacity:.3}50%{transform:translateY(-8px);opacity:1}}
+.result{margin-top:28px;}
+.week-header{font-family:'Bebas Neue',sans-serif;font-size:28px;letter-spacing:2px;color:var(--green);margin-bottom:20px;display:flex;align-items:center;gap:12px;}
+.week-badge{background:rgba(0,255,136,0.1);border:1px solid rgba(0,255,136,0.3);border-radius:50px;padding:4px 16px;font-size:14px;}
+.day-card{background:var(--card);border:1px solid var(--border);border-left:4px solid var(--green);border-radius:18px;padding:22px;margin-bottom:16px;transition:transform .2s;}
+.day-card:hover{transform:translateX(4px);}
+.day-title{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:1.5px;color:var(--green);margin-bottom:14px;display:flex;align-items:center;gap:10px;}
+.day-num{background:var(--green);color:#000;width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;flex-shrink:0;}
+.exercise{padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.05);line-height:1.8;font-size:15px;display:flex;align-items:flex-start;gap:8px;}
+.exercise:last-child{border-bottom:none;}
+.ex-dot{width:6px;height:6px;background:var(--green);border-radius:50%;margin-top:9px;flex-shrink:0;}
+.lock-box{background:linear-gradient(135deg,#0a1f13,#071a10);border:1px solid rgba(0,255,136,0.2);border-radius:16px;padding:20px;margin-top:24px;line-height:1.8;color:#aaa;font-size:14px;}
+.lock-box strong{color:var(--green);}
+.btn-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px;}
+.btn{padding:16px;border:none;border-radius:14px;font-size:15px;font-weight:700;cursor:pointer;font-family:'Syne',sans-serif;transition:all .2s;}
+.btn-confirm{background:var(--green);color:#000;}
+.btn-confirm:hover{background:#00ffaa;transform:translateY(-1px);}
+.btn-next{background:var(--blue);color:#000;}
+.btn-next:hover{opacity:0.9;transform:translateY(-1px);}
+.error-box{background:#1a0a0a;color:#ff7777;padding:20px;border-radius:16px;margin-top:20px;border:1px solid rgba(255,68,85,0.3);}
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.85);backdrop-filter:blur(8px);z-index:100;display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;pointer-events:none;transition:opacity .3s;}
+.modal-overlay.show{opacity:1;pointer-events:all;}
+.modal{background:#121212;border:1px solid rgba(0,255,136,0.25);border-radius:24px;padding:32px;max-width:440px;width:100%;animation:slideUp .3s ease;}
+@keyframes slideUp{from{transform:translateY(20px);opacity:0}to{transform:translateY(0);opacity:1}}
+.modal-title{font-family:'Bebas Neue',sans-serif;font-size:28px;letter-spacing:2px;color:var(--green);margin-bottom:20px;}
+.confirm-row{display:flex;justify-content:space-between;padding:12px 0;border-bottom:1px solid rgba(255,255,255,0.06);}
+.confirm-label{color:var(--muted);font-size:13px;font-family:'DM Mono',monospace;text-transform:uppercase;letter-spacing:1px;}
+.confirm-val{font-weight:700;font-size:15px;}
+.modal-btns{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:24px;}
+.modal-cancel{background:#1a1a1a;color:#aaa;border:1px solid #333;padding:14px;border-radius:12px;font-family:'Syne',sans-serif;font-weight:700;cursor:pointer;transition:all .2s;}
+.modal-cancel:hover{border-color:var(--red);color:var(--red);}
+.modal-ok{background:var(--green);color:#000;border:none;padding:14px;border-radius:12px;font-family:'Syne',sans-serif;font-weight:800;cursor:pointer;font-size:15px;}
+.modal-ok:hover{background:#00ffaa;}
 </style>
-
 </head>
-
 <body>
-
-<div class="container">
-
-  <div class="ai-header">
-
-    <div class="ai-logo">💪</div>
-
-    <div class="ai-title">
-      AI Workout Coach
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal">
+    <div class="modal-title">⚡ Confirm Your Program</div>
+    <div class="confirm-row"><span class="confirm-label">Goal</span><span class="confirm-val" id="m-goal"></span></div>
+    <div class="confirm-row"><span class="confirm-label">Level</span><span class="confirm-val" id="m-level"></span></div>
+    <div class="confirm-row"><span class="confirm-label">Split</span><span class="confirm-val" id="m-split"></span></div>
+    <div class="confirm-row"><span class="confirm-label">Days / Week</span><span class="confirm-val" id="m-days"></span></div>
+    <div class="confirm-row" style="border:none;"><span class="confirm-label">Duration</span><span class="confirm-val" style="color:var(--green);">1 Week Locked</span></div>
+    <p style="color:var(--muted);font-size:13px;margin-top:16px;line-height:1.7;">This program will be locked for your full workout cycle. Make sure your selections are correct before confirming.</p>
+    <div class="modal-btns">
+      <button class="modal-cancel" onclick="closeModal()">← Edit</button>
+      <button class="modal-ok" onclick="confirmAndGenerate()">Confirm & Generate 🔥</button>
     </div>
-
-    <div class="ai-subtitle">
-      Personalized Fitness Program Generator
-    </div>
-
   </div>
-
-  <div class="box">
-
-    <label class="input-label">
-      FITNESS GOAL
-    </label>
-
-    <select id="goal">
-      <option>Bulk</option>
-      <option>Cut</option>
-      <option>Maintain</option>
-      <option>Athletic</option>
-    </select>
-
-    <label class="input-label">
-      EXPERIENCE LEVEL
-    </label>
-
-    <select id="level">
-      <option>Beginner</option>
-      <option>Intermediate</option>
-      <option>Advanced</option>
-    </select>
-
-    <label class="input-label">
-      WORKOUT SPLIT
-    </label>
-
-    <select id="split">
-      <option>PPL</option>
-      <option>Bro Split</option>
-      <option>Upper Lower</option>
-      <option>Full Body</option>
-    </select>
-
-    <label class="input-label">
-      WORKOUT DAYS PER WEEK
-    </label>
-
-    <select id="days">
-      <option>3</option>
-      <option>4</option>
-      <option>5</option>
-      <option>6</option>
-    </select>
-
-    <button class="generate-btn"
-    onclick="generateWorkout()">
-
-      Generate My Program 🔥
-
-    </button>
-
-  </div>
-
-  <div id="workoutResult"
-  class="result"></div>
-
 </div>
-
+<div class="wrap">
+  <div class="header">
+    <div class="logo">💪</div>
+    <div class="brand">Workout Coach</div>
+    <div class="tagline">PERSONALIZED FITNESS PROGRAM GENERATOR</div>
+  </div>
+  <div class="nav">
+    <a href="home.html">🏠 Home</a>
+    <a href="workout.html" class="active">💪 Workout</a>
+    <a href="budget.html">💰 Budget</a>
+    <a href="meal.html">🍗 Meal</a>
+  </div>
+  <div class="box">
+    <label class="input-label">Fitness Goal</label>
+    <select id="goal"><option>Bulk</option><option>Cut</option><option>Maintain</option><option>Athletic</option></select>
+    <label class="input-label">Experience Level</label>
+    <select id="level"><option>Beginner</option><option>Intermediate</option><option>Advanced</option></select>
+    <label class="input-label">Workout Split</label>
+    <select id="split"><option>PPL</option><option>Bro Split</option><option>Upper Lower</option><option>Full Body</option></select>
+    <label class="input-label">Workout Days Per Week</label>
+    <select id="days"><option>3</option><option>4</option><option>5</option><option>6</option></select>
+    <button class="generate-btn" id="genBtn" onclick="openModal()">Generate My Program 🔥</button>
+  </div>
+  <div id="workoutResult" class="result"></div>
+</div>
 <script>
-
-const WORKER_URL =
-"https://pavenfitzz-ai.pavendansg.workers.dev/";
-
-window.onload = function(){
-
-  const savedWorkout =
-  localStorage.getItem(
-    "generatedWorkout"
-  );
-
-  if(savedWorkout){
-
-    renderWorkout(savedWorkout);
-
-  }
-
+const WORKER_URL = "https://pavenfitzz-ai.pavendansg.workers.dev/";
+window.onload = function() {
+  const saved = localStorage.getItem("generatedWorkout");
+  if (saved) renderWorkout(saved);
+};
+function openModal() {
+  document.getElementById("m-goal").innerText = document.getElementById("goal").value;
+  document.getElementById("m-level").innerText = document.getElementById("level").value;
+  document.getElementById("m-split").innerText = document.getElementById("split").value;
+  document.getElementById("m-days").innerText = document.getElementById("days").value + " days";
+  document.getElementById("modalOverlay").classList.add("show");
 }
-
-async function generateWorkout(){
-
-  const goal =
-  document.getElementById("goal").value;
-
-  const level =
-  document.getElementById("level").value;
-
-  const split =
-  document.getElementById("split").value;
-
-  const days =
-  document.getElementById("days").value;
-
-  const result =
-  document.getElementById("workoutResult");
-
-  result.innerHTML = `
-  <div class="loading">
-
-    🤖 AI Coach is generating your
-    personalized workout...
-
-  </div>
-  `;
-
-  const prompt = `
-Create a ${days}-day ${split} workout plan.
-
-Goal: ${goal}
-Level: ${level}
-
-STRICT RULES:
-- Professional gym workout
-- Clear DAY format
-- 5 exercises per day
-- Sets and reps
-- Keep concise
-- No explanations
-
-FORMAT:
-
-DAY 1:
-- Exercise — Sets x Reps
-`;
-
-  try{
-
-    const res = await fetch(WORKER_URL,{
-
-      method:"POST",
-
-      headers:{
-        "Content-Type":"application/json"
-      },
-
-      body:JSON.stringify({
-        prompt:prompt
-      })
-
-    });
-
-    const data =
-    await res.json();
-
-    console.log(data);
-
-    const text =
-    data.text || "No response";
-
-    localStorage.setItem(
-      "generatedWorkout",
-      text
-    );
-
-    localStorage.setItem(
-      "goal",
-      goal
-    );
-
-    localStorage.setItem(
-      "level",
-      level
-    );
-
-    localStorage.setItem(
-      "split",
-      split
-    );
-
-    localStorage.setItem(
-      "days",
-      days
-    );
-
+function closeModal() { document.getElementById("modalOverlay").classList.remove("show"); }
+async function confirmAndGenerate() { closeModal(); await generateWorkout(); }
+async function generateWorkout() {
+  const goal = document.getElementById("goal").value;
+  const level = document.getElementById("level").value;
+  const split = document.getElementById("split").value;
+  const days = document.getElementById("days").value;
+  const btn = document.getElementById("genBtn");
+  const result = document.getElementById("workoutResult");
+  btn.disabled = true;
+  result.innerHTML = `<div class="loading">🤖 AI Coach Building Your Program<div class="loading-dots"><span></span><span></span><span></span></div></div>`;
+  const prompt = `Create a ${days}-day ${split} workout plan for 1 full week. Goal: ${goal} | Level: ${level}. Exactly ${days} training days. 5 exercises per day with sets x reps. Clear DAY 1, DAY 2 format. Professional gym exercises. No rest day text. Keep concise. FORMAT: DAY 1 — Push: - Bench Press — 4 x 8-10`;
+  try {
+    const res = await fetch(WORKER_URL, { method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify({prompt}) });
+    const data = await res.json();
+    const text = data.text || "No response";
+    localStorage.setItem("generatedWorkout", text);
+    localStorage.setItem("goal", goal);
+    localStorage.setItem("level", level);
+    localStorage.setItem("split", split);
+    localStorage.setItem("days", days);
     renderWorkout(text);
-
+  } catch(err) {
+    result.innerHTML = `<div class="error-box">⚠️ ${err.message}</div>`;
   }
-
-  catch(err){
-
-    console.log(err);
-
-    result.innerHTML = `
-
-    <div class="error-box">
-
-      ⚠️ ${err.message}
-
-    </div>
-
-    `;
-
-  }
-
+  btn.disabled = false;
 }
-
-function renderWorkout(text){
-
-  const result =
-  document.getElementById(
-    "workoutResult"
-  );
-
-  const lines =
-  text.split("\n")
-  .filter(line => line.trim());
-
-  let html = "";
-
-  let currentCard = false;
-
+function renderWorkout(text) {
+  const result = document.getElementById("workoutResult");
+  const days = localStorage.getItem("days") || "?";
+  const split = localStorage.getItem("split") || "";
+  const lines = text.split("\n").filter(l => l.trim());
+  let html = `<div class="week-header">📅 Weekly Program <span class="week-badge">${days} Days · ${split}</span></div>`;
+  let dayCount = 0; let inCard = false;
   lines.forEach(line => {
-
-    const cleanLine =
-    line.trim();
-
-    if(
-      cleanLine.toLowerCase()
-      .includes("day")
-    ){
-
-      if(currentCard){
-        html += `</div>`;
-      }
-
-      html += `
-      <div class="day-card">
-
-        <div class="day-title">
-          ${cleanLine}
-        </div>
-      `;
-
-      currentCard = true;
-
+    const clean = line.trim();
+    if (clean.toLowerCase().match(/^day\s*\d/)) {
+      if (inCard) html += `</div>`;
+      dayCount++;
+      html += `<div class="day-card"><div class="day-title"><div class="day-num">${dayCount}</div>${clean}</div>`;
+      inCard = true;
+    } else if (clean) {
+      html += `<div class="exercise"><div class="ex-dot"></div><span>${clean.replace(/^[-•]\s*/,'')}</span></div>`;
     }
-
-    else{
-
-      html += `
-      <div class="exercise">
-        ${cleanLine}
-      </div>
-      `;
-
-    }
-
   });
-
-  if(currentCard){
-    html += `</div>`;
-  }
-
-  html += `
-
-  <div class="lock-box">
-
-  ⚠️ This workout program will remain
-  fixed until your workout cycle ends.
-
-  </div>
-
-  <button class="confirm-btn"
-  onclick="lockProgram()">
-
-  ✅ Confirm & Lock Program
-
-  </button>
-
-  <button class="next-btn"
-  onclick="goBudget()">
-
-  Continue to Budget Planning →
-
-  </button>
-
-  `;
-
+  if (inCard) html += `</div>`;
+  html += `<div class="lock-box"><strong>⚠️ Program Locked for 1 Week</strong><br>Complete all ${days} days before generating a new program.</div>
+  <div class="btn-row">
+    <button class="btn btn-confirm" onclick="lockProgram()">✅ Lock Program</button>
+    <button class="btn btn-next" onclick="window.location.href='budget.html'">Budget Plan →</button>
+  </div>`;
   result.innerHTML = html;
-
 }
-
-function lockProgram(){
-
-  localStorage.setItem(
-    "programLocked",
-    "true"
-  );
-
-  alert(
-    "Workout Program Locked 🔥"
-  );
-
-}
-
-function goBudget(){
-
-  window.location.href =
-  "budget.html";
-
-}
-
+function lockProgram() { localStorage.setItem("programLocked","true"); alert("🔥 Program Locked for 1 Week!"); }
 </script>
-
 </body>
 </html>

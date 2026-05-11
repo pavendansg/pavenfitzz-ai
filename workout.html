@@ -223,26 +223,32 @@ async function confirmGenerate() {
   document.getElementById("formSection").innerHTML =
     `<div class="loading">🤖 Building Your ${split} Program<div class="dots"><span></span><span></span><span></span></div></div>`;
 
-  const prompt = `You are an expert gym coach. Create a ${split} workout program. Goal: ${goal}. Level: ${level}.
-IMPORTANT: This is a ${split} split. Generate EXACTLY these days in this order:
-${structure.map((s,i) => `Day ${i+1}: ${s}`).join("\n")}
+  const splitDay = structure.map((s,i) => `Day ${i+1}: ${s}`).join("\n");
 
-For EACH day give:
-- Day number and focus (e.g. "Day 1 — Push")
-- 5 exercises with: exercise name, sets x reps, short tip (1 line max)
+const prompt = `You are a gym coach. Create a STRICT ${split} workout plan.
+Goal: ${goal}. Level: ${level}.
 
-FORMAT STRICTLY:
-DAY 1 — Push (Chest/Shoulders/Triceps)
-1. Bench Press | 4x8-10 | Keep elbows at 45°
-2. Overhead Press | 3x10 | Core tight throughout
-3. Incline Dumbbell Press | 3x12 | Full range of motion
-4. Lateral Raises | 3x15 | Slow controlled reps
-5. Tricep Pushdown | 3x12 | Lock elbows at sides
+THIS IS A ${split.toUpperCase()} SPLIT. Follow this EXACT structure:
+${splitDay}
 
-DAY 2 — Pull (Back/Biceps)
-...and so on for all ${days} days.
+IMPORTANT RULES:
+- Day 1 MUST be ${structure[0]}
+- Day 2 MUST be ${structure[1]}  
+- Do NOT mix with PPL or any other split
+- Each day: 5 exercises matching that muscle group ONLY
 
-No extra text. No rest days. No nutrition advice. Just the workout days.`;
+FORMAT:
+DAY 1 — ${structure[0]}
+1. [exercise for ${structure[0]}] | sets x reps | tip
+2. [exercise] | sets x reps | tip
+3. [exercise] | sets x reps | tip
+4. [exercise] | sets x reps | tip
+5. [exercise] | sets x reps | tip
+
+DAY 2 — ${structure[1]}
+[continue same format for all ${days} days]
+
+No rest days. No extra text.`;
 
   try {
     const res  = await fetch(WORKER, {method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify({prompt})});

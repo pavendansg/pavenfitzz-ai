@@ -1,1 +1,619 @@
+<!DOCTYPE html>
+<html lang="en">
 
+<head>
+<meta charset="UTF-8">
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>PavenFitzz AI Diet Generator</title>
+
+<style>
+
+body{
+  margin:0;
+  font-family:Arial,sans-serif;
+  background:#050505;
+  color:white;
+}
+
+.container{
+  max-width:950px;
+  margin:auto;
+  padding:20px;
+}
+
+.ai-header{
+  text-align:center;
+  margin-bottom:35px;
+}
+
+.ai-logo{
+  font-size:70px;
+}
+
+.ai-title{
+  font-size:42px;
+  font-weight:700;
+  margin-top:10px;
+  color:#00ff88;
+}
+
+.ai-subtitle{
+  color:#aaa;
+  margin-top:12px;
+  font-size:17px;
+}
+
+.box{
+  background:#131313;
+  border-radius:24px;
+  padding:28px;
+  border:1px solid rgba(255,255,255,0.08);
+  box-shadow:0 0 25px rgba(0,0,0,0.5);
+}
+
+.input-label{
+  display:block;
+  margin-top:22px;
+  margin-bottom:10px;
+  color:#888;
+  font-weight:700;
+  letter-spacing:1px;
+}
+
+input,select{
+  width:100%;
+  padding:16px;
+  border:none;
+  border-radius:14px;
+  background:#222;
+  color:white;
+  font-size:17px;
+}
+
+.generate-btn{
+  width:100%;
+  padding:18px;
+  border:none;
+  border-radius:18px;
+  margin-top:30px;
+  font-size:18px;
+  font-weight:700;
+  cursor:pointer;
+
+  background:linear-gradient(
+  90deg,
+  #00ff88,
+  #00c3ff
+  );
+
+  color:black;
+}
+
+.result{
+  margin-top:30px;
+}
+
+.section-card{
+  background:#131313;
+  border-left:5px solid #00ff88;
+  border-radius:20px;
+  padding:22px;
+  margin-bottom:20px;
+}
+
+.section-title{
+  color:#00ff88;
+  font-size:24px;
+  font-weight:700;
+  margin-bottom:15px;
+}
+
+.result-line{
+  padding:12px 0;
+  border-bottom:1px solid rgba(255,255,255,0.06);
+  line-height:1.8;
+}
+
+.loading{
+  text-align:center;
+  padding:35px;
+  color:#00ff88;
+  font-size:18px;
+}
+
+.tip-box{
+  background:#101010;
+  border-radius:18px;
+  padding:20px;
+  margin-top:22px;
+  line-height:1.8;
+  color:#bbb;
+}
+
+.next-btn{
+  width:100%;
+  padding:18px;
+  border:none;
+  border-radius:18px;
+  margin-top:22px;
+  font-size:18px;
+  font-weight:700;
+  cursor:pointer;
+
+  background:linear-gradient(
+  90deg,
+  #ffd000,
+  #ff9900
+  );
+
+  color:black;
+}
+
+.error-box{
+  background:#2a1111;
+  color:#ff7777;
+  padding:20px;
+  border-radius:18px;
+  margin-top:20px;
+}
+
+.summary-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+  gap:15px;
+  margin-bottom:25px;
+}
+
+.summary-card{
+  background:#151515;
+  border-radius:16px;
+  padding:18px;
+  border:1px solid rgba(255,255,255,0.08);
+}
+
+.summary-title{
+  color:#aaa;
+  margin-bottom:8px;
+}
+
+.summary-value{
+  font-size:22px;
+  font-weight:700;
+  color:#00ff88;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+  <div class="ai-header">
+
+    <div class="ai-logo">🥗</div>
+
+    <div class="ai-title">
+      AI Indian Diet Generator
+    </div>
+
+    <div class="ai-subtitle">
+      Smart Indian fitness diet planning
+    </div>
+
+  </div>
+
+  <div class="summary-grid">
+
+    <div class="summary-card">
+
+      <div class="summary-title">
+        Goal
+      </div>
+
+      <div class="summary-value"
+      id="goalText">
+      </div>
+
+    </div>
+
+    <div class="summary-card">
+
+      <div class="summary-title">
+        Workout Split
+      </div>
+
+      <div class="summary-value"
+      id="splitText">
+      </div>
+
+    </div>
+
+  </div>
+
+  <div class="box">
+
+    <label class="input-label">
+      AGE
+    </label>
+
+    <input type="number"
+    id="age"
+    placeholder="Enter age">
+
+    <label class="input-label">
+      HEIGHT (CM)
+    </label>
+
+    <input type="number"
+    id="height"
+    placeholder="Enter height">
+
+    <label class="input-label">
+      WEIGHT (KG)
+    </label>
+
+    <input type="number"
+    id="weight"
+    placeholder="Enter weight">
+
+    <label class="input-label">
+      GENDER
+    </label>
+
+    <select id="gender">
+
+      <option>Male</option>
+      <option>Female</option>
+
+    </select>
+
+    <label class="input-label">
+      ACTIVITY LEVEL
+    </label>
+
+    <select id="activity">
+
+      <option>Low</option>
+      <option>Moderate</option>
+      <option>High</option>
+
+    </select>
+
+    <label class="input-label">
+      FOOD TYPE
+    </label>
+
+    <select id="foodType">
+
+      <option>Non-Veg</option>
+      <option>Veg</option>
+
+    </select>
+
+    <label class="input-label">
+      DAILY BUDGET LEVEL
+    </label>
+
+    <select id="budgetLevel">
+
+      <option>Low Budget</option>
+      <option>Medium Budget</option>
+      <option>High Budget</option>
+
+    </select>
+
+    <button class="generate-btn"
+    onclick="generateDietPlan()">
+
+      Generate Indian Diet Plan 🔥
+
+    </button>
+
+  </div>
+
+  <div id="dietResult"
+  class="result"></div>
+
+</div>
+
+<script>
+
+const WORKER_URL =
+"https://pavenfitzz-ai.pavendansg.workers.dev/";
+
+const goal =
+localStorage.getItem("goal")
+|| "Bulk";
+
+const split =
+localStorage.getItem("split")
+|| "PPL";
+
+document.getElementById(
+  "goalText"
+).innerText = goal;
+
+document.getElementById(
+  "splitText"
+).innerText = split;
+
+window.onload = function(){
+
+  const savedDiet =
+  localStorage.getItem(
+    "generatedDiet"
+  );
+
+  const savedDate =
+  localStorage.getItem(
+    "dietDate"
+  );
+
+  const today =
+  new Date().toDateString();
+
+  if(
+    savedDiet &&
+    savedDate === today
+  ){
+
+    renderDiet(savedDiet);
+
+  }
+
+}
+
+async function generateDietPlan(){
+
+  const age =
+  document.getElementById("age").value;
+
+  const height =
+  document.getElementById("height").value;
+
+  const weight =
+  document.getElementById("weight").value;
+
+  const gender =
+  document.getElementById("gender").value;
+
+  const activity =
+  document.getElementById("activity").value;
+
+  const foodType =
+  document.getElementById("foodType").value;
+
+  const budgetLevel =
+  document.getElementById("budgetLevel").value;
+
+  const result =
+  document.getElementById("dietResult");
+
+  result.innerHTML = `
+  <div class="loading">
+
+  🤖 AI Indian Fitness Coach is
+  analyzing your body and creating
+  your diet strategy...
+
+  </div>
+  `;
+
+  const prompt = `
+Create a PROFESSIONAL Indian fitness diet plan.
+
+User Details:
+Age: ${age}
+Height: ${height} cm
+Weight: ${weight} kg
+Gender: ${gender}
+Goal: ${goal}
+Activity Level: ${activity}
+Food Type: ${foodType}
+Budget Level: ${budgetLevel}
+
+STRICT RULES:
+- Use Indian foods only
+- Use realistic gym foods
+- NO western influencer foods
+- Mention body type
+- Mention calories target
+- Mention protein target
+- Mention Indian meal plan
+- Mention affordable foods
+- Mention realistic Indian foods
+- NO chatting
+- NO long explanations
+- Keep concise and premium
+
+FORMAT:
+
+Body Type:
+Goal:
+Calories Target:
+Protein Target:
+
+Breakfast:
+- foods
+
+Lunch:
+- foods
+
+Snack:
+- foods
+
+Dinner:
+- foods
+
+Important Tips:
+`;
+
+  try{
+
+    const res = await fetch(WORKER_URL,{
+
+      method:"POST",
+
+      headers:{
+        "Content-Type":"application/json"
+      },
+
+      body:JSON.stringify({
+        prompt:prompt
+      })
+
+    });
+
+    const data =
+    await res.json();
+
+    console.log(data);
+
+    const text =
+    data.text || "No response";
+
+    localStorage.setItem(
+      "generatedDiet",
+      text
+    );
+
+    localStorage.setItem(
+      "dietDate",
+      new Date().toDateString()
+    );
+
+    renderDiet(text);
+
+  }
+
+  catch(err){
+
+    console.log(err);
+
+    result.innerHTML = `
+    <div class="error-box">
+
+    ⚠️ ${err.message}
+
+    </div>
+    `;
+
+  }
+
+}
+
+function renderDiet(text){
+
+  const result =
+  document.getElementById(
+    "dietResult"
+  );
+
+  const lines =
+  text.split("\n")
+  .filter(line => line.trim());
+
+  let html = "";
+
+  let currentSection = false;
+
+  lines.forEach(line => {
+
+    const cleanLine =
+    line.trim();
+
+    if(
+      cleanLine.includes("Body")
+      ||
+      cleanLine.includes("Goal")
+      ||
+      cleanLine.includes("Calories")
+      ||
+      cleanLine.includes("Protein")
+      ||
+      cleanLine.includes("Breakfast")
+      ||
+      cleanLine.includes("Lunch")
+      ||
+      cleanLine.includes("Snack")
+      ||
+      cleanLine.includes("Dinner")
+      ||
+      cleanLine.includes("Tips")
+    ){
+
+      if(currentSection){
+        html += `</div>`;
+      }
+
+      html += `
+      <div class="section-card">
+
+        <div class="section-title">
+        ${cleanLine}
+        </div>
+      `;
+
+      currentSection = true;
+
+    }
+
+    else{
+
+      html += `
+      <div class="result-line">
+
+      ${cleanLine}
+
+      </div>
+      `;
+
+    }
+
+  });
+
+  if(currentSection){
+    html += `</div>`;
+  }
+
+  html += `
+
+  <div class="tip-box">
+
+  ✅ Your AI Indian fitness diet
+  is locked for today and will
+  refresh tomorrow.
+
+  Stay consistent with training,
+  hydration and sleep.
+
+  </div>
+
+  <button class="next-btn"
+  onclick="goMealPlanner()">
+
+  Continue to Meal Planner →
+
+  </button>
+
+  `;
+
+  result.innerHTML = html;
+
+}
+
+function goMealPlanner(){
+
+  window.location.href =
+  "meal.html";
+
+}
+
+</script>
+
+</body>
+</html>
